@@ -14,9 +14,12 @@ export const getUser = asyncHandler(async (req, res, next) => {
   const {
     params: { id },
   } = req;
+  if (!id) {
+    return next(new ErrorResponse(`Invalid input`, 400));
+  }
   const data = await User.findById(id).select('-password -role');
   if (!data) {
-    return next(new ErrorResponse(`User not found with id of ${id}`, 404));
+    return next(new ErrorResponse(`User not found`, 404));
   }
   res.status(200).json({ success: true, data });
 });
@@ -29,6 +32,9 @@ export const createUser = asyncHandler(async (req, res, next) => {
   }
 
   const data = await User.create(req.body);
+  if (!data) {
+    return next(new ErrorResponse('Server Error!', 500));
+  }
   const { password, ...rest } = data._doc;
   res.status(201).json({ success: true, data: rest });
 });
@@ -70,5 +76,7 @@ export const deleteUser = asyncHandler(async (req, res) => {
   if (!data) {
     return next(new ErrorResponse('User not found!', 404));
   }
-  res.status(200).json({ success: true, data });
+  res
+    .status(200)
+    .json({ success: true, data: { message: 'user was deleted!' } });
 });
