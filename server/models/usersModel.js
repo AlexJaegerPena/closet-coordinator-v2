@@ -31,16 +31,16 @@ const userSchema = new Schema(
         'https://img.freepik.com/free-photo/user-profile-icon-front-side-with-white-background_187299-40010.jpg?t=st=1721037053~exp=1721040653~hmac=b100a5fe2292042e955bb460b1597a97ca1c04f5991dec15c7a3e2cd8c53022c&w=740',
     },
   },
-  {
-    toJSON: {
-      transform: (doc, ret) => {
-        ret.id = ret._id;
-        delete ret._id;
-        delete ret.__v;
-        return ret;
-      },
-    },
-  },
+  // {
+  //   toJSON: {
+  //     transform: (doc, ret) => {
+  //       ret.id = ret._id;
+  //       delete ret._id;
+  //       delete ret.__v;
+  //       return ret;
+  //     },
+  //   },
+  // },
   {
     timestamps: true,
   }

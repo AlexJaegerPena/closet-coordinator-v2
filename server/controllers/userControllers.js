@@ -44,7 +44,6 @@ export const updateUser = asyncHandler(async (req, res) => {
     body,
     params: { id },
   } = req;
-  console.log(body, id);
 
   if (!body.userName || !body.email || !body.password) {
     return next(new ErrorResponse('Invalid input!', 400));
