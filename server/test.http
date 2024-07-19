@@ -12,6 +12,7 @@ Authorization: {{token}}
 ###
 # Get one user by ID
 GET {{host}}/users/66951050ba6883286481ca2a
+Authorization: {{token}}
 
 ###
 # Create a user
@@ -19,25 +20,27 @@ POST {{host}}/users/
 Content-Type: application/json
 
 {
-    "userName": "John Doe6",
+    "userName": "John Doe7",
     "password":"123456",
-    "email": "john6@gmail.com"
+    "email": "john7@gmail.com"
 }
 
 ###
 # Update a user
-PUT {{host}}/users/669a060e68b3aae98782d0b4
+PUT {{host}}/users/669a2a3d9dec5d500b173f19
 Content-Type: application/json
+Authorization: {{token}}
 
 {
-    "userName": "John Doe6",
+    "userName": "John Doe7",
     "password":"123456",
-    "email": "johnDoe6@gmail.com"
+    "email": "johnDoe7@gmail.com"
 }
 
 ###
 # Delete a user
 DELETE {{host}}/users/66951001c87ff536461d1831
+Authorization: {{token}}
 
 ################################# AUTH
 
