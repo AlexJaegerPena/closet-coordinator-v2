@@ -7,12 +7,18 @@ import {
   deleteUser,
 } from '../controllers/userControllers.js';
 
+import {
+  isAdmin,
+  isAuthenticated,
+  isOwnerOrAdmin,
+} from '../middlewares/authMiddlewares.js';
+
 const router = Router();
 
-router.get('/', getAllUsers);
+router.get('/', isAuthenticated, getAllUsers);
 router.post('/', createUser);
-router.get('/:id', getUser);
-router.put('/:id', updateUser);
-router.delete('/:id', deleteUser);
+router.get('/:id', isAuthenticated, isOwnerOrAdmin, getUser);
+router.put('/:id', isAuthenticated, isOwnerOrAdmin, updateUser);
+router.delete('/:id', isAuthenticated, isOwnerOrAdmin, deleteUser);
 
 export default router;
