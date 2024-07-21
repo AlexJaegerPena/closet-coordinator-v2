@@ -1,51 +1,54 @@
 @host = http://localhost:8000/api/v1
-@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTUxMDUwYmE2ODgzMjg2NDgxY2EyYSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzIxMzcxNzg3LCJleHAiOjE3MjE0NTgxODd9.GGAC9rdK4UtQNH0AyaFmVXlehHRLxYABqK8aiz-MRgY
+@token = Bearer {{login.response.body.data}}
+@userId = {{getUser.response.body.data._id}}
 
-# Test serever
+
+###
+# @name serverTesting
 GET http://localhost:8000
 
 ###
-# Get all users
+# @name getAllUsers
 GET {{host}}/users
 Authorization: {{token}}
 
+
 ###
-# Get one user by ID
+# @name createUser
+POST {{host}}/users
+Content-Type: application/json
+{
+    "userName": "John Doe10",
+    "password":"123456",
+    "email": "john10@gmail.com"
+}
+
+###
+# @name getUser
 GET {{host}}/users/66951050ba6883286481ca2a
 Authorization: {{token}}
 
-###
-# Create a user
-POST {{host}}/users/
-Content-Type: application/json
-
-{
-    "userName": "John Doe7",
-    "password":"123456",
-    "email": "john7@gmail.com"
-}
-
-###
-# Update a user
-PUT {{host}}/users/669a2a3d9dec5d500b173f19
+### @name updateUser
+PUT {{host}}/users/{{userId}}
 Content-Type: application/json
 Authorization: {{token}}
 
 {
-    "userName": "John Doe7",
+    "userName": "John Doe1",
     "password":"123456",
-    "email": "johnDoe7@gmail.com"
+    "email": "johnDoe1@gmail.com"
 }
 
 ###
-# Delete a user
-DELETE {{host}}/users/66951001c87ff536461d1831
+# @name deleteUser
+DELETE {{host}}/users/{{userId}}
 Authorization: {{token}}
 
 ################################# AUTH
 
-### Login
-POST {{host}}/auth/login/
+###
+# @name login
+POST {{host}}/auth/login
 Content-Type: application/json
 
 {
@@ -54,5 +57,6 @@ Content-Type: application/json
     "rememberMe":false
 }
 
-### Logout
-POST {{host}}/auth/logout/
+###
+# @name logout
+POST {{host}}/auth/logout

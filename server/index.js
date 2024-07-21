@@ -2,13 +2,12 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 // import crypto from 'crypto';
-
 // console.log(crypto.randomBytes(32).toString('base64'));
 
 // DB
 import DB from './db/dbConnection.js';
 // Routes
-import ImageRoute from './routes/ImageRoute.js';
+import imageRoutes from './routes/imageRoutes.js';
 import usersRoutes from './routes/usersRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 
@@ -26,7 +25,7 @@ app.get('/', (req, res) => {
 
 app.use(`/api/v1/auth`, authRoutes);
 app.use(`/api/v1/users`, usersRoutes);
-app.use(`/api/v1/images`, ImageRoute);
+app.use(`/api/v1/images`, imageRoutes);
 app.use(`*`, (req, res) =>
   res.status(404).json({ message: 'Page not found!' })
 );
