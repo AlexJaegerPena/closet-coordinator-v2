@@ -1,0 +1,21 @@
+import { createContext, useContext, useState } from 'react';
+
+const UserContext = createContext();
+
+export const UserProvider = ({ children }) => {
+  const [error, setError] = useState('');
+  const [user, setUser] = useState({});
+  const [clothes, setClothes] = useState([]);
+  
+  return (
+    <UserContext.Provider
+      value={{ user, setUser,clothes, setClothes, error, setError }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+export const useUserContext = () => {
+  return useContext(UserContext);
+};

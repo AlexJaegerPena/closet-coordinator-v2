@@ -8,11 +8,10 @@ import dotenv from "dotenv";
 import DB from "./db/dbConnection.js";
 // Routes
 import imageRoutes from "./routes/imageRoutes.js";
+import clothesRouter from "./routes/clothesRouter.js";
 import usersRoutes from "./routes/usersRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
-
-// Routers
-import audioRouter from "./routes/audioRouter.js";
+// import audioRouter from "./routes/audioRouter.js";
 import chatRouter from "./routes/chatRouter.js";
 import imageRouter from "./routes/imageRouter.js";
 
@@ -29,13 +28,17 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.use(cors({ origin: "*" }), express.json(), validateProvider, validateMode);
+// app.use(cors({ origin: "*" }), express.json());
+app.use(cors({ origin: "*" }), express.json());
 app.use(`/api/v1/auth`, authRoutes);
 app.use(`/api/v1/users`, usersRoutes);
+app.use(`/api/v1/clothes`, clothesRouter);
 app.use(`/api/v1/images`, imageRoutes);
-app.use("/api/v1/audio/speech", audioRouter);
-app.use("/api/v1/chat/completions", chatRouter);
-app.use("/api/v1/images/generations", imageRouter);
+app.use(validateProvider, validateMode,)
+// app.use("/api/v1/audio/speech",  audioRouter);
+app.use("/api/v1/chat/completions",  chatRouter);
+app.use("/api/v1/images/generations",  imageRouter);
+
 app.use(`*`, (req, res) =>
   res.status(404).json({ message: "Page not found!" })
 );
