@@ -4,10 +4,10 @@ import { getStorage } from 'firebase/storage';
 
 dotenv.config();
 
-console.log(process.env.API_KEY);
+console.log(process.env.OPEN_AI_APIKEY);
 
 const firebaseConfig = {
-  apiKey: process.env.API_KEY,
+  apiKey: process.env.OPEN_AI_APIKEY,
   authDomain: process.env.AUTH_DOMAIN,
   projectId: process.env.PROJECT_ID,
   storageBucket: process.env.STORAGE_BUCKET,

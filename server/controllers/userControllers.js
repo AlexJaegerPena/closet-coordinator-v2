@@ -1,9 +1,9 @@
-import asyncHandler from 'express-async-handler';
-import ErrorResponse from '../utils/ErrorResponse.js';
-import User from '../models/usersModel.js';
+import asyncHandler from "express-async-handler";
+import ErrorResponse from "../utils/ErrorResponse.js";
+import User from "../models/usersModel.js";
 
 export const getAllUsers = asyncHandler(async (req, res, next) => {
-  const data = await User.find().select('-password -role');
+  const data = await User.find().select("-password -role");
   if (!data) {
     return next(new ErrorResponse(`Server error`, 500));
   }
@@ -17,7 +17,7 @@ export const getUser = asyncHandler(async (req, res, next) => {
   if (!id) {
     return next(new ErrorResponse(`Invalid input`, 400));
   }
-  const data = await User.findById(id).select('-password -role');
+  const data = await User.findById(id).select("-password -role");
   if (!data) {
     return next(new ErrorResponse(`User not found`, 404));
   }
@@ -28,12 +28,12 @@ export const createUser = asyncHandler(async (req, res, next) => {
   const { body } = req;
 
   if (!body.userName || !body.email || !body.password) {
-    return next(new ErrorResponse('invalid input!', 400));
+    return next(new ErrorResponse("invalid input!", 400));
   }
 
   const data = await User.create(req.body);
   if (!data) {
-    return next(new ErrorResponse('Server Error!', 500));
+    return next(new ErrorResponse("Server Error!", 500));
   }
   const { password, ...rest } = data._doc;
   res.status(201).json({ success: true, data: rest });
@@ -46,7 +46,7 @@ export const updateUser = asyncHandler(async (req, res) => {
   } = req;
 
   if (!body.userName || !body.email || !body.password) {
-    return next(new ErrorResponse('Invalid input!', 400));
+    return next(new ErrorResponse("Invalid input!", 400));
   }
 
   const data = await User.findByIdAndUpdate(id, body, {
@@ -55,7 +55,7 @@ export const updateUser = asyncHandler(async (req, res) => {
   });
 
   if (!data) {
-    return next(new ErrorResponse('User not found!', 404));
+    return next(new ErrorResponse("User not found!", 404));
   }
 
   res.status(200).json({ success: true, data });
@@ -67,15 +67,15 @@ export const deleteUser = asyncHandler(async (req, res) => {
   } = req;
 
   if (!id) {
-    return next(new ErrorResponse('Invalid input!', 400));
+    return next(new ErrorResponse("Invalid input!", 400));
   }
 
   const data = await User.findByIdAndDelete(id);
 
   if (!data) {
-    return next(new ErrorResponse('User not found!', 404));
+    return next(new ErrorResponse("User not found!", 404));
   }
   res
     .status(200)
-    .json({ success: true, data: { message: 'user was deleted!' } });
+    .json({ success: true, data: { message: "user was deleted!" } });
 });
