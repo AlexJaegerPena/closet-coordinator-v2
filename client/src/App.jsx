@@ -2,16 +2,17 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
+import Update from "./pages/Update";
 
 function App() {
   return (
     <>
       <Header />
-      <Home />
-      {/* <Routes>
+      {/* <Home /> */}
+      <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/update" element={<Update />}></Route>
-      </Routes> */}
+      </Routes>
     </>
   );
 }
