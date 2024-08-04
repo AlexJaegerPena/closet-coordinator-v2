@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa"; // Import icons
 import ClothesForm from "../components/ClothesForm";
 
-
 const categories = [
   {
     id: 1,
@@ -23,9 +22,6 @@ const categories = [
           "https://img01.ztat.net/article/spp-media-p1/637562911a7e36c28ce77c9db69b4cef/00373c35a7f94b4b84a4e070879289a2.jpg?imwidth=300",
       },
     ],
-
-    image: "https://img01.ztat.net/article/spp-media-p1/c64bdecbf99a460fa2804aab18f2ea86/74131e965bc64dc4aedb3a671fa0e7c0.jpg?imwidth=1800&filter=packshot",
-
   },
   {
     id: 2,
@@ -45,9 +41,6 @@ const categories = [
           "https://img01.ztat.net/article/spp-media-p1/637562911a7e36c28ce77c9db69b4cef/00373c35a7f94b4b84a4e070879289a2.jpg?imwidth=300",
       },
     ],
-
-    image: "https://img01.ztat.net/article/spp-media-p1/6df2072f78b041129f50d37a59b1faf6/d457f7b794454b8ea3aa79b04e9e5564.jpg?imwidth=1800&filter=packshot",
-
   },
   {
     id: 3,
@@ -67,8 +60,6 @@ const categories = [
           "https://img01.ztat.net/article/spp-media-p1/637562911a7e36c28ce77c9db69b4cef/00373c35a7f94b4b84a4e070879289a2.jpg?imwidth=300",
       },
     ],
-
-    image: "https://img01.ztat.net/article/spp-media-p1/e9fdf4f0bc5248e6855e87c247cce063/4d96b8baf2be4e38a9113d22ff4c9ec3.jpg?imwidth=1800&filter=packshot",
   },
   {
     id: 4,
@@ -88,9 +79,6 @@ const categories = [
           "https://img01.ztat.net/article/spp-media-p1/637562911a7e36c28ce77c9db69b4cef/00373c35a7f94b4b84a4e070879289a2.jpg?imwidth=300",
       },
     ],
-
-    image: "https://img01.ztat.net/article/spp-media-p1/637562911a7e36c28ce77c9db69b4cef/00373c35a7f94b4b84a4e070879289a2.jpg?imwidth=1800",
-
   },
   {
     id: 5,
@@ -110,9 +98,6 @@ const categories = [
           "https://img01.ztat.net/article/spp-media-p1/637562911a7e36c28ce77c9db69b4cef/00373c35a7f94b4b84a4e070879289a2.jpg?imwidth=300",
       },
     ],
-
-    image: "https://img01.ztat.net/article/spp-media-p1/b8cd4c4adeb3319fb6b4e3c0deabde0b/cf6b6464162b4aafb83a7ac50e3cae68.jpg?imwidth=1800&filter=packshot",
-
   },
   {
     id: 6,
@@ -132,25 +117,21 @@ const categories = [
           "https://img01.ztat.net/article/spp-media-p1/637562911a7e36c28ce77c9db69b4cef/00373c35a7f94b4b84a4e070879289a2.jpg?imwidth=300",
       },
     ],
-
-    image: "https://img01.ztat.net/article/spp-media-p1/50ca52f0675d48c5af8f19394808cc55/8e2e171a77604d7b8487d907a8f869f2.jpg?imwidth=1800&filter=packshot",
-
   },
 ];
 
 const ClothesList = () => {
-
-  const [hoveredCategory, setHoveredCategory] = useState(null);
+  // const [hoveredCategory, setHoveredCategory] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(selectedCategory === category ? null : category);
-  };
+  // const handleCategoryClick = (category) => {
+  //   setSelectedCategory(selectedCategory === category ? null : category);
+  // };
 
-  const handleEditClick = (event, item) => {
-    event.stopPropagation(); // Prevents triggering parent onClick
-    alert(`Edit ${item.name}`);
-  };
+  // const handleEditClick = (event, item) => {
+  //   event.stopPropagation(); // Prevents triggering parent onClick
+  //   alert(`Edit ${item.name}`);
+  // };
 
   const [visibleCategories, setVisibleCategories] = useState(categories);
   const [hoveredCategory, setHoveredCategory] = useState();
@@ -174,7 +155,6 @@ const ClothesList = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-
       {/* List of categories */}
       <div className="grid grid-cols-2 gap-4 mb-4">
         {categories.map((category) => (
@@ -183,14 +163,12 @@ const ClothesList = () => {
             onClick={() => handleCategoryClick(category)}
             className={`flex flex-col items-center p-4 bg-gray-200 rounded-lg shadow-md hover:bg-gray-300 ${
               hoveredCategory === category ? "bg-gray-300" : ""
-
             }`}
           >
             <span className="text-lg font-semibold">{category.name}</span>
           </button>
         ))}
       </div>
-
 
       {selectedCategory && (
         <div>
@@ -258,7 +236,7 @@ const ClothesList = () => {
           </div>
         </div>
       )}
-      
+
       {/* Display images of categories */}
       <div className="flex flex-wrap justify-center gap-4">
         {visibleCategories.map((category) => (
