@@ -2,7 +2,7 @@ import React from "react";
 
 const Checkboxes = ({ checkboxes, handleCheckboxChange }) => (
   <div className="mb-4">
-    <h3 className="text-lg font-semibold text-blue-600 mb-2">Seasons</h3>
+    <h3 className="text-lg font-semibold text-blue-600 mb-2">Season</h3>
     {["Summer", "Autumn", "Winter", "Spring"].map((season, index) => (
       <label key={index} className="inline-flex items-center mr-4">
         <input

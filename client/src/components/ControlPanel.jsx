@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Dropdowns from "./Dropdowns";
 import Checkboxes from "./Checkboxes";
 import Sliders from "./Sliders";
 import TextInput from "./TextInput";
 import Modal from "./Modal";
+import ImageUpload from "./ImageUpload";
 
 const ControlPanel = ({ clearImage }) => {
   const [dropdown1, setDropdown1] = useState("");
@@ -24,6 +25,8 @@ const ControlPanel = ({ clearImage }) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
+
+  const imageUploadRef = useRef();
 
   const handleCheckboxChange = (group, index) => {
     setCheckboxes((prev) => ({
@@ -59,17 +62,22 @@ const ControlPanel = ({ clearImage }) => {
     setSlider1(1);
     setSlider2(1);
     setClothesName("");
+    if (imageUploadRef.current) {
+      imageUploadRef.current.clearImage();
+    }
   };
 
   const handleSubmit = () => {
+    // const image = imageUploadRef.current.getImage();
     console.log("Submitted data:", {
-      clothesName,
       dropdown1,
       dropdown2,
       dropdown3,
       checkboxes,
       slider1,
       slider2,
+      clothesName,
+      // image,
     });
     setIsFeedbackOpen(true);
     resetForm();
@@ -86,9 +94,8 @@ const ControlPanel = ({ clearImage }) => {
       <h2 className="text-xl font-semi-bold text-blue-700 mb-4">
         Item Attributes
       </h2>
-
-      <TextInput textInput={clothesName} setTextInput={setClothesName} />
-
+      <ImageUpload ref={imageUploadRef} />
+      <TextInput textInput={clothesName} setTextInput={setClothesName} />{" "}
       <Dropdowns
         dropdown1={dropdown1}
         setDropdown1={setDropdown1}
@@ -97,19 +104,16 @@ const ControlPanel = ({ clearImage }) => {
         dropdown3={dropdown3}
         setDropdown3={setDropdown3}
       />
-
       <Checkboxes
         checkboxes={checkboxes}
         handleCheckboxChange={handleCheckboxChange}
       />
-
       <Sliders
         slider1={slider1}
         setSlider1={setSlider1}
         slider2={slider2}
         setSlider2={setSlider2}
       />
-
       <div className="flex justify-between">
         <button
           onClick={handleSubmit}
@@ -122,7 +126,6 @@ const ControlPanel = ({ clearImage }) => {
           Clear
         </button>
       </div>
-
       <Modal
         isOpen={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
@@ -130,15 +133,16 @@ const ControlPanel = ({ clearImage }) => {
         message="Are you sure you want to clear all inputs?"
         onConfirm={handleConfirmClear}
         onCancel={() => setIsConfirmOpen(false)}
+        showCancelButton={true}
         confetti={false}
       />
-
       <Modal
         isOpen={isFeedbackOpen}
         onClose={() => setIsFeedbackOpen(false)}
         title="Item Added"
         message="The item has been successfully added."
         onConfirm={() => setIsFeedbackOpen(false)}
+        showCancelButton={false}
         confetti={true}
       />
     </motion.div>
