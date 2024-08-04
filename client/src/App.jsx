@@ -7,6 +7,7 @@ import Home from "./pages/Home.jsx";
 import ClothesSettings from "./pages/ClothesSettings.jsx";
 import ClothesList from "./pages/ClothesList.jsx";
 import Navbar from "./components/Navbar.jsx";
+import Update from "./pages/Update.jsx";
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
           <Route path="/" element={<Home />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/login" element={<Login />}></Route>
-          <Route path="/clothes-settings" element={<ClothesSettings />}></Route>
+          <Route path="/clothes-settings" element={<Update />}></Route>
           <Route path="/clothes-list" element={<ClothesList />}></Route>
         </Routes>
       </div>
