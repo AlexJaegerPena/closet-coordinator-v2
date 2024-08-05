@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-
 import { FaEdit, FaTrash } from "react-icons/fa"; // Import icons
-import ClothesForm from "../components/ClothesForm";
+import ClothesFormPopup from "../components/ClothesFormPopup";
 
 const categories = [
   {
@@ -141,6 +140,7 @@ const categories = [
 const ClothesList = () => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [visibleCategories, setVisibleCategories] = useState(categories);
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(selectedCategory === category ? null : category);
@@ -151,36 +151,27 @@ const ClothesList = () => {
     alert(`Edit ${item.name}`);
   };
 
-  const [visibleCategories, setVisibleCategories] = useState(categories);
-  // const [hoveredCategory, setHoveredCategory] = useState();
-
-  //const handleCategoryClick = (category) => {
-  //  setHoveredCategory(category);
-  //};
-
-  // const handleEditClick = (event, category) => {
-  // event.stopPropagation(); // Prevent triggering the parent element's onClick event
-  //  alert(`Edit ${category.name}`);
-  // };
-
-  // Remove category image when delete button is clicked
-  const handleDeleteClick = (categoryId) => {
-    setVisibleCategories((prevCategories) =>
-      prevCategories.filter((category) => category.id !== categoryId)
-    );
-    console.log("Deleted category with ID: ", categoryId);
+  // Entferne ein Item aus der ausgewählten Kategorie
+  const handleDeleteClick = (event, item) => {
+    event.stopPropagation(); // Verhindert das Auslösen des Eltern onClick
+    setSelectedCategory((prevCategory) => {
+      if (!prevCategory) return null;
+      return {
+        ...prevCategory,
+        items: prevCategory.items.filter((i) => i !== item),
+      };
+    });
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* List of categories */}
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
         {categories.map((category) => (
           <button
             key={category.id}
             onClick={() => handleCategoryClick(category)}
-            className={`flex flex-col items-center p-4 bg-gray-200 rounded-lg shadow-md hover:bg-gray-300 ${
-              hoveredCategory === category ? "bg-gray-300" : ""
+            className={`flex flex-col items-center p-4 bg-gray-200 rounded-lg shadow-md hover:bg-gray-300 transition ${
+              selectedCategory === category ? "bg-gray-300" : ""
             }`}>
             <span className="text-lg font-semibold">{category.name}</span>
           </button>
@@ -219,7 +210,7 @@ const ClothesList = () => {
                           <h3 className="font-bold text-lg mb-4">
                             Update your item
                           </h3>
-                          <ClothesForm />
+                          <ClothesFormPopup />
                           <div className="flex gap-4">
                             <button
                               className="btn flex-1"
@@ -248,38 +239,6 @@ const ClothesList = () => {
           </div>
         </div>
       )}
-
-      {/* Display images of categories */}
-      <div className="flex flex-wrap justify-center gap-4">
-        {visibleCategories.map((category) => (
-          <div
-            key={category.id}
-            className="relative w-40 h-40 bg-gray-200 border rounded-3xl overflow-hidden flex items-center justify-center"
-            onMouseEnter={() => setHoveredCategory(category)}
-            onMouseLeave={() => setHoveredCategory(null)}>
-            <img
-              src={category.image}
-              alt={category.name}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            {hoveredCategory === category && (
-              <div className="absolute top-2 right-2 flex gap-2">
-                <button
-                  onClick={(event) => handleEditClick(event, category)}
-                  className="text-white">
-                  <FaEdit size={20} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleDeleteClick(category.id)}
-                  className="text-white bg-red-500 p-2 rounded-full hover:bg-red-700 focus:outline-none">
-                  <FaTrash size={20} />
-                </button>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
     </div>
   );
 };
