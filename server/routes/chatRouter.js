@@ -1,9 +1,8 @@
-import { Router } from 'express';
-// import { createChat } from '../controllers/chats.js';
-import {createChat} from '../controllers/chat.js'
+import { Router } from "express";
+import { createChat } from "../controllers/chats.js";
 
 const chatRouter = Router();
 
-chatRouter.post('/', createChat);
+chatRouter.post("/", createChat);
 
 export default chatRouter;

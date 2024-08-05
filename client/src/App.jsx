@@ -22,6 +22,7 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/clothes-settings" element={<Update />}></Route>
           <Route path="/clothes-list" element={<ClothesList />}></Route>
+          <Route path="/update" element={<Update />}></Route>
         </Routes>
       </div>
     </div>
