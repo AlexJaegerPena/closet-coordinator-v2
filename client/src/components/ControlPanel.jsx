@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Dropdowns from "./Dropdowns";
 import Checkboxes from "./Checkboxes";
 import Sliders from "./Sliders";
-import TextInput from "./TextInput";
+// import TextInput from "./TextInput";
 import Modal from "./Modal";
 import ImageUpload from "./ImageUpload";
 
@@ -20,7 +20,7 @@ const ControlPanel = ({ clearImage }) => {
   const [slider1, setSlider1] = useState(1);
   const [slider2, setSlider2] = useState(1);
 
-  const [clothesName, setClothesName] = useState("");
+  // const [clothesName, setClothesName] = useState("");
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
@@ -61,7 +61,7 @@ const ControlPanel = ({ clearImage }) => {
     });
     setSlider1(1);
     setSlider2(1);
-    setClothesName("");
+    // setClothesName("");
     if (imageUploadRef.current) {
       imageUploadRef.current.clearImage();
     }
@@ -76,7 +76,7 @@ const ControlPanel = ({ clearImage }) => {
       checkboxes,
       slider1,
       slider2,
-      clothesName,
+      // clothesName,
       // image,
     });
     setIsFeedbackOpen(true);
@@ -95,7 +95,7 @@ const ControlPanel = ({ clearImage }) => {
         Item Attributes
       </h2>
       <ImageUpload ref={imageUploadRef} />
-      <TextInput textInput={clothesName} setTextInput={setClothesName} />{" "}
+      {/* <TextInput textInput={clothesName} setTextInput={setClothesName} />{" "} */}
       <Dropdowns
         dropdown1={dropdown1}
         setDropdown1={setDropdown1}
