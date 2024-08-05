@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from "react";
 import ImageUpload from "../components/ImageUpload";
 import ControlPanel from "../components/ControlPanel";
@@ -41,6 +40,6 @@ const Update = () => {
       />
     </div>
   );
-
+};
 
 export default Update;
