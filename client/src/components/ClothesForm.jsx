@@ -129,8 +129,7 @@ const ClothesForm = ({ setMessages, messages }) => {
           value={form.category}
           required
           onChange={(e) => setForm({ ...form, category: e.target.value })}
-          className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        >
+          className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
           <option value="">Select a category</option>
           <option value="shirt">Shirt</option>
           <option value="pants">Pants</option>
@@ -147,8 +146,7 @@ const ClothesForm = ({ setMessages, messages }) => {
           value={form.occasion}
           required
           onChange={(e) => setForm({ ...form, type: e.target.value })}
-          className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        >
+          className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
           <option value="">Select an occasion</option>
           <option value="sports">Vest</option>
           <option value="holiday">short sleaves</option>
@@ -166,8 +164,7 @@ const ClothesForm = ({ setMessages, messages }) => {
           name="occasion"
           required
           onChange={(e) => setForm({ ...form, occasion: e.target.value })}
-          className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        >
+          className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
           <option value="">Select an occasion</option>
           <option value="sports">Sports</option>
           <option value="holiday">Holiday</option>
@@ -180,8 +177,7 @@ const ClothesForm = ({ setMessages, messages }) => {
         // disabled={!isSaveEnabled}
         // className={`mt-4 w-full text-white font-bold py-2 px-4 rounded ${isSaveEnabled ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-500 cursor-not-allowed'}`}
         className={`mt-4 w-full text-red font-bold py-2 px-4 rounded`}
-        onClick={handleSubmit}
-      >
+        onClick={handleSubmit}>
         Save
       </button>
     </div>

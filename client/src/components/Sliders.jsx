@@ -1,12 +1,12 @@
 import React from "react";
 
-const Sliders = ({ slider1, setSlider1, slider2, setSlider2 }) => (
+const Sliders = ({ slider1, setSlider1 }) => (
   <div className="mb-4">
     <div className="mb-2">
       <label className="text-lg font-semibold text-blue-600 mb-2">
-        Fun Level:
+        Energy Level:
         <div className="flex items-center justify-between">
-          <span className="text-gray-700 text-sm pr-2">Easy Going</span>
+          <span className="text-gray-700 text-sm pr-2">Zombie mode</span>
           <input
             type="range"
             min="1"
@@ -22,7 +22,7 @@ const Sliders = ({ slider1, setSlider1, slider2, setSlider2 }) => (
       </label>
     </div>
 
-    <div className="mb-2">
+    {/* <div className="mb-2">
       <label className="text-lg font-semibold text-blue-600 mb-2">
         Mood Level:
         <div className="flex items-center justify-between">
@@ -40,7 +40,7 @@ const Sliders = ({ slider1, setSlider1, slider2, setSlider2 }) => (
           </span>
         </div>
       </label>
-    </div>
+    </div> */}
   </div>
 );
 

@@ -5,7 +5,6 @@ import Confetti from "react-confetti";
 const Modal = ({
   isOpen,
   onClose,
-  title,
   message,
   onConfirm,
   onCancel,
@@ -50,9 +49,6 @@ const Modal = ({
             w: dimensions.width,
             h: 0,
           }}
-          onConfettiComplete={() => {
-            onClose();
-          }}
         />
       )}
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
@@ -61,10 +57,10 @@ const Modal = ({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 50 }}
           transition={{ duration: 0.3 }}
-          className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative">
-          <h2 className="text-xl font-bold mb-4">{title}</h2>
-          <p className="mb-6">{message}</p>
-          <div className="flex justify-end space-x-2">
+          className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full relative"
+          style={{ maxWidth: "90%", margin: "auto" }}>
+          <p className="mb-6 text-center">{message}</p>
+          <div className="flex justify-center space-x-4 mt-4">
             {showCancelButton && (
               <button
                 onClick={onCancel}

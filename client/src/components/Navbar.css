@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+body,
+html {
+  overflow-x: hidden;
+}
+
 .navbar {
   background-color: #3a93c6;
   height: 50px;

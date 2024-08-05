@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react';
-import { ref, uploadBytes, getDownloadURL, listAll } from 'firebase/storage';
-import { storage } from '../utils/firebase';
-import { v4 } from 'uuid';
+import { useState, useEffect } from "react";
+import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+import { storage } from "../utils/firebase";
+import { v4 } from "uuid";
 
 function FireBase() {
   const [imageUpload, setImageUpload] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState("");
 
-  const imagesListRef = ref(storage, 'images/');
+  const imagesListRef = ref(storage, "images/");
 
   const uploadFile = () => {
-      if (imageUpload == null) return;
-      const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-      console.log(imageRef)
+    if (imageUpload == null) return;
+    const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
+    console.log(imageRef);
     uploadBytes(imageRef, imageUpload).then((snapshot) => {
       console.log(snapshot?.ref._location.path_);
       getDownloadURL(snapshot.ref).then((url) => {
@@ -45,10 +45,10 @@ function FireBase() {
   }, []);
 
   return (
-    <div className='App'>
-      {imageUrl && <img alt={'i'} src={imageUrl} />}
+    <div className="App">
+      {imageUrl && <img alt={"i"} src={imageUrl} />}
       <input
-        type='file'
+        type="file"
         onChange={(event) => {
           setImageUpload(event.target.files[0]);
         }}

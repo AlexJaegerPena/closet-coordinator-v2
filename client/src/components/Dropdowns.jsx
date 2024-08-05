@@ -1,19 +1,46 @@
 import React from "react";
 
-const Dropdowns = ({ dropdown1, setDropdown1, dropdown2, setDropdown2 }) => (
+const Dropdowns = ({
+  dropdown1,
+  setDropdown1,
+  dropdown2,
+  setDropdown2,
+  dropdown3,
+  setDropdown3,
+  // dropdown4,
+  // setDropdown4,
+  // dropdown5,
+  // setDropdown5,
+}) => (
   <div>
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-1">
-        Clothing Type:
+        Category:
         <select
           value={dropdown1}
           onChange={(e) => setDropdown1(e.target.value)}
           className="mt-1 block w-full p-2 border border-gray-300 rounded shadow-sm focus:border-blue-500 focus:ring-blue-500">
           <option value="">Select</option>
-          <option value="1">Jacket</option>
-          <option value="2">T-Shirt</option>
-          <option value="3">Pants</option>
-          <option value="4">Shoes</option>
+          <option value="Shirt">Shirt</option>
+          <option value="Pants">Pants</option>
+          <option value="Jacket">Jacket</option>
+          <option value="Shoes">Shoes</option>
+        </select>
+      </label>
+    </div>
+
+    <div className="mb-4">
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        Type:
+        <select
+          value={dropdown2}
+          onChange={(e) => setDropdown2(e.target.value)}
+          className="mt-1 block w-full p-2 border border-gray-300 rounded shadow-sm focus:border-blue-500 focus:ring-blue-500">
+          <option value="">Select</option>
+          <option value="Vest">Vest</option>
+          <option value="Short Sleeves">Short Sleeves</option>
+          <option value="Long Sleeves">Long Sleeves</option>
+          <option value="Blouse">Blouse</option>
         </select>
       </label>
     </div>
@@ -22,17 +49,49 @@ const Dropdowns = ({ dropdown1, setDropdown1, dropdown2, setDropdown2 }) => (
       <label className="block text-sm font-medium text-gray-700 mb-1">
         Main Colour:
         <select
-          value={dropdown2}
-          onChange={(e) => setDropdown2(e.target.value)}
+          value={dropdown3}
+          onChange={(e) => setDropdown3(e.target.value)}
           className="mt-1 block w-full p-2 border border-gray-300 rounded shadow-sm focus:border-blue-500 focus:ring-blue-500">
           <option value="">Select</option>
-          <option value="1">Red</option>
-          <option value="2">Blue</option>
-          <option value="3">Green</option>
-          <option value="4">White</option>
+          <option value="Red">Red</option>
+          <option value="Blue">Blue</option>
+          <option value="Green">Green</option>
+          <option value="White">White</option>
         </select>
       </label>
     </div>
+
+    {/* <div className="mb-4">
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        Season:
+        <select
+          value={dropdown4}
+          onChange={(e) => setDropdown4(e.target.value)}
+          className="mt-1 block w-full p-2 border border-gray-300 rounded shadow-sm focus:border-blue-500 focus:ring-blue-500">
+          <option value="">Select</option>
+          <option value="Summer">Summer</option>
+          <option value="Autumn">Autumn</option>
+          <option value="Winter">Winter</option>
+          <option value="Spring">Spring</option>
+        </select>
+      </label>
+    </div> */}
+
+    {/* <div className="mb-4">
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        Occasion:
+        <select
+          value={dropdown5}
+          onChange={(e) => setDropdown5(e.target.value)}
+          className="mt-1 block w-full p-2 border border-gray-300 rounded shadow-sm focus:border-blue-500 focus:ring-blue-500">
+          <option value="">Select</option>
+          <option value="Sports">Sports</option>
+          <option value="Holiday">Holiday</option>
+          <option value="Formal">Formal</option>
+          <option value="Informal">Informal</option>
+        </select>
+      </label>
+    </div> */}
   </div>
 );
 

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import ImageUpload from "../components/ImageUpload";
+// import ImageUpload from "../components/ImageUpload";
 import ControlPanel from "../components/ControlPanel";
 import Modal from "../components/Modal";
 
@@ -23,7 +23,7 @@ const Update = () => {
         <h1 className="text-3xl font-bold text-center text-blue-800">
           Add New Item
         </h1>
-        <ImageUpload ref={imageUploadRef} />
+        {/* <ImageUpload ref={imageUploadRef} /> */}
         <ControlPanel
           clearImage={clearImage}
           onFeedback={() => setIsFeedbackOpen(true)}

@@ -1,24 +1,49 @@
 import React, { useState, forwardRef, useImperativeHandle } from "react";
+import {
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
+import { storage } from "../utils/firebase";
+import { v4 } from "uuid";
 
 const ImageUpload = forwardRef((props, ref) => {
   const [image, setImage] = useState(null);
   const [filename, setFilename] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       setImage(URL.createObjectURL(file));
-      setFilename(file.name);
+
+      const imageRef = storageRef(storage, `images/${file.name + v4()}`);
+      setUploading(true);
+
+      uploadBytes(imageRef, file).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          console.log("Image URL:", url);
+          setImageUrl(url);
+          setFilename(file.name);
+
+          setUploading(false);
+        });
+      });
     }
   };
 
   const clearImage = () => {
     setImage(null);
     setFilename("");
+    setImageUrl("");
+    setUploading(false);
   };
 
   useImperativeHandle(ref, () => ({
     clearImage,
+    getImageUrl: () => imageUrl,
+    isUploading: () => uploading,
   }));
 
   return (
