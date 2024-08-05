@@ -26,6 +26,7 @@
     "mongodb": "^6.8.0",
     "mongoose": "^8.5.1",
     "openai": "^4.54.0",
+    "react-confetti": "^6.1.0",
     "salt": "^0.5.5",
     "uuid": "^10.0.0"
   },

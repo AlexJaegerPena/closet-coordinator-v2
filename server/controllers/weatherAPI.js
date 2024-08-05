@@ -1,6 +1,4 @@
 import asyncHandler from 'express-async-handler'; // Assuming you're using this for async error handling
-import OpenAI from 'openai';
-import OpenAIMock from '/Users/nospike4u/Desktop/wbs-exercises/ReactJS/closet-coordinator-v2/closet-coordinator-v2/server/utils/OpenAIMock.js';
 import axios from 'axios';
 import dotenv from 'dotenv';
 

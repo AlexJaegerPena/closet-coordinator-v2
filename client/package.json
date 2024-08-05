@@ -12,12 +12,11 @@
   "dependencies": {
     "axios": "^1.7.3",
     "daisyui": "^4.12.10",
-    "framer-motion": "^11.3.21",
     "firebase": "^10.12.5",
+    "framer-motion": "^11.3.21",
     "geo-tz": "^8.0.2",
     "js-cookie": "^3.0.5",
     "luxon": "^3.5.0",
-
     "react": "^18.2.0",
     "react-confetti": "^6.1.0",
     "react-dom": "^18.2.0",
