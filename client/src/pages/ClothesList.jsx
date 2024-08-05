@@ -172,7 +172,8 @@ const ClothesList = () => {
             onClick={() => handleCategoryClick(category)}
             className={`flex flex-col items-center p-4 bg-gray-200 rounded-lg shadow-md hover:bg-gray-300 transition ${
               selectedCategory === category ? "bg-gray-300" : ""
-            }`}>
+            }`}
+          >
             <span className="text-lg font-semibold">{category.name}</span>
           </button>
         ))}
@@ -189,7 +190,8 @@ const ClothesList = () => {
                 key={item.name}
                 className="relative w-40 h-40 bg-gray-200 border rounded-3xl overflow-hidden flex items-center justify-center shadow-md"
                 onMouseEnter={() => setHoveredCategory(item)}
-                onMouseLeave={() => setHoveredCategory(null)}>
+                onMouseLeave={() => setHoveredCategory(null)}
+              >
                 <img
                   src={item.image}
                   alt={item.name}
@@ -202,10 +204,12 @@ const ClothesList = () => {
                       // onClick={(event) => handleEditClick(event, item)}
                       onClick={() =>
                         document.getElementById("my_modal_4").showModal()
-                      }>
+                      }
+                    >
                       <dialog
                         id="my_modal_4"
-                        className="modal fixed inset-0 flex items-center justify-center p-4">
+                        className="modal fixed inset-0 flex items-center justify-center p-4"
+                      >
                         <div className="modal-box w-6/12 max-w-md bg-white rounded-lg shadow-lg p-4">
                           <h3 className="font-bold text-lg mb-4">
                             Update your item
@@ -214,7 +218,8 @@ const ClothesList = () => {
                           <div className="flex gap-4">
                             <button
                               className="btn flex-1"
-                              onClick={() => alert("Update action")}>
+                              onClick={() => alert("Update action")}
+                            >
                               Update
                             </button>
                             <form method="dialog" className="flex-1">
@@ -229,7 +234,8 @@ const ClothesList = () => {
 
                     <button
                       onClick={(event) => handleDeleteClick(event, item)}
-                      className="text-grey-400 rounded-full p-1">
+                      className="text-grey-400 rounded-full p-1"
+                    >
                       <FaTrash size={20} />
                     </button>
                   </div>
