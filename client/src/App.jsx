@@ -1,4 +1,5 @@
-import {useEffect} from 'react'
+import {useEffect,useState} from 'react'
+import axios from 'axios'
 import { Routes, Route } from "react-router-dom";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
@@ -12,35 +13,43 @@ import Navbar from "./components/Navbar.jsx";
 import Update from "./pages/Update.jsx";
 
 function App() {
+const [weather, setWeather] = useState(null)
+const [location, setLocation] = useState({ latitude: null, longitude: null });
 
-  // useEffect(() => {
-  //   if ("geolocation" in navigator) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         // setLocation({
-  //         //   latitude: position.coords.latitude,
-  //         //   longitude: position.coords.longitude,
-  //         // });
-  //         console.log({
-  //           latitude: position.coords.latitude,
-  //           longitude: position.coords.longitude,
-  //         });
-  //       },
-  //       (error) => {
-  //         console.error("Error getting geolocation:", error);
-  //       }
-  //     );
-  //   } else {
-  //     console.error("Geolocation not available");
-  //   }
-  // }, []);
-  
-  
+const getGPT = async() => { 
+  try {
+    const {data} = await axios.post(
+      'http://localhost:5050/api/v1/chat/completions',
+      {
+        model: 'gpt-4o-mini',
+        messages: weather,
+        stream: false,
+      },
+      {
+        headers: {
+          provider: 'open-ai',
+          mode: 'development',
+          // mode: 'production',
+          'Content-Type': 'application/json',
+        }
+      }
+    );
+    console.log(data?.message?.content.slice(7,-3));
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+useEffect(() => {
+  getGPT()
+}, [weather,location])
+
+
   return (
     <div className="flex flex-col min-h-screen">
 
       <Navbar />
-      <Weather />
+      <Weather setWeather={setWeather} weather={weather} location={location} setLocation={setLocation} />
       {/* <X/> */}
 
       <div className="flex-grow">

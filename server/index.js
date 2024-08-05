@@ -24,24 +24,25 @@ import validateMode from "./middlewares/validateMode.js";
 
 let weather =""
 
+
 // const getWeather = async (latitude,longitude) => {
-const getWeather = async (location) => {
-  const apiKey = process.env.WEATHER_API_KEY;
-  const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}`;
-  // const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}`;
+// const getWeather = async (location) => {
+//   const apiKey = process.env.WEATHER_API_KEY;
+//   const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}`;
+//   // const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}`;
 
 
-  try {
-    const response = await axios.get(url);
-    const data = response.data;
-    weather=`the location is ${data?.location.name} and the weather is ${data?.current.condition.text} `
-    console.log("data", data);
-  } catch (error) {
-    console.error("Error fetching weather data:", error);
-  }
-};
+//   try {
+//     const response = await axios.get(url);
+//     const data = response.data;
+//     weather=`the location is ${data?.location.name} and the weather is ${data?.current.condition.text} `
+//     console.log("data", data);
+//   } catch (error) {
+//     console.error("Error fetching weather data:", error);
+//   }
+// };
 
-getWeather('London');
+// getWeather('London');
 
 dotenv.config();
 const app = express();

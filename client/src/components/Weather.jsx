@@ -17,15 +17,17 @@ const getWeather = async (latitude, longitude) => {
   }
 };
 
-const WeatherComponent = () => {
-  const [location, setLocation] = useState({ latitude: null, longitude: null });
-  const [weather, setWeather] = useState(null);
+const WeatherComponent = ({setWeather,weather,location, setLocation}) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          console.log({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          })
           setLocation({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
