@@ -3,6 +3,10 @@ import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { PassThrough } from 'stream';
 import ErrorResponse from './ErrorResponse.js';
+import dotenv from 'dotenv';
+import axios from 'axios';
+
+dotenv.config();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -12,7 +16,7 @@ class StreamMock {
     this.iterator = this[Symbol.asyncIterator];
     this.controller = new AbortController();
   }
-
+  
   async *[Symbol.asyncIterator]() {
     for (let [i, v] of this.words.entries()) {
       await new Promise(resolve => setTimeout(resolve, 100));
@@ -49,9 +53,9 @@ class ChatMock {
     create({ messages, model, stream }) {
       if (!model) throw new ErrorResponse('400 you must provide a model parameter', 400);
       if (!messages) throw new ErrorResponse("400 Missing required parameter: 'messages'", 400);
-
+      
       const text =
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
       if (stream) {
         return new StreamMock(text.split(' '));
       } else {
@@ -121,12 +125,82 @@ class AudioMock {
   };
 }
 
+const apiKey = process.env.WEATHER_API_KEY;
+
+class WeatherMock {
+  constructor(apiKey) {
+    this.apiKey = apiKey;
+    this.baseUrl = 'https://api.weatherapi.com/v1/current.json';
+  }
+
+  // Method to get weather data
+  async generate({ location, response_format = 'json', ...rest }) {
+    if (!location) {
+      throw new Error('Location parameter is required');
+    }
+
+    try {
+      // Fetch data from the Weather API
+      const response = await axios.get(this.baseUrl, {
+        params: {
+          key: this.apiKey,
+          q: location,
+          ...rest,
+        },
+      });
+
+      const weatherData = response.data;
+
+      // Format the data as per the response format
+      let data;
+      if (response_format === 'json') {
+        data = this.formatJsonResponse(weatherData);
+      } else if (response_format === 'text') {
+        data = this.formatTextResponse(weatherData);
+      } else {
+        throw new Error(`Unsupported response format: ${response_format}`);
+      }
+
+      return { data };
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
+      throw new Error('Failed to fetch weather data');
+    }
+  }
+
+  // Helper method to format data in JSON format
+  formatJsonResponse(weatherData) {
+    return {
+      location: {
+        name: weatherData.location.name,
+        region: weatherData.location.region,
+        country: weatherData.location.country,
+        lat: weatherData.location.lat,
+        lon: weatherData.location.lon,
+      },
+      current: {
+        temperature: weatherData.current.temp_c,
+        condition: weatherData.current.condition.text,
+        wind_speed: weatherData.current.wind_kph,
+        humidity: weatherData.current.humidity,
+        feels_like: weatherData.current.feelslike_c,
+      },
+    };
+  }
+
+  // Helper method to format data in text format
+  formatTextResponse(weatherData) {
+    return `The current weather in ${weatherData.location.name} is ${weatherData.current.condition.text} with a temperature of ${weatherData.current.temp_c}°C. The wind speed is ${weatherData.current.wind_kph} km/h and the humidity is ${weatherData.current.humidity}%.`;
+  }
+}
+
 class OpenAIMock {
   constructor() {}
 
   chat = new ChatMock();
   images = new ImageMock();
   audio = new AudioMock();
+  weather = new WeatherMock();
 }
 
 export default OpenAIMock;
