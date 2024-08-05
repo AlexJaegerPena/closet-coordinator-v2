@@ -14,6 +14,7 @@ import authRoutes from "./routes/authRoutes.js";
 // import audioRouter from "./routes/audioRouter.js";
 import chatRouter from "./routes/chatRouter.js";
 import imageRouter from "./routes/imageRouter.js";
+import weatherRouter from "./routes/weatherRouter.js";
 
 // middlewares
 import errorHandler from "./middlewares/errorHandler.js";
@@ -38,6 +39,7 @@ app.use(validateProvider, validateMode,)
 // app.use("/api/v1/audio/speech",  audioRouter);
 app.use("/api/v1/chat/completions",  chatRouter);
 app.use("/api/v1/images/generations",  imageRouter);
+app.use("/api/v1/weather/completions",  weatherRouter);
 
 app.use(`*`, (req, res) =>
   res.status(404).json({ message: "Page not found!" })
