@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { CgProfile } from "react-icons/cg";
-import "./Header.css";
 import { Link } from "react-router-dom";
+import "./Navbar.css";
 
-const Header = () => {
+const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
 
   return (
     <div className="navbar flex justify-between items-center px-[30px]">
@@ -23,7 +24,9 @@ const Header = () => {
         </Link>
       </div>
       <div className="doc flex items-center ml-[70%]">
-        <Link to="/" className="flex space-x-1 items-center"></Link>
+        <Link to="/" className="flex space-x-1 items-center">
+
+        </Link>
       </div>
       <div className="flex-none gap-2">
         {/* Dropdown Container */}
@@ -60,4 +63,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Navbar;

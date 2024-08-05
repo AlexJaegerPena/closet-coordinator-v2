@@ -1,11 +1,8 @@
 import React from "react";
+import ClothesForm from "../components/ClothesForm";
 
 const Update = () => {
-  return (
-    <div>
-      <h1>Update</h1>
-    </div>
-  );
+  return <ClothesForm />;
 };
 
 export default Update;
