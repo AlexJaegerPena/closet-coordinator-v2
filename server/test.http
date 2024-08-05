@@ -1,11 +1,11 @@
-@host = http://localhost:8000/api/v1
+@host = http://localhost:5050/api/v1
 @token = Bearer {{login.response.body.data}}
 @userId = {{getUser.response.body.data._id}}
 
 
 ###
 # @name serverTesting
-GET http://localhost:8000
+GET http://localhost:5050/api/v1/users
 
 ###
 # @name getAllUsers

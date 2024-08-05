@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import {
-  getAllUsers,
-  getUser,
-  updateUser,
-  createUser,
-  deleteUser,
-} from '../controllers/userControllers.js';
+  getAllClothes,
+  getOneClothes,
+  createClothes,
+  updateClothes,
+  deleteClothes
+} from '../controllers/clothesControllers.js';
 
 import {
   isAdmin,
@@ -16,10 +16,10 @@ import {
 const router = Router();
 
 // router.get('/', isAuthenticated, getAllUsers);
-router.get('/',  getAllUsers);
-router.post('/', createUser);
+router.get('/',  getAllClothes);
+router.post('/', createClothes);
 // router.use(isAuthenticated, isOwnerOrAdmin);
 // router.use(isAuthenticated, isOwnerOrAdmin);
-router.route(`/:id`).get(getUser).put(updateUser).delete(deleteUser);
+router.route(`/:id`).get(getOneClothes).put(updateClothes).delete(deleteClothes);
 
 export default router;

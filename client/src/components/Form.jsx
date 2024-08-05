@@ -1,6 +1,9 @@
 import { useState } from 'react';
+import Firebase from './Firebase'
+import {useUserContext} from '../contexts/userContext.jsx'
 
 export const Form = ({ setMessages, messages }) => {
+  const {user,clothes, setClothes}=useUserContext
   const [{ stream, message }, setState] = useState({
     stream: true,
     message: '',
@@ -104,6 +107,7 @@ export const Form = ({ setMessages, messages }) => {
       className="flex flex-col w-full p-4 bg-red-300 rounded-lg shadow-md"
       onSubmit={onSubmit}
     >
+      <Firebase/>
       <label className="block mb-4">
         <span className="text-red-700">Stream</span>
         <input
@@ -121,6 +125,7 @@ export const Form = ({ setMessages, messages }) => {
         value={message}
         className="block w-full p-2 mb-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
       ></textarea>
+
       <button
         type="submit"
         className="w-full px-4 py-2 bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
