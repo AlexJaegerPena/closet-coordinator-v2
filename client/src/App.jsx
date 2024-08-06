@@ -29,7 +29,7 @@ function App() {
         {
           headers: {
             provider: "open-ai",
-            mode: "production",
+            mode: "developement",
             // mode: 'production',
             "Content-Type": "application/json",
           },
@@ -72,7 +72,7 @@ function App() {
       <div className="app-bg "></div>
       <div className="container flex-grow relative">
         <Routes>
-          <Route path="/" element={<Home loginName={loginName} />}></Route>
+          <Route path="/" element={<Home loginName={loginName} setLoginName={setLoginName} />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/clothes-list" element={<ClothesList />}></Route>

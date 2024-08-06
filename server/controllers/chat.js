@@ -24,7 +24,8 @@ let message={
   "messages": [
       {
           "role": "system",
-          "content":  `You are a helpful assistant who provides only ONE image (img) as a thumbnail from this database ${dataClothes} as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request?.messages?.location?.region}`
+          "content":  `"I have a list of shirts stored in this database ${dataClothes}. Please randomly select a shirt from the list and provide me with the thumbnail of the selected shirt."  as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request?.messages?.location?.region}`
+          
       },
       {
           "role": "user",
