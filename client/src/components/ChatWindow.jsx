@@ -6,7 +6,7 @@ import axios from "axios";
 const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
   const messagesEndRef = useRef(null);
   const [userMessage, setUserMessage] = useState("");
-  const [comeBack, setComeBack] = useState("")
+  const [comeBack, setComeBack] = useState("");
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -31,7 +31,7 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
         "http://localhost:8000/api/v1/chat/completions/2",
         {
           model: "gpt-4o-mini",
-          messages: [...chatData, newMessage, comeBack.length>0&& comeBack],
+          messages: [...chatData, newMessage, comeBack.length > 0 && comeBack],
           stream: false,
         },
         {
@@ -51,7 +51,7 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
       };
 
       setChatData((prevMessages) => [...prevMessages, assistantMessage]);
-      setComeBack((prevMessages) => [...prevMessages, assistantMessage])
+      setComeBack((prevMessages) => [...prevMessages, assistantMessage]);
     } catch (error) {
       console.error("Error fetching chat response:", error);
       const errorMessage = {
@@ -64,13 +64,11 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
     setUserMessage("");
   };
 
-  const RenderMessage = ({msg,index}) => {
+  const RenderMessage = ({ msg, index }) => {
     if (msg.imageUrl) {
       return (
-
-        <div key={index} className={`mb-2 ${msg.role === "user" ? "text-right" : "text-left"}`}>
-          <div className={`inline-block p-2 rounded-lg ${msg.role === "user" ? "bg-blue-500 text-white" : "bg-gray-200 text-black"}`}>
         <div
+          key={index}
           className={`mb-2 ${msg.role === "user" ? "text-right" : "text-left"}`}
         >
           <div
@@ -80,13 +78,26 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
                 : "bg-gray-200 text-black"
             }`}
           >
-
-            {msg.content && <p>{msg.content}</p>}
-            <img
-              src={msg.imageUrl}
-              alt="Chat Response"
-              className="max-w-full mt-2 rounded"
-            />
+            <div
+              className={`mb-2 ${
+                msg.role === "user" ? "text-right" : "text-left"
+              }`}
+            >
+              <div
+                className={`inline-block p-2 rounded-lg ${
+                  msg.role === "user"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-black"
+                }`}
+              >
+                {msg.content && <p>{msg.content}</p>}
+                <img
+                  src={msg.imageUrl}
+                  alt="Chat Response"
+                  className="max-w-full mt-2 rounded"
+                />
+              </div>
+            </div>
           </div>
         </div>
       );
@@ -132,8 +143,8 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
           </button>
         </div>
         <div className="flex-1 p-4 overflow-y-auto">
-          {chatData?.map((msg, index) => RenderMessage({msg,index}))}
-          <div  ref={messagesEndRef} />
+          {chatData?.map((msg, index) => RenderMessage({ msg, index }))}
+          <div ref={messagesEndRef} />
         </div>
         <form onSubmit={handleSubmit} className="border-t border-gray-200 p-2">
           <input
