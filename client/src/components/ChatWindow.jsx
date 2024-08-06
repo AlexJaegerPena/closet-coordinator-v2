@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
 import axios from "axios";
+import { TbMessageChatbot } from "react-icons/tb";
 
 const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
   const messagesEndRef = useRef(null);
@@ -123,21 +124,26 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: isVisible ? 1 : 0, scale: isVisible ? 1 : 0.8 }}
+      animate={{
+        opacity: isVisible ? 1 : 0,
+        scale: isVisible ? 1 : 0.8,
+        y: isVisible ? 0 : 20,
+      }}
       transition={{ duration: 0.3 }}
       style={{
         position: "fixed",
-        right: 20,
-        bottom: 20,
+        right: 15,
+        bottom: 80,
         zIndex: 1000,
       }}
-      className={`w-80 h-96 bg-white shadow-lg rounded-lg ${
+      className={`w-[93%] h-[73%] bg-white border-2 border-white shadow-lg rounded-lg ${
         isVisible ? "block" : "hidden"
       }`}
     >
       <div className="flex flex-col h-full">
-        <div className="bg-gradient-to-r from-blue-400 to-blue-600 text-white p-4 flex justify-between items-center border-b border-gray-200">
-          <h2 className="text-lg font-semibold">Chat</h2>
+        <div className="bg-gradient-to-r from-red-500 to-orange-400 text-white p-4 flex justify-between items-center border-b border-gray-200 rounded-lg">
+          <TbMessageChatbot className="text-2xl -mr-36" />
+          <h2 className="text-lg font-semibold">Chat with Closet</h2>
           <button onClick={onClose} className="text-white hover:text-gray-200">
             <FaTimes />
           </button>
@@ -152,11 +158,11 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
             value={userMessage}
             onChange={(e) => setUserMessage(e.target.value)}
             placeholder="Type your message..."
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded"
           />
           <button
             type="submit"
-            className="w-full mt-2 px-4 py-2 bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full mt-2 px-4 py-2 bg-gradient-to-r from-red-500 to-orange-400 text-white rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Send
           </button>

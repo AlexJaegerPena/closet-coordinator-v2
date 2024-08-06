@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { FaRandom } from "react-icons/fa";
 import { TbMessageChatbot } from "react-icons/tb";
@@ -31,6 +32,50 @@ const getRandomImage = (items) => {
 const Wardrobe = () => {
   const [images, setImages] = useState({});
   const [showOptions, setShowOptions] = useState(false);
+  const [weather, setWeather] = useState(null);
+  const [location, setLocation] = useState({ latitude: null, longitude: null });
+  const [chatVisible, setChatVisible] = useState(false);
+  const [chatData, setChatData] = useState([]);
+
+  const getGPT = async () => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:8000/api/v1/chat/completions",
+        {
+          model: "gpt-4o-mini",
+          messages: weather,
+          stream: false,
+        },
+        {
+          headers: {
+            provider: "open-ai",
+            mode: "developement",
+            // mode: "production",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      // console.log(data?.message?.content.slice(7, -3));
+      console.log(data);
+      setChatData([
+        {
+          role: "assistant",
+          content:
+            data?.message?.content.slice(7, -3) || "No content available.",
+        },
+      ]);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    getGPT();
+  }, [weather, location]);
+
+  const toggleChat = () => {
+    setChatVisible((prev) => !prev);
+  };
 
   useEffect(() => {
     const storedImages = JSON.parse(localStorage.getItem("images"));
@@ -94,20 +139,26 @@ const Wardrobe = () => {
       <div className="flex flex-row items-center justify-center gap-2">
         <div className="flex flex-row items-center justify-center">
           <button
-            className="btn bg-gradient-to-r from-sky-600 to-teal-400 w-44 h-12 text-white text-m rounded-2xl shadow-xl border-2 border-white hover:bg-teal-500 "
+            className="btn bg-gradient-to-r from-sky-600 to-teal-400 w-44 h-12 text-white text-m rounded-2xl shadow-xl border-2 border-white hover:bg-teal-500"
             onClick={handleClick}
           >
             <FaRandom />
             {showOptions ? "Clothe Me Again!" : "Clothe Me!"}
           </button>
         </div>
-        <div>
-          <ChatWindow />
-          <button className="btn bg-gradient-to-r from-red-500 to-orange-400 w-44 h-12 text-white text-m rounded-2xl shadow-xl border-2 border-white hover:bg-teal-500">
-            <TbMessageChatbot className="text-2xl" />
-            Chat with Closet
-          </button>
-        </div>
+        <button
+          className="btn bg-gradient-to-r from-red-500 to-orange-400 w-44 h-12 text-white text-m rounded-2xl shadow-xl border-2 border-white hover:bg-teal-500"
+          onClick={toggleChat}
+        >
+          <TbMessageChatbot className="text-2xl" />
+          Chat with Closet
+        </button>
+        <ChatWindow
+          isVisible={chatVisible}
+          onClose={toggleChat}
+          chatData={chatData}
+          setChatData={setChatData}
+        />
       </div>
     </div>
   );

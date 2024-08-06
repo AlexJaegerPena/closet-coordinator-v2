@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Register from "./pages/Register.jsx";
@@ -9,73 +9,14 @@ import ClothesList from "./pages/ClothesList.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import Update from "./pages/Update.jsx";
-import ChatWindow from "./components/ChatWindow.jsx";
+// import ChatWindow from "./components/ChatWindow.jsx";
 
 function App() {
-  const [weather, setWeather] = useState(null);
-  const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [loginName, setLoginName] = useState(null);
-  const [chatVisible, setChatVisible] = useState(false);
-  const [chatData, setChatData] = useState([]);
-
-  const getGPT = async () => {
-    try {
-      const { data } = await axios.post(
-        "http://localhost:8000/api/v1/chat/completions",
-        {
-          model: "gpt-4o-mini",
-          messages: weather,
-          stream: false,
-        },
-        {
-          headers: {
-            provider: "open-ai",
-            mode: "developement",
-            // mode: "production",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      // console.log(data?.message?.content.slice(7, -3));
-      console.log(data);
-      setChatData([
-        {
-          role: "assistant",
-          content:
-            data?.message?.content.slice(7, -3) || "No content available.",
-        },
-      ]);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  useEffect(() => {
-    getGPT();
-  }, [weather, location]);
-
-  const toggleChat = () => {
-    setChatVisible((prev) => !prev);
-  };
 
   return (
     <div className="flex flex-col min-h-screen relative">
       <Navbar className="sticky top-0" />
-      <div className="fixed bottom-4 right-4 z-50">
-        <button
-          onClick={toggleChat}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md shadow-lg hover:bg-blue-700"
-        >
-          Chat with Closet
-        </button>
-      </div>
-      <ChatWindow
-        isVisible={chatVisible}
-        onClose={toggleChat}
-        chatData={chatData}
-        setChatData={setChatData}
-      />
-
       <div className="app-bg "></div>
       <div className="flex-grow relative">
         <Routes>

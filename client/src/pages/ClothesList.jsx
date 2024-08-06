@@ -17,7 +17,7 @@ const ClothesList = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5050/api/v1/clothes"
+          "http://localhost:8000/api/v1/clothes"
         );
         if (response.data && response.data.data) {
           console.log("Data received from server:", response.data.data);
