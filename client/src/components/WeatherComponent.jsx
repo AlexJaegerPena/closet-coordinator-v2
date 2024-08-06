@@ -42,21 +42,13 @@ const WeatherIcon = ({ condition }) => {
       }
     };
     
-    const WeatherComponent = () => {
-      const {user} =useUserContext()
+  const WeatherComponent = () => {
+
+  const {user} =useUserContext()
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
-
-    default:
-      return <FaCloud className="weather-icon default" />;
-  }
-};
-
-
-const WeatherComponent = ({setLoginName, loginName, setWeather, setLocation, location, weather}) => {
-
-
+  
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -114,8 +106,6 @@ const WeatherComponent = ({setLoginName, loginName, setWeather, setLocation, loc
         <div className="weather-info flex flex-row">
 
           <p className="hi-text pr-12">Hi, {user?.name}!</p>
-
-          <p className="hi-text pr-12">Hi, {loginName}</p>
 
           <WeatherIcon condition={weather.current.condition.text} />
           <p className="temperature">{weather.current.temp_c}°</p>
