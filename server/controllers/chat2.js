@@ -4,7 +4,7 @@ import OpenAI from "openai";
 import OpenAIMock from "../utils/OpenAIMock.js";
 import asyncHandler from "../utils/asyncHandler.js";
 
-export const createChat = asyncHandler(async (req, res) => {
+export const createChat2 = asyncHandler(async (req, res) => {
   const {
     body: { stream, ...request },
     headers: { mode },
@@ -17,19 +17,28 @@ export const createChat = asyncHandler(async (req, res) => {
     
   
     let collectMessage=
-    `You are a helpful assistant who provides only ONE image (img) from this database ${dataClothes} as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request?.messages?.location?.region}`
+    `"I have a list of shirts stored in this database ${dataClothes}. Please randomly select a shirt from the list and provide me with the thumbnail of the selected shirt."  as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request}`
+    
+    
     let message={
         "model": "gpt-4o-mini",
         "messages": [
               {
                     "role": "system",
-                    "content":  `"I have a list of shirts stored in this database ${dataClothes}. Please randomly select a shirt from the list and provide me with the thumbnail of the selected shirt."  as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request?.messages?.location?.region}`
+                    "content": `You are a helpful assistant who provides only ONE image (img) from this database ${dataClothes} as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request?.messages?.location?.region} give me one <a></a> tags links for one image of the clothes from the database in every sugestion`
           
                 },
       {
           "role": "user",
           "content": collectMessage
-      },
+      },  {
+        "role": "assistant",
+        "content": " `You are a helpful assistant who provides only ONE image (img) from this database ${dataClothes} as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request?.messages?.location?.region}`"
+    },
+    {
+        "role": "user",
+        "content": "WHat should I wear today?"
+    }
   ],
   "stream": false
 }
@@ -44,7 +53,6 @@ let openai;
       stream,
       ...message,
     });
-    console.log(completion)
     
     if (stream) {
       res.writeHead(200, {
