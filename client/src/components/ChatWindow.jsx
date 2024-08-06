@@ -64,49 +64,17 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
     setUserMessage("");
   };
 
-  const RenderMessage = ({msg,index}) => {
-    if (msg.imageUrl) {
-      return (
-
-        <div key={index} className={`mb-2 ${msg.role === "user" ? "text-right" : "text-left"}`}>
-          <div className={`inline-block p-2 rounded-lg ${msg.role === "user" ? "bg-blue-500 text-white" : "bg-gray-200 text-black"}`}>
-        <div
-          className={`mb-2 ${msg.role === "user" ? "text-right" : "text-left"}`}
-        >
-          <div
-            className={`inline-block p-2 rounded-lg ${
-              msg.role === "user"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-black"
-            }`}
-          >
-
-            {msg.content && <p>{msg.content}</p>}
-            <img
-              src={msg.imageUrl}
-              alt="Chat Response"
-              className="max-w-full mt-2 rounded"
-            />
-          </div>
+  const RenderMessage = ({ msg, index }) => {
+    return (
+      <div key={index} className={`mb-2 ${msg.role === "user" ? "text-right" : "text-left"}`}>
+        <div className={`inline-block p-2 rounded-lg ${msg.role === "user" ? "bg-blue-500 text-white" : "bg-gray-200 text-black"}`}>
+          {msg.content && <p>{msg.content}</p>}
+          {msg.imageUrl && (
+            <img src={msg.imageUrl} alt="Chat Response" className="max-w-full mt-2 rounded" />
+          )}
         </div>
-      );
-    } else {
-      return (
-        <div
-          className={`mb-2 ${msg.role === "user" ? "text-right" : "text-left"}`}
-        >
-          <div
-            className={`inline-block p-2 rounded-lg ${
-              msg.role === "user"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-black"
-            }`}
-          >
-            {msg.content}
-          </div>
-        </div>
-      );
-    }
+      </div>
+    );
   };
 
   return (
@@ -120,9 +88,7 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
         bottom: 20,
         zIndex: 1000,
       }}
-      className={`w-80 h-96 bg-white shadow-lg rounded-lg ${
-        isVisible ? "block" : "hidden"
-      }`}
+      className={`w-80 h-96 bg-white shadow-lg rounded-lg ${isVisible ? "block" : "hidden"}`}
     >
       <div className="flex flex-col h-full">
         <div className="bg-gradient-to-r from-blue-400 to-blue-600 text-white p-4 flex justify-between items-center border-b border-gray-200">
@@ -132,8 +98,10 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
           </button>
         </div>
         <div className="flex-1 p-4 overflow-y-auto">
-          {chatData?.map((msg, index) => RenderMessage({msg,index}))}
-          <div  ref={messagesEndRef} />
+          {chatData?.map((msg, index) => (
+            <RenderMessage key={index} msg={msg} index={index} />
+          ))}
+          <div ref={messagesEndRef} />
         </div>
         <form onSubmit={handleSubmit} className="border-t border-gray-200 p-2">
           <input

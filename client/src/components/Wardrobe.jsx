@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaRandom } from "react-icons/fa";
 import { TbMessageChatbot } from "react-icons/tb";
@@ -7,7 +7,7 @@ import { TbMessageChatbot } from "react-icons/tb";
 const fetchImagesByCategory = async (category) => {
   try {
     const response = await fetch(
-      `http://localhost:5050/api/v1/clothes/category/${category}`
+      `http://localhost:8000/api/v1/clothes/category/${category}`
     );
     if (!response.ok) {
       throw new Error(`Network response was not ok for category ${category}`);
