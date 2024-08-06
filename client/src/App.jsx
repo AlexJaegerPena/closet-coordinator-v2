@@ -9,6 +9,7 @@ import Login from "./pages/Login.jsx";
 // import Weather from "./components/Weather.jsx";
 import Home from "./pages/Home.jsx";
 import ClothesList from "./pages/ClothesList.jsx";
+import ClothesListTwo from "./pages/ClothesListTwo.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Update from "./pages/Update.jsx";
 
@@ -62,6 +63,7 @@ function App() {
           <Route path="/register" element={<Register />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/clothes-list" element={<ClothesList />}></Route>
+          {/* <Route path="/clothes-list" element={<ClothesListTwo />}></Route> */}
           <Route path="/update" element={<Update />}></Route>
         </Routes>
       </div>

@@ -3,15 +3,15 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import SidebarButton from "../components/SidebarButton";
 import SidebarMenu from "../components/SidebarMenu";
-import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-import ControlPanel from "../components/ControlPanel";
+import { AiFillEdit, AiFillDelete } from "react-icons/ai"; // Import react-icons
+import ControlPanel from "../components/ControlPanel"; // Import ControlPanel
 
 const ClothesList = () => {
   const [clothes, setClothes] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [filter, setFilter] = useState("All");
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null); // State for the item being edited
+  const [isEditing, setIsEditing] = useState(false); // State for showing ControlPanel
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +38,7 @@ const ClothesList = () => {
     console.log(`Filter changed to: ${category}`);
     setFilter(category);
     setIsMenuOpen(false);
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0); // Scroll to top when filter is changed
   };
 
   const handleEditClick = (item) => {
@@ -60,6 +60,7 @@ const ClothesList = () => {
     setSelectedItem(null);
   };
 
+  // Filter clothes based on selected filter
   const filteredClothes = clothes.filter(
     (item) => filter === "All" || item.category === filter
   );
