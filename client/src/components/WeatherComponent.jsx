@@ -40,7 +40,7 @@ const WeatherIcon = ({ condition }) => {
   }
 };
 
-const WeatherComponent = () => {
+const WeatherComponent = ({setLoginName, loginName}) => {
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
@@ -100,7 +100,7 @@ const WeatherComponent = () => {
         </div>
       ) : weather ? (
         <div className="weather-info flex flex-row">
-          <p className="hi-text pr-12">Hi, Name!</p>
+          <p className="hi-text pr-12">Hi, {loginName}</p>
           <WeatherIcon condition={weather.current.condition.text} />
           <p className="temperature">{weather.current.temp_c}°</p>
           <div className="loc-con">
