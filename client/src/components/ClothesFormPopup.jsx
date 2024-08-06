@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Firebase from "./Firebase";
-import { useUserContext } from "../contexts/userContext.jsx";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../utils/firebase.jsx";
-import { v4 } from "uuid";
 import axios from "axios";
-import SaveButton from "./SaveButton"; // Importieren der neuen Komponente
 
-const ClothesFormPopup = ({ setMessages, messages }) => {
-  const { user, clothes, setClothes } = useUserContext();
+const ClothesFormPopup = ({ setMessages, messages, onClose }) => {
   const [imageUpload, setImageUpload] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [form, setForm] = useState({
@@ -21,10 +16,35 @@ const ClothesFormPopup = ({ setMessages, messages }) => {
     energyLevel: "",
   });
 
-  const url = `http://localhost:5050/api/v1`;
+  const url = `http://localhost:5050/api/v1/clothes`;
 
   const handleSubmit = async () => {
-    await uploadFile();
+    if (form.img) {
+      try {
+        await axios.post(url, form);
+        setMessages([
+          ...messages,
+          { type: "success", text: "Clothes added successfully!" },
+        ]);
+        setForm({
+          category: "",
+          type: "",
+          color: "",
+          season: "",
+          occasion: "",
+          img: "",
+          energyLevel: "",
+        });
+        setImageUpload(null);
+        setImageUrl("");
+        onClose(); // Close the popup after successful submission
+      } catch (error) {
+        setMessages([
+          ...messages,
+          { type: "error", text: "Failed to add clothes!" },
+        ]);
+      }
+    }
   };
 
   const uploadFile = () => {
@@ -33,29 +53,16 @@ const ClothesFormPopup = ({ setMessages, messages }) => {
     uploadBytes(imageRef, imageUpload).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {
         setForm({ ...form, img: url });
+        setImageUrl(url); // Update the preview URL as well
       });
     });
   };
 
   useEffect(() => {
-    const addClothes = async () => {
-      const { data } = await axios.post(`${url}/clothes`, form);
-      console.log(data);
-    };
-    if (form.img) {
-      addClothes();
+    if (imageUpload) {
+      uploadFile();
     }
-  }, [form.img]);
-
-  useEffect(() => {
-    const getImage = async () => {
-      const singleImageRef = ref(storage);
-      await getDownloadURL(singleImageRef).then((res) => {
-        setImageUrl(res);
-      });
-    };
-    getImage();
-  }, []);
+  }, [imageUpload]);
 
   return (
     <div className="p-6 max-w-md mx-auto bg-white rounded-xl shadow-md space-y-4">
@@ -128,7 +135,18 @@ const ClothesFormPopup = ({ setMessages, messages }) => {
           </select>
         </div>
 
-        <SaveButton onClick={handleSubmit} />
+        <div className="flex justify-between">
+          <button
+            onClick={handleSubmit}
+            className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+            Save
+          </button>
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50">
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );
