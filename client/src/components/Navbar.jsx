@@ -12,7 +12,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="nav-bar navbar flex items-center bg-gradient-to-r from-sky-600 to-teal-400">
+    <div className="nav-bar navbar sticky top-0 flex items-center bg-gradient-to-r from-sky-600 to-teal-400">
       <div className="flex items-center">
         <Link to="/" className="flex items-center">
           <img
