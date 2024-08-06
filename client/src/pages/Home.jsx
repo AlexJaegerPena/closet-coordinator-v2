@@ -1,4 +1,3 @@
-import React from "react";
 import "./Home.css";
 import Wardrobe from "../components/Wardrobe";
 import WeatherComponent from "../components/WeatherComponent";

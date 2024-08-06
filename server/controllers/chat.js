@@ -37,7 +37,7 @@ let message={
 
   let openai;
 
-  mode === "production"
+  mode === "developement"
     ? (openai = new OpenAI({ apiKey: process.env.OPEN_AI_APIKEY }))
     : (openai = new OpenAIMock());
 

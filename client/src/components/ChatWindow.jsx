@@ -27,7 +27,8 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:5050/api/v1/chat/completions",
+        "http://localhost:8000/api/v1/chat/completions",
+        // "http://localhost:5050/api/v1/chat/completions",
         {
           model: "gpt-4o-mini",
           messages: [...chatData, newMessage], // include the history in the request
@@ -36,7 +37,8 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
         {
           headers: {
             provider: "open-ai",
-            mode: "development",
+            mode: "devopment",
+            // mode: "production",
             "Content-Type": "application/json",
           },
         }
