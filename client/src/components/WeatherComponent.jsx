@@ -12,7 +12,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import "./WeatherComponent.css"; // Stile für die Komponente
 
 const getWeather = async (latitude, longitude) => {
-  const apiKey = "d1f4eb599154491d94e92554240508";
+  const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
   const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}`;
 
   try {
