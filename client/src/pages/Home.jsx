@@ -1,11 +1,15 @@
 import React from "react";
+import "./Home.css";
 import Wardrobe from "../components/Wardrobe";
+import WeatherComponent from "../components/WeatherComponent";
 
-const Home = ({loginName}) => {
+const Home = ({ loginName }) => {
   return (
-    <div>
-      <div className="flex flex-col items-center space-y-2 pt-2 -mb-4">
-        <span className="text-2xl font-semibold text-gray-700">Hi, {loginName}</span>
+    <div className="home-pattern bg-repeat bg-cover bg-center">
+      <div className="cont">
+        <div className="hi-container flex justify-around mx-4 align-items">
+          <WeatherComponent className="hi-weather" />
+        </div>
       </div>
       <Wardrobe />
     </div>

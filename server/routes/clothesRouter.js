@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { Router } from "express";
 import {
   getAllClothes,
   getOneClothes,
@@ -17,6 +18,8 @@ import {
 const router = Router();
 
 // router.get('/', isAuthenticated, getAllUsers);
+router.get("/", getAllClothes);
+router.post("/", createClothes);
 router.get("/", getAllClothes);
 router.post("/", createClothes);
 // router.use(isAuthenticated, isOwnerOrAdmin);

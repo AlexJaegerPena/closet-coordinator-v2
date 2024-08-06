@@ -24,6 +24,20 @@ export const getOneClothes = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, data });
 });
 
+export const getClothesByCategory = asyncHandler(async (req, res, next) => {
+  const { category } = req.params;
+  if (!category) {
+    return next(new ErrorResponse("Invalid input", 400));
+  }
+
+  const data = await Clothes.find({ category });
+  if (!data) {
+    return next(new ErrorResponse("No items found", 404));
+  }
+
+  res.status(200).json({ success: true, data });
+});
+
 export const createClothes = asyncHandler(async (req, res, next) => {
   const { body } = req;
 
