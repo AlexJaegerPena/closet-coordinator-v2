@@ -40,7 +40,7 @@ const WeatherIcon = ({ condition }) => {
   }
 };
 
-const WeatherComponent = ({setLoginName, loginName}) => {
+const WeatherComponent = ({ setLoginName, loginName }) => {
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
@@ -92,7 +92,7 @@ const WeatherComponent = ({setLoginName, loginName}) => {
   };
 
   return (
-    <div className="weather-container border-2 border-white">
+    <div className="weather-container border-2 border-white mt-4">
       {error ? (
         <div className="error-message">
           <p>Error: {error}</p>

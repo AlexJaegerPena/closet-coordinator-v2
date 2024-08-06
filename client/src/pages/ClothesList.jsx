@@ -33,6 +33,14 @@ const ClothesList = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const category = query.get("category");
+    if (category) {
+      setFilter(category);
+    }
+  }, [location.search]);
+
   const handleMenuToggle = () => setIsMenuOpen(!isMenuOpen);
   const handleFilterChange = (category) => {
     console.log(`Filter changed to: ${category}`);
@@ -94,7 +102,8 @@ const ClothesList = () => {
               className="relative bg-base-100 shadow-xl rounded-md border-4 border-white overflow-hidden"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}>
+              transition={{ duration: 0.5 }}
+            >
               <figure>
                 <img
                   src={item.img}
@@ -105,12 +114,14 @@ const ClothesList = () => {
               <div className="absolute top-0 right-0 p-2 space-x-2 flex">
                 <button
                   onClick={() => handleEditClick(item)}
-                  className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700">
+                  className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700"
+                >
                   <AiFillEdit size={20} />
                 </button>
                 <button
                   onClick={() => handleDeleteClick(item._id)}
-                  className="bg-red-600 text-white p-2 rounded-full hover:bg-red-700">
+                  className="bg-red-600 text-white p-2 rounded-full hover:bg-red-700"
+                >
                   <AiFillDelete size={20} />
                 </button>
               </div>

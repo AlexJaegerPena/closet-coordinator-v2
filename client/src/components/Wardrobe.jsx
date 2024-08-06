@@ -32,39 +32,48 @@ const Wardrobe = () => {
   const [showOptions, setShowOptions] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const categories = [
-        "Accessories",
-        "Shirts",
-        "Jackets",
-        "Trousers",
-        "Sweatshirts",
-        "Shoes",
-      ];
-
-      const categoryImages = {};
-      for (const category of categories) {
-        const items = await fetchImagesByCategory(category);
-        categoryImages[category] = getRandomImage(items); // Save the full item object
-      }
-      setImages(categoryImages);
-    };
-
-    fetchData();
+    const storedImages = JSON.parse(localStorage.getItem("images"));
+    if (storedImages) {
+      setImages(storedImages);
+    } else {
+      fetchImages();
+    }
   }, []);
 
+  const fetchImages = async () => {
+    const categories = [
+      "Accessories",
+      "Shirts",
+      "Jackets",
+      "Trousers",
+      "Sweatshirts",
+      "Shoes",
+    ];
+
+    const categoryImages = {};
+    for (const category of categories) {
+      const items = await fetchImagesByCategory(category);
+      categoryImages[category] = getRandomImage(items); // Save the full item object
+    }
+    setImages(categoryImages);
+    localStorage.setItem("images", JSON.stringify(categoryImages)); // Save to localStorage
+  };
+
+  const handleClick = () => {
+    setShowOptions(true);
+    fetchImages(); // Fetch new images without reloading the page
+  };
+
   return (
-    <div className="flex flex-col h-screen px-4 py-4">
-      <div className="flex flex-col flex-grow">
-        <div className="grid grid-cols-2 gap-4 w-full max-w-4xl mx-auto mb-4">
+    <div className="flex flex-col h-min-screen px-4 py-4">
+      <div className="flex flex-col mb-8">
+        <div className="grid grid-cols-2 gap-4 w-full max-w-4xl mx-auto">
           {Object.keys(images).map((category, index) => (
             <Link
-              to={`/clothes-list?category=${encodeURIComponent(
-                category
-              )}&itemId=${images[category].id}`}
+              to={`/clothes-list?category=${encodeURIComponent(category)}`}
               key={index}
             >
-              <div className="img-box relative w-full h-48 bg-gray-200 border-4 border-white rounded-3xl overflow-hidden shadow-2xl">
+              <div className="img-box relative w-full h-44 bg-gray-200 border-4 border-white rounded-3xl overflow-hidden shadow-2xl">
                 <img
                   src={images[category].img}
                   alt={category}
@@ -78,37 +87,24 @@ const Wardrobe = () => {
             </Link>
           ))}
         </div>
+      </div>
 
-        {/* Button Section */}
+      {/* Button Section */}
+      <div className="flex flex-row items-center justify-center gap-2">
         <div className="flex flex-row items-center justify-center">
-          <div className="flex flex-row items-center justify-center">
-            {showOptions ? (
-              <button
-                className="btn bg-gradient-to-r from-sky-600 to-teal-400 w-auto h-12 text-white text-lg rounded-3xl shadow-lg border-2 border-white hover:bg-teal-500"
-                onClick={() => setShowOptions(true)}
-              >
-                <FaRandom />
-                Clothe Me Again!
-              </button>
-            ) : (
-              <button
-                className="btn bg-gradient-to-r from-sky-600 to-teal-400 w-auto h-12 text-white text-lg rounded-3xl shadow-lg border-2 border-white hover:bg-teal-500"
-                onClick={() => setShowOptions(true)}
-              >
-                <FaRandom />
-                Clothe Me!
-              </button>
-            )}
-          </div>
-          <div>
-            <button
-              className="btn bg-gradient-to-r from-sky-600 to-teal-400 w-60 h-12 text-white text-lg rounded-3xl shadow-lg border-2 border-white hover:bg-teal-500"
-              onClick={() => setShowOptions(true)}
-            >
-              <TbMessageChatbot className="text-2xl" />
-              Chat with Assistant
-            </button>
-          </div>
+          <button
+            className="btn bg-gradient-to-r from-sky-600 to-teal-400 w-44 h-12 text-white text-m rounded-2xl shadow-xl border-2 border-white hover:bg-teal-500 "
+            onClick={handleClick}
+          >
+            <FaRandom />
+            {showOptions ? "Clothe Me Again!" : "Clothe Me!"}
+          </button>
+        </div>
+        <div>
+          <button className="btn bg-gradient-to-r from-red-500 to-orange-400 w-44 h-12 text-white text-m rounded-2xl shadow-xl border-2 border-white hover:bg-teal-500">
+            <TbMessageChatbot className="text-2xl" />
+            Chat with Closet
+          </button>
         </div>
       </div>
     </div>
