@@ -7,11 +7,8 @@ import Login from "./pages/Login.jsx";
 import Home from "./pages/Home.jsx";
 import ClothesList from "./pages/ClothesList.jsx";
 import ClothesListTwo from "./pages/ClothesListTwo.jsx";
-import ClothesListTwo from "./pages/ClothesListTwo.jsx";
-import ClothesListTwo from "./pages/ClothesListTwo.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Update from "./pages/Update.jsx";
-import ChatWindow from "./components/ChatWindow.jsx";
 import ChatWindow from "./components/ChatWindow.jsx";
 
 function App() {
@@ -20,13 +17,10 @@ function App() {
   const [loginName, setLoginName] = useState(null);
   const [chatVisible, setChatVisible] = useState(false);
   const [chatData, setChatData] = useState([]);
-  const [chatVisible, setChatVisible] = useState(false);
-  const [chatData, setChatData] = useState([]);
 
   const getGPT = async () => {
     try {
       const { data } = await axios.post(
-        "http://localhost:8000/api/v1/chat/completions",
         "http://localhost:8000/api/v1/chat/completions",
         {
           model: "gpt-4o-mini",
@@ -36,7 +30,6 @@ function App() {
         {
           headers: {
             provider: "open-ai",
-            mode: "developement",
             mode: "developement",
             // mode: 'production',
             "Content-Type": "application/json",
@@ -60,10 +53,6 @@ function App() {
   useEffect(() => {
     getGPT();
   }, [weather, location]);
-
-  const toggleChat = () => {
-    setChatVisible((prev) => !prev);
-  };
 
   const toggleChat = () => {
     setChatVisible((prev) => !prev);
