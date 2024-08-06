@@ -24,7 +24,7 @@ const Login = () => {
     e.preventDefault();
     try {
       // const {headers} =
-      const response = await axios.post("http://localhost:5050/api/v1/login", {
+      const response = await axios.post("http://localhost:8000/api/v1/login", {
         email,
         password,
       });
@@ -35,7 +35,7 @@ const Login = () => {
         setMessage("Login successful");
         toast.success("Login successfully!");
         //With token coming from headers
-        // localStorage.setItem('token', headers.authorization);
+        localStorage.setItem('token', headers.authorization);
         localStorage.setItem("token", response.token);
         //Don't save the email in the localstorage
         localStorage.setItem("email", response.email);
@@ -66,7 +66,7 @@ const Login = () => {
             <div
         className="text-white p-8 rounded shadow-md w-full max-w-md my-8"
         style={{
-          background: "linear-gradient(to right, #013f58, #007bb0)",
+          background: "linear-gradient(to right, #60a5d6, #38b2ac)",
           WebkitBackdropFilter: "blur(5px)",
           backdropFilter: "blur(5px)",
           border: "1px solid rgba(102,224,2,0.1)",
@@ -82,6 +82,7 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
+            required
             className="mt-1 p-2 w-full border rounded outline-none text-black bg-cyan-50"
           />
         </div>
@@ -93,6 +94,7 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
+            required
             className="mt-1 p-2 w-full border rounded outline-none text-black bg-cyan-50"
           />
         </div>

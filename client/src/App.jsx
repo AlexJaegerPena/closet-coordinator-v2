@@ -7,7 +7,6 @@ import Login from "./pages/Login.jsx";
 // import X from "./components/X.jsx";
 import Weather from './components/Weather.jsx'
 import Home from "./pages/Home.jsx";
-import ClothesSettings from "./pages/ClothesSettings.jsx";
 import ClothesList from "./pages/ClothesList.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Update from "./pages/Update.jsx";
@@ -15,6 +14,7 @@ import Update from "./pages/Update.jsx";
 function App() {
 const [weather, setWeather] = useState(null)
 const [location, setLocation] = useState({ latitude: null, longitude: null });
+const [loginName, setLoginName] = useState(null);
 
 const getGPT = async() => { 
   try {
@@ -54,10 +54,9 @@ useEffect(() => {
 
       <div className="flex-grow">
         <Routes>
-          <Route path="/" element={<Home />}></Route>
+          <Route path="/" element={<Home loginName={loginName} />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/login" element={<Login />}></Route>
-          <Route path="/clothes-settings" element={<Update />}></Route>
           <Route path="/clothes-list" element={<ClothesList />}></Route>
           <Route path="/update" element={<Update />}></Route>
         </Routes>

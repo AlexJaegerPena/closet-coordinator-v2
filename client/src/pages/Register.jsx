@@ -49,9 +49,9 @@ const Register = () => {
       handleReset();
       navigate("/login");
     } catch (error) {
-      // console.log(error.message);
+      console.log(error.message);
       toast.error("Please fill all information in the form");
-      // toast.error(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -65,7 +65,7 @@ const Register = () => {
       <div
         className="text-white p-8 rounded shadow-md w-full max-w-md my-8"
         style={{
-          background: "linear-gradient(to right, #013f58, #007bb0)",
+          background: "linear-gradient(to right, #60a5d6, #38b2ac)", 
           WebkitBackdropFilter: "blur(5px)",
           backdropFilter: "blur(5px)",
           border: "1px solid rgba(102,224,2,0.1)",
@@ -83,6 +83,7 @@ const Register = () => {
               onChange={handleChange}
               value={name}
               placeholder="Name"
+              required
               className="mt-1 p-2 w-full border rounded outline-none text-black bg-cyan-50"
             />
           </div>
@@ -95,6 +96,7 @@ const Register = () => {
               onChange={handleChange}
               value={email}
               placeholder="Email"
+              required
               className="mt-1 p-2 w-full border rounded outline-none text-black bg-cyan-50"
             />
           </div>
@@ -109,6 +111,7 @@ const Register = () => {
               onChange={handleChange}
               value={password}
               placeholder="Password"
+              required
               className="mt-1 p-2 w-full border rounded outline-none text-black bg-cyan-50"
             />
           </div>
