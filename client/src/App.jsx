@@ -31,7 +31,7 @@ function App() {
           headers: {
             provider: "open-ai",
             mode: "developement",
-            // mode: 'production',
+            // mode: "production",
             "Content-Type": "application/json",
           },
         }
