@@ -22,7 +22,7 @@ export default {
   theme: {
     extend: {
       animation: {
-        shake: "shake 0.3s ease-in-out",
+        shake: "shake 0.5s ease-in-out",
       },
       keyframes: {
         shake: {

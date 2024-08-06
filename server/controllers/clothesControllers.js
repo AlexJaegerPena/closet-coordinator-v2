@@ -30,7 +30,7 @@ export const createClothes = asyncHandler(async (req, res, next) => {
   // if ( !body.category || !body.type  || !body.color || !body.seasons || !body.occasion || !body.img||!body.energyLevel ) {
   //   return next(new ErrorResponse("invalid input!", 400));
   // }
-console.log(body)
+  console.log(body);
   const data = await Clothes.create(req.body);
   if (!data) {
     return next(new ErrorResponse("Server Error!", 500));
@@ -44,7 +44,15 @@ export const updateClothes = asyncHandler(async (req, res) => {
     params: { id },
   } = req;
 
-  if ( !body.category || !body.type  || !body.color || !body.seasons || !body.occasion || !body.img||!body.energyLevel ) {
+  if (
+    !body.category ||
+    !body.type ||
+    !body.color ||
+    !body.seasons ||
+    !body.occasion ||
+    !body.img ||
+    !body.energyLevel
+  ) {
     return next(new ErrorResponse("Invalid input!", 400));
   }
 
@@ -78,3 +86,13 @@ export const deleteClothes = asyncHandler(async (req, res) => {
     .status(200)
     .json({ success: true, data: { message: "Clothes was deleted!" } });
 });
+
+export const getClothesByCategory = async (req, res) => {
+  try {
+    const { category } = req.params;
+    const clothes = await Clothes.find({ category });
+    res.json(clothes);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
