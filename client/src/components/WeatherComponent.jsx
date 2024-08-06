@@ -10,11 +10,9 @@ import {
 import { useUserContext } from "../contexts/userContext";
 import { FaLocationDot } from "react-icons/fa6";
 import "./WeatherComponent.css"; // Stile für die Komponente
-
 const getWeather = async (latitude, longitude) => {
-  const apiKey = "d1f4eb599154491d94e92554240508";
+  const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
   const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}`;
-
   try {
     const response = await axios.get(url);
     return response.data;
@@ -23,7 +21,6 @@ const getWeather = async (latitude, longitude) => {
     return null;
   }
 };
-
 const WeatherIcon = ({ condition }) => {
   switch (condition.toLowerCase()) {
     case "sunny":
@@ -36,32 +33,15 @@ const WeatherIcon = ({ condition }) => {
       return <FaCloudRain className="weather-icon rainy" />;
     case "snowy":
       return <FaSnowflake className="weather-icon snowy" />;
-
     default:
       return <FaCloud className="weather-icon default" />;
   }
 };
-
 const WeatherComponent = () => {
   const { user } = useUserContext();
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
-
-  return <FaCloud className="weather-icon default" />;
-};
-
-const WeatherComponent = ({
-  setLoginName,
-  loginName,
-  setWeather,
-  setLocation,
-  location,
-  weather,
-  setWeather,
-  error,
-  setError,
-}) => {
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -82,7 +62,6 @@ const WeatherComponent = ({
       setError("Geolocation not available");
     }
   }, []);
-
   useEffect(() => {
     if (location.latitude && location.longitude) {
       getWeather(location.latitude, location.longitude).then((data) => {
@@ -90,7 +69,6 @@ const WeatherComponent = ({
       });
     }
   }, [location]);
-
   const handleRetry = () => {
     setError(null);
     navigator.geolocation.getCurrentPosition(
@@ -117,9 +95,6 @@ const WeatherComponent = ({
       ) : weather ? (
         <div className="weather-info flex flex-row">
           <p className="hi-text pr-12">Hi, {user?.name}!</p>
-
-          <p className="hi-text pr-12">Hi, {loginName}</p>
-
           <WeatherIcon condition={weather.current.condition.text} />
           <p className="temperature">{weather.current.temp_c}°</p>
           <div className="loc-con">
@@ -138,5 +113,4 @@ const WeatherComponent = ({
     </div>
   );
 };
-
 export default WeatherComponent;

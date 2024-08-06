@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaRandom } from "react-icons/fa";
 import { TbMessageChatbot } from "react-icons/tb";
+import ChatWindow from "./ChatWindow";
 
 // Helper function to fetch images by category
 const fetchImagesByCategory = async (category) => {
@@ -101,6 +102,7 @@ const Wardrobe = () => {
           </button>
         </div>
         <div>
+          <ChatWindow />
           <button className="btn bg-gradient-to-r from-red-500 to-orange-400 w-44 h-12 text-white text-m rounded-2xl shadow-xl border-2 border-white hover:bg-teal-500">
             <TbMessageChatbot className="text-2xl" />
             Chat with Closet
