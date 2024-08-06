@@ -1,8 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import Dropdowns from "./Dropdowns";
 import Sliders from "./Sliders";
-import Modal from "./Modal";
 import ImageUpload from "./ImageUpload";
 import Checkboxes from "./Checkboxes";
 import axios from "axios";
@@ -28,6 +27,52 @@ const ControlPanel = ({
 
   const imageUploadRef = useRef();
 
+  useEffect(() => {
+    if (isEditMode && initialData) {
+      const parseCheckboxes = (data, possibleValues) => {
+        if (typeof data === "string") {
+          data = data
+            .replace(/[\[\]]/g, "")
+            .split(",")
+            .map((item) => item.trim().toLowerCase());
+        }
+
+        if (!Array.isArray(data)) {
+          return possibleValues.map(() => false);
+        }
+
+        return possibleValues.map((value) =>
+          data.includes(value.toLowerCase())
+        );
+      };
+
+      setCheckboxes({
+        seasons: parseCheckboxes(initialData.seasons, [
+          "summer",
+          "autumn",
+          "winter",
+          "spring",
+        ]),
+        occasion: parseCheckboxes(initialData.occasion, [
+          "athleisure",
+          "beach",
+          "black tie",
+          "business",
+          "casual",
+          "cocktail",
+          "date night",
+          "festival",
+          "formal",
+          "loungewear",
+          "party",
+          "red carpet",
+          "travel",
+          "wedding",
+        ]),
+      });
+    }
+  }, [isEditMode, initialData]);
+
   const handleClear = () => {
     setIsShaking(true);
     setTimeout(() => {
@@ -49,28 +94,40 @@ const ControlPanel = ({
     setSlider1(1);
     setCheckboxes({
       seasons: [false, false, false, false],
-      occasion: [false, false, false, false],
+      occasion: Array(14).fill(false),
     });
   };
 
   const handleSubmit = async () => {
-    const imageUrl = imageUploadRef.current.getImageUrl();
-    const isUploading = imageUploadRef.current.isUploading();
+    const imageUrl = isEditMode
+      ? initialData.img
+      : imageUploadRef.current.getImageUrl();
+    const isUploading = !isEditMode && imageUploadRef.current.isUploading();
 
-    if (isUploading || !imageUrl) {
+    if (isUploading || (!isEditMode && !imageUrl)) {
       alert("Image is still uploading or not selected.");
       return;
     }
 
-    const selectedSeasons = ["Summer", "Autumn", "Winter", "Spring"].filter(
+    const selectedSeasons = ["summer", "autumn", "winter", "spring"].filter(
       (season, index) => checkboxes.seasons[index]
     );
     const selectedOccasion = [
-      "Party",
-      "Business",
-      "Red Carpet",
-      "Casual",
-    ].filter((season, index) => checkboxes.occasion[index]);
+      "athleisure",
+      "beach",
+      "black tie",
+      "business",
+      "casual",
+      "cocktail",
+      "date night",
+      "festival",
+      "formal",
+      "loungewear",
+      "party",
+      "red carpet",
+      "travel",
+      "wedding",
+    ].filter((occasion, index) => checkboxes.occasion[index]);
 
     const formattedSeasons = `[${selectedSeasons.join(", ")}]`;
     const formattedOccasion = `[${selectedOccasion.join(", ")}]`;
@@ -134,7 +191,7 @@ const ControlPanel = ({
       <h2 className="text-xl font-semibold text-blue-700 mb-4">
         {isEditMode ? "Edit Item" : "Add New Item"}
       </h2>
-      <ImageUpload ref={imageUploadRef} />
+      {!isEditMode && <ImageUpload ref={imageUploadRef} />}
       <Dropdowns
         dropdown1={dropdown1}
         setDropdown1={setDropdown1}
@@ -153,14 +210,16 @@ const ControlPanel = ({
           onClick={handleSubmit}
           className="w-full bg-gradient-to-r from-sky-600 to-teal-400 text-white font-bold py-2 px-4 rounded shadow hover:from-sky-700 hover:to-teal-500 transition"
           disabled={
-            imageUploadRef.current && imageUploadRef.current.isUploading()
+            !isEditMode &&
+            imageUploadRef.current &&
+            imageUploadRef.current.isUploading()
           }>
           {isEditMode ? "Save Changes" : "Add To Closet"}
         </button>
         <button
           onClick={() => {
             if (isEditMode) {
-              onClose(); // Close panel without shaking
+              onClose();
             } else {
               handleClear();
             }
@@ -169,23 +228,43 @@ const ControlPanel = ({
           {isEditMode ? "Cancel" : "Clear Form"}
         </button>
       </div>
-      <Modal
-        isOpen={isConfirmOpen}
-        onClose={() => setIsConfirmOpen(false)}
-        message="Are you sure you want to clear all inputs?"
-        onConfirm={handleConfirmClear}
-        onCancel={() => setIsConfirmOpen(false)}
-        showCancelButton={true}
-        confetti={false}
-      />
-      <Modal
-        isOpen={isFeedbackOpen}
-        onClose={() => setIsFeedbackOpen(false)}
-        message="The item has been successfully added."
-        onConfirm={() => setIsFeedbackOpen(false)}
-        showCancelButton={false}
-        confetti={true}
-      />
+
+      {/* Confirm Clear Modal */}
+      {isConfirmOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
+            <p>Are you sure you want to clear all inputs?</p>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={() => setIsConfirmOpen(false)}
+                className="mr-2 bg-gray-300 px-4 py-2 rounded">
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmClear}
+                className="bg-blue-500 text-white px-4 py-2 rounded">
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Feedback Modal */}
+      {isFeedbackOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
+            <p>The item has been successfully added.</p>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={() => setIsFeedbackOpen(false)}
+                className="bg-blue-500 text-white px-4 py-2 rounded">
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 };

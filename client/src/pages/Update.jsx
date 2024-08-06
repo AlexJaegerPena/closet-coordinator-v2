@@ -1,5 +1,4 @@
-import React, { useRef, useState } from "react";
-// import ImageUpload from "../components/ImageUpload";
+import React, { useRef, useState, useCallback } from "react";
 import ControlPanel from "../components/ControlPanel";
 import Modal from "../components/Modal";
 
@@ -7,15 +6,21 @@ const Update = () => {
   const imageUploadRef = useRef();
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
-  const clearImage = () => {
+  const clearImage = useCallback(() => {
     if (imageUploadRef.current) {
       imageUploadRef.current.clearImage();
     }
-  };
+  }, []);
 
-  const handleCloseFeedback = () => {
+  const handleCloseFeedback = useCallback(() => {
+    console.log("Closing feedback modal");
     setIsFeedbackOpen(false);
-  };
+  }, []);
+
+  const handleFeedbackOpen = useCallback(() => {
+    console.log("Opening feedback modal");
+    setIsFeedbackOpen(true);
+  }, []);
 
   return (
     <div className="min-h-screen bg-blue-50 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
@@ -23,20 +28,16 @@ const Update = () => {
         <h1 className="text-3xl font-bold text-center text-blue-800">
           Add New Item
         </h1>
-        {/* <ImageUpload ref={imageUploadRef} /> */}
-        <ControlPanel
-          clearImage={clearImage}
-          onFeedback={() => setIsFeedbackOpen(true)}
-        />
+        <ControlPanel clearImage={clearImage} onFeedback={handleFeedbackOpen} />
       </div>
 
       <Modal
         isOpen={isFeedbackOpen}
-        onClose={handleCloseFeedback}
-        title="Item Added"
+        onClose={() => setIsFeedbackOpen(false)}
         message="The item has been successfully added."
+        onConfirm={() => setIsFeedbackOpen(false)}
+        showCancelButton={false} // Hide cancel button
         confetti={isFeedbackOpen}
-        onConfirm={handleCloseFeedback}
       />
     </div>
   );

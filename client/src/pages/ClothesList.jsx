@@ -3,15 +3,18 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import SidebarButton from "../components/SidebarButton";
 import SidebarMenu from "../components/SidebarMenu";
-import { AiFillEdit, AiFillDelete } from "react-icons/ai"; // Import react-icons
-import ControlPanel from "../components/ControlPanel"; // Import ControlPanel
+import { AiFillEdit, AiFillDelete } from "react-icons/ai";
+import ControlPanel from "../components/ControlPanel";
+import Modal from "../components/Modal";
 
 const ClothesList = () => {
   const [clothes, setClothes] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [filter, setFilter] = useState("All");
-  const [selectedItem, setSelectedItem] = useState(null); // State for the item being edited
-  const [isEditing, setIsEditing] = useState(false); // State for showing ControlPanel
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +41,7 @@ const ClothesList = () => {
     console.log(`Filter changed to: ${category}`);
     setFilter(category);
     setIsMenuOpen(false);
-    window.scrollTo(0, 0); // Scroll to top when filter is changed
+    window.scrollTo(0, 0);
   };
 
   const handleEditClick = (item) => {
@@ -46,13 +49,24 @@ const ClothesList = () => {
     setIsEditing(true);
   };
 
-  const handleDeleteClick = async (itemId) => {
-    try {
-      await axios.delete(`http://localhost:5050/api/v1/clothes/${itemId}`);
-      setClothes(clothes.filter((item) => item._id !== itemId));
-    } catch (error) {
-      console.error("Error deleting item:", error);
+  const handleDeleteClick = (item) => {
+    setItemToDelete(item);
+    setIsConfirmDeleteOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (itemToDelete) {
+      try {
+        await axios.delete(
+          `http://localhost:5050/api/v1/clothes/${itemToDelete._id}`
+        );
+        setClothes(clothes.filter((item) => item._id !== itemToDelete._id));
+        setItemToDelete(null);
+      } catch (error) {
+        console.error("Error deleting item:", error);
+      }
     }
+    setIsConfirmDeleteOpen(false);
   };
 
   const handleCloseEditPanel = () => {
@@ -60,7 +74,6 @@ const ClothesList = () => {
     setSelectedItem(null);
   };
 
-  // Filter clothes based on selected filter
   const filteredClothes = clothes.filter(
     (item) => filter === "All" || item.category === filter
   );
@@ -91,32 +104,50 @@ const ClothesList = () => {
           {filteredClothes.map((item) => (
             <motion.div
               key={item._id}
-              className="relative bg-base-100 shadow-xl rounded-md border-4 border-white overflow-hidden"
+              className={`relative bg-white shadow-md rounded-md border border-gray-200 overflow-hidden flex flex-col transition-transform ${
+                isConfirmDeleteOpen && itemToDelete?._id === item._id
+                  ? "animate-shake"
+                  : ""
+              }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}>
-              <figure>
+              <figure className="flex-1">
                 <img
                   src={item.img}
                   alt={item.type || "Clothing Item"}
                   className="w-full h-40 object-cover"
                 />
               </figure>
-              <div className="absolute top-0 right-0 p-2 space-x-2 flex">
+              <div className="p-4 flex-1">
+                <p className="text-sm font-bold text-black">{item.type}</p>
+              </div>
+              <div className="absolute top-0 left-0 right-0 flex justify-between p-2">
                 <button
                   onClick={() => handleEditClick(item)}
-                  className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700">
+                  className="bg-blue-600 text-white rounded-full p-2 opacity-50 hover:opacity-100">
                   <AiFillEdit size={20} />
                 </button>
                 <button
-                  onClick={() => handleDeleteClick(item._id)}
-                  className="bg-red-600 text-white p-2 rounded-full hover:bg-red-700">
+                  onClick={() => handleDeleteClick(item)}
+                  className="bg-red-600 text-white rounded-full p-2 opacity-50 hover:opacity-100">
                   <AiFillDelete size={20} />
                 </button>
               </div>
             </motion.div>
           ))}
         </div>
+        {isConfirmDeleteOpen && (
+          <Modal
+            isOpen={isConfirmDeleteOpen}
+            onClose={() => setIsConfirmDeleteOpen(false)}
+            message="Are you sure you want to delete this item?"
+            onConfirm={confirmDelete}
+            onCancel={() => setIsConfirmDeleteOpen(false)}
+            showCancelButton={true}
+            confetti={false}
+          />
+        )}
       </div>
     </div>
   );
