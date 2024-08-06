@@ -7,6 +7,7 @@ import { generateToken } from '../utils/auth.js';
 export const register = async (req, res) => {
   try {
     const user = new User(req.body);
+    console.log(user)
     const createdUser = await user.save();
     console.log(createdUser);
 
@@ -32,10 +33,13 @@ export const login = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('invalid input!', 400));
   }
 
-  const user = { id: data._id, role: data.role };
+  const user = { id: data._id, userName: data.userName, role: data.role };
   const token = generateToken(user);
 
   res.status(200).json({ success: true, user: {token,userDetails:data} });
+
+  res.status(200).json({ success: true, data: token, user: user });
+
 });
 
 export const logout = asyncHandler(async (req, res, next) => {

@@ -4,24 +4,27 @@ import Dropdowns from "./Dropdowns";
 import Sliders from "./Sliders";
 import Modal from "./Modal";
 import ImageUpload from "./ImageUpload";
-// import FireBase from "./Firebase";
 import Checkboxes from "./Checkboxes";
 import axios from "axios";
 
-const ControlPanel = ({ clearImage }) => {
-  const [dropdown1, setDropdown1] = useState("");
-  const [dropdown2, setDropdown2] = useState("");
-  const [dropdown3, setDropdown3] = useState("");
-  // const [dropdown4, setDropdown4] = useState("");
-  // const [dropdown5, setDropdown5] = useState("");
-  const [slider1, setSlider1] = useState(1);
+const ControlPanel = ({
+  clearImage,
+  onFeedback,
+  isEditMode = false,
+  initialData = null,
+  onClose,
+}) => {
+  const [dropdown1, setDropdown1] = useState(initialData?.category || "");
+  const [dropdown2, setDropdown2] = useState(initialData?.type || "");
+  const [dropdown3, setDropdown3] = useState(initialData?.color || "");
+  const [slider1, setSlider1] = useState(initialData?.energyLevel || 1);
+  const [checkboxes, setCheckboxes] = useState({
+    seasons: initialData?.seasons || [false, false, false, false],
+    occasion: initialData?.occasion || [false, false, false, false],
+  });
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
-  const [checkboxes, setCheckboxes] = useState({
-    seasons: [false, false, false, false],
-    occasion: [false, false, false, false],
-  });
 
   const imageUploadRef = useRef();
 
@@ -43,8 +46,6 @@ const ControlPanel = ({ clearImage }) => {
     setDropdown1("");
     setDropdown2("");
     setDropdown3("");
-    // setDropdown4("");
-    // setDropdown5("");
     setSlider1(1);
     setCheckboxes({
       seasons: [false, false, false, false],
@@ -55,8 +56,6 @@ const ControlPanel = ({ clearImage }) => {
   const handleSubmit = async () => {
     const imageUrl = imageUploadRef.current.getImageUrl();
     const isUploading = imageUploadRef.current.isUploading();
-
-    console.log("Submitting image URL:", imageUrl);
 
     if (isUploading || !imageUrl) {
       alert("Image is still uploading or not selected.");
@@ -82,31 +81,34 @@ const ControlPanel = ({ clearImage }) => {
       color: dropdown3,
       seasons: formattedSeasons,
       occasion: formattedOccasion,
-      //seasons: selectedSeasons,
-      //seasons: JSON.stringify(selectedSeasons),
-      // seasons: dropdown4,
-      //occasion: dropdown5,
       energyLevel: slider1,
       img: imageUrl,
     };
 
-    console.log(dataToSend);
-
     try {
-      const response = await axios.post(
-        "http://localhost:5050/api/v1/clothes",
-        dataToSend,
-        {
+      if (isEditMode) {
+        await axios.put(
+          `http://localhost:5050/api/v1/clothes/${initialData._id}`,
+          dataToSend,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      } else {
+        await axios.post("http://localhost:5050/api/v1/clothes", dataToSend, {
           headers: {
             "Content-Type": "application/json",
           },
-        }
-      );
+        });
+      }
 
-      console.log("Submitted data", response.data);
       setIsFeedbackOpen(true);
       resetForm();
       imageUploadRef.current.clearImage();
+      onFeedback && onFeedback();
+      onClose && onClose();
     } catch (error) {
       console.error("There was an error!", error);
     }
@@ -130,7 +132,7 @@ const ControlPanel = ({ clearImage }) => {
         isShaking ? "animate-shake" : ""
       } w-full max-w-lg`}>
       <h2 className="text-xl font-semibold text-blue-700 mb-4">
-        Item Attributes
+        {isEditMode ? "Edit Item" : "Add New Item"}
       </h2>
       <ImageUpload ref={imageUploadRef} />
       <Dropdowns
@@ -140,17 +142,12 @@ const ControlPanel = ({ clearImage }) => {
         setDropdown2={setDropdown2}
         dropdown3={dropdown3}
         setDropdown3={setDropdown3}
-        // dropdown4={dropdown4}
-        // setDropdown4={setDropdown4}
-        // dropdown5={dropdown5}
-        // setDropdown5={setDropdown5}
       />
       <Checkboxes
         checkboxes={checkboxes}
         handleCheckboxChange={handleCheckboxChange}
       />
       <Sliders slider1={slider1} setSlider1={setSlider1} />
-
       <div className="flex justify-between">
         <button
           onClick={handleSubmit}
@@ -158,12 +155,18 @@ const ControlPanel = ({ clearImage }) => {
           disabled={
             imageUploadRef.current && imageUploadRef.current.isUploading()
           }>
-          Add To Closet
+          {isEditMode ? "Save Changes" : "Add To Closet"}
         </button>
         <button
-          onClick={handleClear}
+          onClick={() => {
+            if (isEditMode) {
+              onClose(); // Close panel without shaking
+            } else {
+              handleClear();
+            }
+          }}
           className="ml-2 w-full bg-gradient-to-r from-red-500 to-orange-400 text-white font-bold py-2 px-4 rounded shadow hover:from-red-600 hover:to-orange-500 transition">
-          Clear Form
+          {isEditMode ? "Cancel" : "Clear Form"}
         </button>
       </div>
       <Modal

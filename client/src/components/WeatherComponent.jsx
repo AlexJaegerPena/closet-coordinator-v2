@@ -36,6 +36,7 @@ const WeatherIcon = ({ condition }) => {
             return <FaCloudRain className="weather-icon rainy" />;
     case "snowy":
       return <FaSnowflake className="weather-icon snowy" />;
+
       default:
         return <FaCloud className="weather-icon default" />;
       }
@@ -46,6 +47,15 @@ const WeatherIcon = ({ condition }) => {
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
+
+    default:
+      return <FaCloud className="weather-icon default" />;
+  }
+};
+
+
+const WeatherComponent = ({setLoginName, loginName, setWeather, setLocation, location, weather}) => {
+
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -70,6 +80,7 @@ const WeatherIcon = ({ condition }) => {
 
   useEffect(() => {
     if (location.latitude && location.longitude) {
+      
       getWeather(location.latitude, location.longitude).then((data) => {
         setWeather(data);
       });
@@ -92,9 +103,8 @@ const WeatherIcon = ({ condition }) => {
       }
     );
   };
-
   return (
-    <div className="weather-container border-2 border-white">
+    <div className="weather-container border-2 border-white mt-4">
       {error ? (
         <div className="error-message">
           <p>Error: {error}</p>
@@ -102,7 +112,11 @@ const WeatherIcon = ({ condition }) => {
         </div>
       ) : weather ? (
         <div className="weather-info flex flex-row">
+
           <p className="hi-text pr-12">Hi, {user?.name}!</p>
+
+          <p className="hi-text pr-12">Hi, {loginName}</p>
+
           <WeatherIcon condition={weather.current.condition.text} />
           <p className="temperature">{weather.current.temp_c}°</p>
           <div className="loc-con">

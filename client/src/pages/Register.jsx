@@ -36,10 +36,11 @@ const Register = () => {
 
     try {
       const newUser = {
-        name,
+        userName : name,
         email,
         password,
       };
+      console.log(newUser);
       const { data } = await axios.post(
         `http://localhost:8000/api/v1/register`,
         newUser

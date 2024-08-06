@@ -27,17 +27,26 @@ const Login = () => {
     try {
       // const {headers} =
       const response = await axios.post("http://localhost:8000/api/v1/login", {
+        name,
         email,
         password,
       });
 
+
 setUser(response.data.user.userDetails)
 localStorage.setItem("user",JSON.stringify(response.data.user.userDetails))
+
+      console.log(response.data);
+
       if (response.status === 200) {
         setMessage("Login successful");
         toast.success("Login successfully!");
         //With token coming from headers
+
         localStorage.setItem('token', response.authorization);
+
+        localStorage.setItem('token', response.headers.authorization);
+
         localStorage.setItem("token", response.token);
         //Don't save the email in the localstorage
         localStorage.setItem("email", response.email);
