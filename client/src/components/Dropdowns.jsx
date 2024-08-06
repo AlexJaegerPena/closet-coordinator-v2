@@ -21,10 +21,12 @@ const Dropdowns = ({
           onChange={(e) => setDropdown1(e.target.value)}
           className="mt-1 block w-full p-2 border border-gray-300 rounded shadow-sm focus:border-blue-500 focus:ring-blue-500">
           <option value="">Select</option>
-          <option value="Shirt">Shirt</option>
-          <option value="Pants">Pants</option>
-          <option value="Jacket">Jacket</option>
+          <option value="Shirts">Shirt</option>
+          <option value="Sweatshirts">Sweatshirt</option>
+          <option value="Trousers">Trousers</option>
+          <option value="Jackets">Jacket</option>
           <option value="Shoes">Shoes</option>
+          <option value="Accessories">Accessory</option>
         </select>
       </label>
     </div>
