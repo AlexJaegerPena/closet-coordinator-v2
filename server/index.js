@@ -1,19 +1,19 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-// import crypto from 'crypto';
-// console.log(crypto.randomBytes(32).toString('base64'));
 
-// DB
+// Database
 import DB from "./db/dbConnection.js";
 // Routes
 import imageRoutes from "./routes/imageRoutes.js";
 import clothesRouter from "./routes/clothesRouter.js";
 import usersRoutes from "./routes/usersRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
-// import audioRouter from "./routes/audioRouter.js";
+
+//API Routes
 import chatRouter from "./routes/chatRouter.js";
 import imageRouter from "./routes/imageRouter.js";
+import weatherRouter from "./routes/weatherRouter.js";
 
 // middlewares
 import errorHandler from "./middlewares/errorHandler.js";
@@ -25,19 +25,19 @@ const app = express();
 const PORT = process.env.PORT;
 DB();
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Checking server");
 });
 
-// app.use(cors({ origin: "*" }), express.json());
 app.use(cors({ origin: "*" }), express.json());
-app.use(`/api/v1/auth`, authRoutes);
-app.use(`/api/v1/users`, usersRoutes);
-app.use(`/api/v1/clothes`, clothesRouter);
-app.use(`/api/v1/images`, imageRoutes);
-app.use(validateProvider, validateMode,)
-// app.use("/api/v1/audio/speech",  audioRouter);
-app.use("/api/v1/chat/completions",  chatRouter);
-app.use("/api/v1/images/generations",  imageRouter);
+app.use(`/api/v1`, authRoutes);
+app.use(`/api/v1`, authRoutes);
+app.use(`/api/v1/users/`, usersRoutes);
+app.use(`/api/v1/clothes/`, clothesRouter);
+app.use(`/api/v1/images/`, imageRoutes);
+app.use(`/api/v1/weather/`,  weatherRouter);
+
+app.use("/api/v1/chat/completions", validateProvider, chatRouter);
+app.use("/api/v1/images/generations", validateMode, imageRouter);
 
 app.use(`*`, (req, res) =>
   res.status(404).json({ message: "Page not found!" })

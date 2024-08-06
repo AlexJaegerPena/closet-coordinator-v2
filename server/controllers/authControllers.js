@@ -4,9 +4,23 @@ import User from '../models/usersModel.js';
 import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/auth.js';
 
+export const register = async (req, res) => {
+  try {
+    const user = new User(req.body);
+    const createdUser = await user.save();
+    console.log(createdUser);
+
+    const token = generateToken(createdUser);
+    // res.status(201).json({ token });
+    res.status(201).json({ message: 'First time login successful' });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error', error });
+  }
+};
+
 export const login = asyncHandler(async (req, res, next) => {
   const {
-    body: { email, password, rememberMe },
+    body: { email, password },
   } = req;
 
   if (!email || !password) {
@@ -18,7 +32,7 @@ export const login = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('invalid input!', 400));
   }
 
-  const user = { rememberMe, id: data._id, role: data.role };
+  const user = { id: data._id, role: data.role };
   const token = generateToken(user);
 
   res.status(200).json({ success: true, data: token });
