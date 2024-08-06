@@ -6,7 +6,7 @@ import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
 // import Header from "./components/Header";
 // import X from "./components/X.jsx";
-import Weather from "./components/Weather.jsx";
+// import Weather from "./components/Weather.jsx";
 import Home from "./pages/Home.jsx";
 import ClothesList from "./pages/ClothesList.jsx";
 import Navbar from "./components/Navbar.jsx";
@@ -48,12 +48,12 @@ function App() {
   return (
     <div className="flex flex-col min-h-screen relative">
       <Navbar />
-      <Weather
+      {/* <Weather
         setWeather={setWeather}
         weather={weather}
         location={location}
         setLocation={setLocation}
-      />
+      /> */}
       {/* <X/> */}
       <div className="app-bg "></div>
       <div className="container flex-grow relative">

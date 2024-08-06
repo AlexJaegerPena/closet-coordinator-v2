@@ -100,13 +100,3 @@ export const deleteClothes = asyncHandler(async (req, res) => {
     .status(200)
     .json({ success: true, data: { message: "Clothes was deleted!" } });
 });
-
-export const getClothesByCategory = async (req, res) => {
-  try {
-    const { category } = req.params;
-    const clothes = await Clothes.find({ category });
-    res.json(clothes);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
