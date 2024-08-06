@@ -4,7 +4,6 @@ import WeatherComponent from "../components/WeatherComponent";
 
 const Home = ({setLoginName, loginName , location, weather, setWeather, setLocation}) => {
 
-
   return (
     <div className="home-pattern bg-repeat bg-cover bg-center">
       <div className="cont">

@@ -1,11 +1,14 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState,useEffect } from 'react';
 
 const UserContext = createContext();
 
+
 export const UserProvider = ({ children }) => {
   const [error, setError] = useState('');
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user"))||{});
   const [clothes, setClothes] = useState([]);
+  
+  
   
   return (
     <UserContext.Provider
