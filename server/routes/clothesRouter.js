@@ -8,9 +8,9 @@ import {
 } from '../controllers/clothesControllers.js';
 
 import {
-  isAdmin,
+  // isAdmin,
   isAuthenticated,
-  isOwnerOrAdmin,
+  // isOwnerOrAdmin,
 } from '../middlewares/authMiddlewares.js';
 
 const router = Router();

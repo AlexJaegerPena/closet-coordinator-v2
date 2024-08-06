@@ -8,14 +8,14 @@ import {
 } from '../controllers/userControllers.js';
 
 import {
-  isAdmin,
-  isAuthenticated,
-  isOwnerOrAdmin,
+  // isAdmin,
+  // isAuthenticated,
+  // isOwnerOrAdmin,
 } from '../middlewares/authMiddlewares.js';
 
 const router = Router();
 
-// router.get('/', isAuthenticated, getAllUsers);
+router.get('/', getAllUsers);
 router.get('/',  getAllUsers);
 router.post('/', createUser);
 // router.use(isAuthenticated, isOwnerOrAdmin);
