@@ -17,14 +17,14 @@ export const createChat = asyncHandler(async (req, res) => {
   }
 
   
-  let collectMessage=`
-  give me two diffrent arrays of clothes recomendations according to the status of the weathre in ${request?.messages?.location?.region}`
+  let collectMessage=
+  `You are a helpful assistant who provides only ONE image (img) from this database ${dataClothes} as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request?.messages?.location?.region}`
 let message={
   "model": "gpt-4o-mini",
   "messages": [
       {
           "role": "system",
-          "content": `You are a helpful assistant who gives JSON code only from this database ${dataClothes} as an answer.`
+          "content":  `You are a helpful assistant who provides only ONE image (img) as a thumbnail from this database ${dataClothes} as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request?.messages?.location?.region}`
       },
       {
           "role": "user",

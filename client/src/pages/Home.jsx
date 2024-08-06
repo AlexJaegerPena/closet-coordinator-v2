@@ -3,7 +3,9 @@ import "./Home.css";
 import Wardrobe from "../components/Wardrobe";
 import WeatherComponent from "../components/WeatherComponent";
 
-const Home = ({ loginName }) => {
+
+const Home = () => {
+
   return (
     <div className="home-pattern bg-repeat bg-cover bg-center">
       <div className="cont">
