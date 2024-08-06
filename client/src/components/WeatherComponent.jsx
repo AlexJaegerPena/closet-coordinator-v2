@@ -40,9 +40,7 @@ const WeatherIcon = ({ condition }) => {
   }
 };
 
-const WeatherComponent = ({setLoginName, loginName}) => {
-  const [location, setLocation] = useState({ latitude: null, longitude: null });
-  const [weather, setWeather] = useState(null);
+const WeatherComponent = ({setLoginName, loginName, setWeather, setLocation, location, weather}) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -68,6 +66,7 @@ const WeatherComponent = ({setLoginName, loginName}) => {
 
   useEffect(() => {
     if (location.latitude && location.longitude) {
+      
       getWeather(location.latitude, location.longitude).then((data) => {
         setWeather(data);
       });
@@ -90,7 +89,6 @@ const WeatherComponent = ({setLoginName, loginName}) => {
       }
     );
   };
-
   return (
     <div className="weather-container border-2 border-white">
       {error ? (

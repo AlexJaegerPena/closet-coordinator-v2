@@ -10,44 +10,45 @@ export const createChat = asyncHandler(async (req, res) => {
     headers: { mode },
   } = req;
 
+  console.log(JSON.parse(request))
+  // const dataClothes = await Clothes.find();
+  // if (!dataClothes) {
+    //   return next(new ErrorResponse(`Server error`, 500));
+    // }
+    
   
-  const dataClothes = await Clothes.find();
-  if (!dataClothes) {
-    return next(new ErrorResponse(`Server error`, 500));
-  }
-
-  
-  let collectMessage=
-  `You are a helpful assistant who provides only ONE image (img) from this database ${dataClothes} as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request?.messages?.location?.region}`
-let message={
-  "model": "gpt-4o-mini",
-  "messages": [
-      {
-          "role": "system",
-          "content":  `"I have a list of shirts stored in this database ${dataClothes}. Please randomly select a shirt from the list and provide me with the thumbnail of the selected shirt."  as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request?.messages?.location?.region}`
+    // let collectMessage=
+    // `You are a helpful assistant who provides only ONE image (img) from this database ${dataClothes} as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request?.messages?.location?.region}`
+    // let message={
+      //   "model": "gpt-4o-mini",
+      //   "messages": [
+        //       {
+          //           "role": "system",
+          //           "content":  `"I have a list of shirts stored in this database ${dataClothes}. Please randomly select a shirt from the list and provide me with the thumbnail of the selected shirt."  as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request?.messages?.location?.region}`
           
-      },
-      {
-          "role": "user",
-          "content": collectMessage
-      },
-  ],
-  "stream": false
-}
+          //       },
+//       {
+//           "role": "user",
+//           "content": collectMessage
+//       },
+//   ],
+//   "stream": false
+// }
 
-  let openai;
+let openai;
 
   mode === "developement"
     ? (openai = new OpenAI({ apiKey: process.env.OPEN_AI_APIKEY }))
     : (openai = new OpenAIMock());
-
-  const completion = await openai.chat.completions.create({
-    stream,
-    ...message,
-  });
-  
-  if (stream) {
-    res.writeHead(200, {
+    
+    const completion = await openai.chat.completions.create({
+      stream,
+      ...request,
+    });
+    console.log(completion)
+    
+    if (stream) {
+      res.writeHead(200, {
       Connection: "keep-alive",
       "Cache-Control": "no-cache",
       "Content-Type": "text/event-stream",
