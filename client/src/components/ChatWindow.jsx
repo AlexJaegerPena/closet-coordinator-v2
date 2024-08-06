@@ -67,17 +67,41 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
   const RenderMessage = ({msg,index}) => {
     if (msg.imageUrl) {
       return (
+
         <div key={index} className={`mb-2 ${msg.role === "user" ? "text-right" : "text-left"}`}>
           <div className={`inline-block p-2 rounded-lg ${msg.role === "user" ? "bg-blue-500 text-white" : "bg-gray-200 text-black"}`}>
+        <div
+          className={`mb-2 ${msg.role === "user" ? "text-right" : "text-left"}`}
+        >
+          <div
+            className={`inline-block p-2 rounded-lg ${
+              msg.role === "user"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-black"
+            }`}
+          >
+
             {msg.content && <p>{msg.content}</p>}
-            <img src={msg.imageUrl} alt="Chat Response" className="max-w-full mt-2 rounded" />
+            <img
+              src={msg.imageUrl}
+              alt="Chat Response"
+              className="max-w-full mt-2 rounded"
+            />
           </div>
         </div>
       );
     } else {
       return (
-        <div className={`mb-2 ${msg.role === "user" ? "text-right" : "text-left"}`}>
-          <div className={`inline-block p-2 rounded-lg ${msg.role === "user" ? "bg-blue-500 text-white" : "bg-gray-200 text-black"}`}>
+        <div
+          className={`mb-2 ${msg.role === "user" ? "text-right" : "text-left"}`}
+        >
+          <div
+            className={`inline-block p-2 rounded-lg ${
+              msg.role === "user"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-black"
+            }`}
+          >
             {msg.content}
           </div>
         </div>

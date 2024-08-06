@@ -1,107 +1,134 @@
-import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import ClothesFormPopup from "../components/ClothesFormPopup";
-import { motion, AnimatePresence } from "framer-motion";
-import CategoryList from "../components/CategoryList";
-import FloatingButton from "../components/FloatingButton";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { motion } from "framer-motion";
+import SidebarButton from "../components/SidebarButton";
+import SidebarMenu from "../components/SidebarMenu";
+import { AiFillEdit, AiFillDelete } from "react-icons/ai"; // Import react-icons
+import ControlPanel from "../components/ControlPanel"; // Import ControlPanel
 
 const ClothesList = () => {
-  const [hoveredCategory, setHoveredCategory] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [showCategories, setShowCategories] = useState(false);
+  const [clothes, setClothes] = useState([]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [filter, setFilter] = useState("All");
+  const [selectedItem, setSelectedItem] = useState(null); // State for the item being edited
+  const [isEditing, setIsEditing] = useState(false); // State for showing ControlPanel
 
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-    setShowCategories(false); // Hide categories when a category is selected
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5050/api/v1/clothes"
+        );
+        if (response.data && response.data.data) {
+          console.log("Data received from server:", response.data.data);
+          setClothes(response.data.data);
+        } else {
+          console.error("Unexpected data format:", response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const category = query.get("category");
+    if (category) {
+      setFilter(category);
+    }
+  }, [location.search]);
+
+  const handleMenuToggle = () => setIsMenuOpen(!isMenuOpen);
+  const handleFilterChange = (category) => {
+    console.log(`Filter changed to: ${category}`);
+    setFilter(category);
+    setIsMenuOpen(false);
+    window.scrollTo(0, 0); // Scroll to top when filter is changed
   };
 
-  const handleDeleteClick = (event, item) => {
-    event.stopPropagation();
-    console.log(`Delete ${item.name}`);
+  const handleEditClick = (item) => {
+    setSelectedItem(item);
+    setIsEditing(true);
   };
+
+  const handleDeleteClick = async (itemId) => {
+    try {
+      await axios.delete(`http://localhost:5050/api/v1/clothes/${itemId}`);
+      setClothes(clothes.filter((item) => item._id !== itemId));
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
+  };
+
+  const handleCloseEditPanel = () => {
+    setIsEditing(false);
+    setSelectedItem(null);
+  };
+
+  // Filter clothes based on selected filter
+  const filteredClothes = clothes.filter(
+    (item) => filter === "All" || item.category === filter
+  );
+
+  console.log(`Filtered clothes: ${JSON.stringify(filteredClothes)}`);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
-        {categories.map((category) => (
-          <button
-            key={category.id}
-            onClick={() => handleCategoryClick(category)}
-            className={`flex flex-col items-center p-4 bg-gray-200 rounded-lg shadow-md hover:bg-gray-300 transition ${
-              selectedCategory === category ? "bg-gray-300" : ""
-            }`}
-          >
-            <span className="text-lg font-semibold">{category.name}</span>
-          </button>
-        ))}
-      </div>
-
-      {selectedCategory && (
-        <div>
-          <h2 className="text-2xl font-semibold mb-4">
-            {selectedCategory.name}
-          </h2>
-          <div className="flex flex-wrap justify-center gap-4">
-            {selectedCategory.items.map((item) => (
-              <li
-                key={item.name}
-                className="relative w-40 h-40 bg-gray-200 border rounded-3xl overflow-hidden flex items-center justify-center shadow-md"
-                onMouseEnter={() => setHoveredCategory(item)}
-                onMouseLeave={() => setHoveredCategory(null)}
-              >
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className={`absolute inset-0 w-full h-full object-cover `}
-                />
-                {hoveredCategory === item && (
-                  <div className="absolute top-2 right-2 flex gap-2">
-                    <button
-                      className="text-grey-400 rounded-full p-1"
-                      // onClick={(event) => handleEditClick(event, item)}
-                      onClick={() =>
-                        document.getElementById("my_modal_4").showModal()
-                      }
-                    >
-                      <dialog
-                        id="my_modal_4"
-                        className="modal fixed inset-0 flex items-center justify-center p-4"
-                      >
-                        <div className="modal-box w-6/12 max-w-md bg-white rounded-lg shadow-lg p-4">
-                          <h3 className="font-bold text-lg mb-4">
-                            Update your item
-                          </h3>
-                          <ClothesFormPopup />
-                          <div className="flex gap-4">
-                            <button
-                              className="btn flex-1"
-                              onClick={() => alert("Update action")}
-                            >
-                              Update
-                            </button>
-                            <form method="dialog" className="flex-1">
-                              <button className="btn w-full">Close</button>
-                            </form>
-                          </div>
-                        </div>
-                      </dialog>
-
-                      <FaEdit size={20} />
-                    </button>
-
-                    <button
-                      onClick={(event) => handleDeleteClick(event, item)}
-                      className="text-grey-400 rounded-full p-1"
-                    >
-                      <FaTrash size={20} />
-                    </button>
-                  </div>
-                )}
-              </li>
-            ))}
+    <div className="relative">
+      <SidebarButton onClick={handleMenuToggle} />
+      <SidebarMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        onFilterChange={handleFilterChange}
+      />
+      <div className="p-2 max-w-screen-sm mx-auto">
+        {isEditing && selectedItem && (
+          <div className="fixed inset-0 flex items-center justify-center z-40">
+            <ControlPanel
+              isEditMode={true}
+              initialData={selectedItem}
+              onClose={handleCloseEditPanel}
+              clearImage={() => {}}
+              onFeedback={() => {}}
+            />
           </div>
+        )}
+        <div className="grid grid-cols-3 gap-4">
+          {filteredClothes.map((item) => (
+            <motion.div
+              key={item._id}
+              className="relative bg-base-100 shadow-xl rounded-md border-4 border-white overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <figure>
+                <img
+                  src={item.img}
+                  alt={item.type || "Clothing Item"}
+                  className="w-full h-40 object-cover"
+                />
+              </figure>
+              <div className="absolute top-0 right-0 p-2 space-x-2 flex">
+                <button
+                  onClick={() => handleEditClick(item)}
+                  className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700"
+                >
+                  <AiFillEdit size={20} />
+                </button>
+                <button
+                  onClick={() => handleDeleteClick(item._id)}
+                  className="bg-red-600 text-white p-2 rounded-full hover:bg-red-700"
+                >
+                  <AiFillDelete size={20} />
+                </button>
+              </div>
+            </motion.div>
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 };

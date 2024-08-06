@@ -40,8 +40,8 @@ const WeatherIcon = ({ condition }) => {
   }
 };
 
+
 const WeatherComponent = ({setLoginName, loginName, setWeather, setLocation, location, weather}) => {
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -90,7 +90,7 @@ const WeatherComponent = ({setLoginName, loginName, setWeather, setLocation, loc
     );
   };
   return (
-    <div className="weather-container border-2 border-white">
+    <div className="weather-container border-2 border-white mt-4">
       {error ? (
         <div className="error-message">
           <p>Error: {error}</p>

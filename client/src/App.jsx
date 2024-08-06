@@ -7,6 +7,7 @@ import Login from "./pages/Login.jsx";
 import Home from "./pages/Home.jsx";
 import ClothesList from "./pages/ClothesList.jsx";
 import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
 import Update from "./pages/Update.jsx";
 import ChatWindow from "./components/ChatWindow.jsx";
 
@@ -40,7 +41,8 @@ function App() {
       setChatData([
         {
           role: "assistant",
-          content: data?.message?.content.slice(7, -3) || "No content available.",
+          content:
+            data?.message?.content.slice(7, -3) || "No content available.",
         },
       ]);
     } catch (error) {
@@ -58,7 +60,7 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen relative">
-      <Navbar />
+      <Navbar className="sticky top-0" />
       <div className="fixed bottom-4 right-4 z-50">
         <button
           onClick={toggleChat}
@@ -67,18 +69,28 @@ function App() {
           Chat with Closet
         </button>
       </div>
-      <ChatWindow isVisible={chatVisible} onClose={toggleChat} chatData={chatData} setChatData={setChatData}/>
-      
+      <ChatWindow
+        isVisible={chatVisible}
+        onClose={toggleChat}
+        chatData={chatData}
+        setChatData={setChatData}
+      />
+
       <div className="app-bg "></div>
-      <div className="container flex-grow relative">
+      <div className="flex-grow relative">
         <Routes>
-          <Route path="/" element={<Home loginName={loginName} setLoginName={setLoginName} />}></Route>
+          <Route
+            path="/"
+            element={<Home loginName={loginName} setLoginName={setLoginName} />}
+          ></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/clothes-list" element={<ClothesList />}></Route>
+          {/* <Route path="/clothes-list" element={<ClothesListTwo />}></Route> */}
           <Route path="/update" element={<Update />}></Route>
         </Routes>
       </div>
+      <Footer className="sticky bottom-0" />
     </div>
   );
 }
