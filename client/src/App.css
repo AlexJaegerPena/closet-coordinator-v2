@@ -4,21 +4,21 @@
   box-sizing: border-box;
 }
 
-.flex {
+/* .flex {
   display: flex;
-}
+} */
 
-.flex-col {
+/* .flex-col {
   flex-direction: column;
-}
+} */
 
-.min-h-screen {
+/* .min-h-screen {
   min-height: 100vh;
 }
 
 .relative {
   position: relative;
-}
+} */
 
 .app-bg {
   position: fixed;
@@ -67,5 +67,16 @@
 
 .navbar {
   z-index: 10;
-  position: relative;
+  position: sticky;
+}
+
+.footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+.main-content {
+  flex: 1;
 }

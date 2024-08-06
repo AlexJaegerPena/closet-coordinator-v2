@@ -36,7 +36,10 @@ export const login = asyncHandler(async (req, res, next) => {
   const user = { id: data._id, userName: data.userName, role: data.role };
   const token = generateToken(user);
 
+  res.status(200).json({ success: true, user: {token,userDetails:data} });
+
   res.status(200).json({ success: true, data: token, user: user });
+
 });
 
 export const logout = asyncHandler(async (req, res, next) => {

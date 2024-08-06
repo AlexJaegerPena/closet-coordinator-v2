@@ -36,6 +36,14 @@ const ClothesList = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const category = query.get("category");
+    if (category) {
+      setFilter(category);
+    }
+  }, [location.search]);
+
   const handleMenuToggle = () => setIsMenuOpen(!isMenuOpen);
   const handleFilterChange = (category) => {
     console.log(`Filter changed to: ${category}`);

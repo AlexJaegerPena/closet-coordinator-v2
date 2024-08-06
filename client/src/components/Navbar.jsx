@@ -1,18 +1,25 @@
 import { useState } from "react";
 import { CgProfile } from "react-icons/cg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 import "./Navbar.css";
 import logo from "../assets/logo.svg";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  const handleLogout = () => { 
+    localStorage.removeItem("user")
+    navigate("/login")
+   }
+
   return (
-    <div className="nav-bar navbar sticky top-0 flex items-center bg-gradient-to-r from-sky-600 to-teal-400">
+    <div className="nav-bar navbar sticky top-0 bg-white shadow-md z-50 flex items-center bg-gradient-to-r from-sky-600 to-teal-400">
       <div className="flex items-center">
         <Link to="/" className="flex items-center">
           <img
@@ -28,6 +35,7 @@ const Navbar = () => {
       <div className="doc flex items-center">
         <Link to="/" className="flex space-x-1 items-center"></Link>
       </div>
+
       <div className="flex-none gap-2">
         {/* Dropdown Container */}
         <div className="dropdown dropdown-end">
@@ -52,8 +60,9 @@ const Navbar = () => {
                 {/* <span className="badge bg-green-500 ">New</span> */}
               </li>
 
-              <li>
-                <Link to="/login">Logout</Link>
+              <li onClick={handleLogout}>
+                Logout
+                {/* <Link to="/login">Logout</Link> */}
               </li>
             </ul>
           )}

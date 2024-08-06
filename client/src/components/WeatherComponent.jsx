@@ -7,6 +7,7 @@ import {
   FaCloudRain,
   FaSnowflake,
 } from "react-icons/fa";
+import {useUserContext} from '../contexts/userContext'
 import { FaLocationDot } from "react-icons/fa6";
 import "./WeatherComponent.css"; // Stile für die Komponente
 
@@ -27,23 +28,34 @@ const WeatherIcon = ({ condition }) => {
   switch (condition.toLowerCase()) {
     case "sunny":
       return <FaSun className="weather-icon sunny" />;
-    case "cloudy":
-      return <FaCloud className="weather-icon cloudy" />;
-    case "partly cloudy":
-      return <FaCloudSun className="weather-icon partly-cloudy" />;
-    case "rainy":
-      return <FaCloudRain className="weather-icon rainy" />;
+      case "cloudy":
+        return <FaCloud className="weather-icon cloudy" />;
+        case "partly cloudy":
+          return <FaCloudSun className="weather-icon partly-cloudy" />;
+          case "rainy":
+            return <FaCloudRain className="weather-icon rainy" />;
     case "snowy":
       return <FaSnowflake className="weather-icon snowy" />;
+
+      default:
+        return <FaCloud className="weather-icon default" />;
+      }
+    };
+    
+    const WeatherComponent = () => {
+      const {user} =useUserContext()
+  const [location, setLocation] = useState({ latitude: null, longitude: null });
+  const [weather, setWeather] = useState(null);
+  const [error, setError] = useState(null);
+
     default:
       return <FaCloud className="weather-icon default" />;
   }
 };
 
-const WeatherComponent = ({setLoginName, loginName}) => {
-  const [location, setLocation] = useState({ latitude: null, longitude: null });
-  const [weather, setWeather] = useState(null);
-  const [error, setError] = useState(null);
+
+const WeatherComponent = ({setLoginName, loginName, setWeather, setLocation, location, weather}) => {
+
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -68,6 +80,7 @@ const WeatherComponent = ({setLoginName, loginName}) => {
 
   useEffect(() => {
     if (location.latitude && location.longitude) {
+      
       getWeather(location.latitude, location.longitude).then((data) => {
         setWeather(data);
       });
@@ -90,9 +103,8 @@ const WeatherComponent = ({setLoginName, loginName}) => {
       }
     );
   };
-
   return (
-    <div className="weather-container border-2 border-white">
+    <div className="weather-container border-2 border-white mt-4">
       {error ? (
         <div className="error-message">
           <p>Error: {error}</p>
@@ -100,7 +112,11 @@ const WeatherComponent = ({setLoginName, loginName}) => {
         </div>
       ) : weather ? (
         <div className="weather-info flex flex-row">
+
+          <p className="hi-text pr-12">Hi, {user?.name}!</p>
+
           <p className="hi-text pr-12">Hi, {loginName}</p>
+
           <WeatherIcon condition={weather.current.condition.text} />
           <p className="temperature">{weather.current.temp_c}°</p>
           <div className="loc-con">
