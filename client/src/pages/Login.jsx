@@ -3,8 +3,10 @@ import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {useUserContext} from '../contexts/userContext'
 
 const Login = () => {
+  const {setUser} =useUserContext()
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -29,13 +31,13 @@ const Login = () => {
         password,
       });
 
-      console.log(response);
-
+setUser(response.data.user.userDetails)
+localStorage.setItem("user",JSON.stringify(response.data.user.userDetails))
       if (response.status === 200) {
         setMessage("Login successful");
         toast.success("Login successfully!");
         //With token coming from headers
-        localStorage.setItem('token', headers.authorization);
+        localStorage.setItem('token', response.authorization);
         localStorage.setItem("token", response.token);
         //Don't save the email in the localstorage
         localStorage.setItem("email", response.email);
