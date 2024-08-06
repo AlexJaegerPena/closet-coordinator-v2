@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { FaRandom } from "react-icons/fa";
+import { TbMessageChatbot } from "react-icons/tb";
 
 const Wardrobe = () => {
   const [showOptions, setShowOptions] = useState(false);
@@ -65,35 +67,35 @@ const Wardrobe = () => {
         </div>
 
         {/* Button Section */}
-        <div className="flex flex-col items-center justify-center">
-          {showOptions ? (
-            <div className="flex flex-col items-center space-y-2">
-              <span className="text-xl font-semibold text-gray-700">
-                Are you satisfied with your outfit?
-              </span>
-              <div className="flex space-x-4">
-                <button
-                  className="btn bg-gradient-to-r from-green-600 to-green-300 w-28 h-12 text-white text-lg rounded-3xl shadow-gl hover:bg-green-500"
-                  onClick={() => setShowOptions(false)}
-                >
-                  Yes
-                </button>
-                <button
-                  className="btn bg-gradient-to-r from-orange-500 to-amber-300 w-48 h-12 text-white text-lg rounded-3xl shadow-lg hover:bg-teal-500"
-                  onClick={() => setShowOptions(false)}
-                >
-                  Clothe Me Again
-                </button>
-              </div>
-            </div>
-          ) : (
+        <div className="flex flex-row items-center justify-center">
+          <div className="flex flex-row items-center justify-center">
+            {showOptions ? (
+              <button
+                className="btn bg-gradient-to-r from-sky-600 to-teal-400 w-auto h-12 text-white text-lg rounded-3xl shadow-lg border-2 border-white hover:bg-teal-500"
+                onClick={() => setShowOptions(true)}
+              >
+                <FaRandom />
+                Clothe Me Again!
+              </button>
+            ) : (
+              <button
+                className="btn bg-gradient-to-r from-sky-600 to-teal-400 w-auto h-12 text-white text-lg rounded-3xl shadow-lg border-2 border-white hover:bg-teal-500"
+                onClick={() => setShowOptions(true)}
+              >
+                <FaRandom />
+                Clothe Me!
+              </button>
+            )}
+          </div>
+          <div>
             <button
               className="btn bg-gradient-to-r from-sky-600 to-teal-400 w-60 h-12 text-white text-lg rounded-3xl shadow-lg border-2 border-white hover:bg-teal-500"
               onClick={() => setShowOptions(true)}
             >
-              Clothe Me!
+              <TbMessageChatbot className="text-2xl" />
+              Chat with Assistant
             </button>
-          )}
+          </div>
         </div>
       </div>
     </div>
