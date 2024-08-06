@@ -1,19 +1,42 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import {
+  FaSun,
+  FaCloud,
+  FaCloudSun,
+  FaCloudRain,
+  FaSnowflake,
+} from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
+import "./WeatherComponent.css"; // Stile für die Komponente
 
 const getWeather = async (latitude, longitude) => {
-  // const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
   const apiKey = "d1f4eb599154491d94e92554240508";
   const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}`;
 
   try {
     const response = await axios.get(url);
-    const data = response.data;
-    console.log("Weather data:", data);
-    return data;
+    return response.data;
   } catch (error) {
     console.error("Error fetching weather data:", error);
     return null;
+  }
+};
+
+const WeatherIcon = ({ condition }) => {
+  switch (condition.toLowerCase()) {
+    case "sunny":
+      return <FaSun className="weather-icon sunny" />;
+    case "cloudy":
+      return <FaCloud className="weather-icon cloudy" />;
+    case "partly cloudy":
+      return <FaCloudSun className="weather-icon partly-cloudy" />;
+    case "rainy":
+      return <FaCloudRain className="weather-icon rainy" />;
+    case "snowy":
+      return <FaSnowflake className="weather-icon snowy" />;
+    default:
+      return <FaCloud className="weather-icon default" />;
   }
 };
 
@@ -69,18 +92,26 @@ const WeatherComponent = () => {
   };
 
   return (
-    <div>
-      <h1>Weather Information</h1>
+    <div className="weather-container border-2 border-white">
       {error ? (
-        <div>
+        <div className="error-message">
           <p>Error: {error}</p>
           <button onClick={handleRetry}>Retry</button>
         </div>
       ) : weather ? (
-        <div>
-          <p>Location: {weather.location.name}</p>
-          <p>Temperature: {weather.current.temp_c}°C</p>
-          <p>Condition: {weather.current.condition.text}</p>
+        <div className="weather-info flex flex-row">
+          <p className="hi-text pr-12">Hi, Name!</p>
+          <WeatherIcon condition={weather.current.condition.text} />
+          <p className="temperature">{weather.current.temp_c}°</p>
+          <div className="loc-con">
+            <div className="loc-icon ">
+              <p className="location mr-1">{weather.location.name}</p>
+              <FaLocationDot className="" />
+            </div>
+            <p className="condition lowercase">
+              {weather.current.condition.text}
+            </p>
+          </div>
         </div>
       ) : (
         <p>Loading weather data...</p>

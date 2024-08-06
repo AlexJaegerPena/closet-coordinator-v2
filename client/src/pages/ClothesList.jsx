@@ -165,7 +165,7 @@ const ClothesList = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
+      <div className="grid grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
         {categories.map((category) => (
           <button
             key={category.id}
@@ -186,7 +186,7 @@ const ClothesList = () => {
           </h2>
           <div className="flex flex-wrap justify-center gap-4">
             {selectedCategory.items.map((item) => (
-              <div
+              <li
                 key={item.name}
                 className="relative w-40 h-40 bg-gray-200 border rounded-3xl overflow-hidden flex items-center justify-center shadow-md"
                 onMouseEnter={() => setHoveredCategory(item)}
@@ -240,7 +240,7 @@ const ClothesList = () => {
                     </button>
                   </div>
                 )}
-              </div>
+              </li>
             ))}
           </div>
         </div>

@@ -1,10 +1,11 @@
-import {useEffect} from 'react'
+import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import "./App.css";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
 // import Header from "./components/Header";
 // import X from "./components/X.jsx";
-import Weather from './components/Weather.jsx'
+import Weather from "./components/Weather.jsx";
 import Home from "./pages/Home.jsx";
 import ClothesSettings from "./pages/ClothesSettings.jsx";
 import ClothesList from "./pages/ClothesList.jsx";
@@ -12,38 +13,13 @@ import Navbar from "./components/Navbar.jsx";
 import Update from "./pages/Update.jsx";
 
 function App() {
-
-  // useEffect(() => {
-  //   if ("geolocation" in navigator) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         // setLocation({
-  //         //   latitude: position.coords.latitude,
-  //         //   longitude: position.coords.longitude,
-  //         // });
-  //         console.log({
-  //           latitude: position.coords.latitude,
-  //           longitude: position.coords.longitude,
-  //         });
-  //       },
-  //       (error) => {
-  //         console.error("Error getting geolocation:", error);
-  //       }
-  //     );
-  //   } else {
-  //     console.error("Geolocation not available");
-  //   }
-  // }, []);
-  
-  
   return (
-    <div className="flex flex-col min-h-screen">
-
+    <div className="flex flex-col min-h-screen relative">
       <Navbar />
-      <Weather />
+      {/* <Weather /> */}
       {/* <X/> */}
-
-      <div className="flex-grow">
+      <div className="app-bg "></div>
+      <div className="container flex-grow relative">
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/register" element={<Register />}></Route>

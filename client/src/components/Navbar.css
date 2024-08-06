@@ -4,17 +4,20 @@
   box-sizing: border-box;
 }
 
-.navbar {
-  background-color: #3a93c6;
-  height: 50px;
-  /* align-items: center; */
-  justify-content: space-between;
+.nav-bar {
+  display: flex;
+  justify-content: space-between; /* Verbreitet die Elemente gleichmäßig über die gesamte Breite */
+  align-items: center; /* Zentriert die Items vertikal */
+  padding: 0 1rem; /* Fügt einen Abstand auf beiden Seiten hinzu */
+  width: 100%; /* Stellt sicher, dass die Navbar die gesamte Breite einnimmt */
+  box-sizing: border-box; /* Stellt sicher, dass Padding und Border in der Breite enthalten sind */
 }
 
-.compass {
+.closet-coordinator {
   color: #ffffff;
   font-weight: bolder;
-  font-size: 25px;
+  font-size: 15px;
+  line-height: 16px;
 }
 
 .profile-icon {

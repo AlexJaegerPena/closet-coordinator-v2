@@ -3,3 +3,61 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.relative {
+  position: relative;
+}
+
+.app-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  overflow: hidden;
+  display: flex;
+}
+
+.app-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("./assets/th.jpeg");
+  background-size: 58% 22%;
+  background-position: center;
+  background-repeat: repeat;
+  width: 100%;
+  height: auto;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.navbar {
+  z-index: 10;
+  position: relative;
+}
