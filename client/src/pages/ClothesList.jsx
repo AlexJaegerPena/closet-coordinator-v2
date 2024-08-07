@@ -5,6 +5,7 @@ import SidebarButton from "../components/SidebarButton";
 import SidebarMenu from "../components/SidebarMenu";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai"; // Import react-icons
 import ControlPanel from "../components/ControlPanel"; // Import ControlPanel
+import Footer from "../components/Footer";
 
 const ClothesList = () => {
   const [clothes, setClothes] = useState([]);
@@ -56,7 +57,7 @@ const ClothesList = () => {
 
   const handleDeleteClick = async (itemId) => {
     try {
-      await axios.delete(`http://localhost:5050/api/v1/clothes/${itemId}`);
+      await axios.delete(`http://localhost:8000/api/v1/clothes/${itemId}`);
       setClothes(clothes.filter((item) => item._id !== itemId));
     } catch (error) {
       console.error("Error deleting item:", error);
@@ -129,6 +130,7 @@ const ClothesList = () => {
           ))}
         </div>
       </div>
+      <Footer className="sticky bottom-0" />
     </div>
   );
 };

@@ -17,12 +17,12 @@ const clothesSchema = new Schema(
       // required: true,
       trim: true,
     },
-    seasons: {
+    season: {
       type: String,
       // required: true,
       trim: true,
     },
-    occassion: {
+    occasion: {
       type: String,
       // required: true,
       trim: true,

@@ -7,7 +7,6 @@ import Login from "./pages/Login.jsx";
 import Home from "./pages/Home.jsx";
 import ClothesList from "./pages/ClothesList.jsx";
 import Navbar from "./components/Navbar.jsx";
-import Footer from "./components/Footer.jsx";
 import Update from "./pages/Update.jsx";
 // import ChatWindow from "./components/ChatWindow.jsx";
 
@@ -31,7 +30,6 @@ function App() {
           <Route path="/update" element={<Update />}></Route>
         </Routes>
       </div>
-      <Footer className="sticky bottom-0" />
     </div>
   );
 }

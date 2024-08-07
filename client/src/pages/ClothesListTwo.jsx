@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "./ClothesListTwo.css";
 
+
 // Helper function to fetch images by category
 const fetchImagesByCategory = async (category) => {
   try {

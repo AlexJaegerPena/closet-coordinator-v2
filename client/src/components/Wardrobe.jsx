@@ -12,6 +12,7 @@ const fetchImagesByCategory = async (category) => {
     const response = await fetch(
       `http://localhost:8000/api/v1/clothes/category/${category}`
     );
+    console.log(response);
     if (!response.ok) {
       throw new Error(`Network response was not ok for category ${category}`);
     }
