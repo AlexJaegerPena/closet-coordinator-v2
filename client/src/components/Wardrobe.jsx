@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FaRandom } from "react-icons/fa";
 import { TbMessageChatbot } from "react-icons/tb";
 import ChatWindow from "./ChatWindow";
+import { useAuthContext } from "../contexts/authContext";
 
 // Helper function to fetch images by category
-const fetchImagesByCategory = async (category) => {
+const fetchImagesByCategory = async (url,category) => {
   try {
-    const response = await fetch(
-      `http://localhost:8000/api/v1/clothes/category/${category}`
-    );
-    console.log(response);
+    const response = await fetch(`${url}/api/v1/clothes/category/${category}`);
     if (!response.ok) {
       throw new Error(`Network response was not ok for category ${category}`);
     }
@@ -38,11 +36,13 @@ const Wardrobe = () => {
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [chatVisible, setChatVisible] = useState(false);
   const [chatData, setChatData] = useState([]);
+  const [animationKey, setAnimationKey] = useState(0); // Add key for animation
+  const { url } = useAuthContext();
 
   const getGPT = async () => {
     try {
       const { data } = await axios.post(
-        "http://localhost:8000/api/v1/chat/completions",
+        `${url}/api/v1/chat/completions`,
         {
           model: "gpt-4o-mini",
           messages: weather,
@@ -51,14 +51,11 @@ const Wardrobe = () => {
         {
           headers: {
             provider: "open-ai",
-            mode: "developement",
-            // mode: "production",
+            mode: "development",
             "Content-Type": "application/json",
           },
         }
       );
-      // console.log(data?.message?.content.slice(7, -3));
-      console.log(data);
       setChatData([
         {
           role: "assistant",
@@ -100,7 +97,8 @@ const Wardrobe = () => {
 
     const categoryImages = {};
     for (const category of categories) {
-      const items = await fetchImagesByCategory(category);
+      const items = await fetchImagesByCategory(url, category);
+
       categoryImages[category] = getRandomImage(items); // Save the full item object
     }
     setImages(categoryImages);
@@ -109,35 +107,47 @@ const Wardrobe = () => {
 
   const handleClick = () => {
     setShowOptions(true);
-    fetchImages(); // Fetch new images without reloading the page
+    fetchImages();
+    setAnimationKey((prevKey) => prevKey + 1); // Change key to trigger animation
   };
 
   return (
     <div className="flex flex-col h-min-screen px-4 py-4">
-      <div className="flex flex-col mb-8">
-        <div className="grid grid-cols-2 gap-4 w-full max-w-4xl mx-auto">
-          {Object.keys(images).map((category, index) => (
-            <Link
-              to={`/clothes-list?category=${encodeURIComponent(category)}`}
-              key={index}
-            >
-              <div className="img-box relative w-full h-44 bg-gray-200 border-4 border-white rounded-3xl overflow-hidden shadow-2xl">
-                <img
-                  src={images[category].img}
-                  alt={category}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  onError={(e) =>
-                    (e.target.src =
-                      "https://via.placeholder.com/300?text=No+Image")
-                  }
-                />
-              </div>
-            </Link>
-          ))}
+      <motion.div
+        key={animationKey} // Use the key prop to trigger animation
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        <div className="flex flex-col mb-8">
+          <div className="grid grid-cols-2 gap-4 w-full max-w-4xl mx-auto">
+            {Object.keys(images).map((category, index) => (
+              <Link
+                to={`/clothes-list?category=${encodeURIComponent(category)}`}
+                key={index}
+              >
+                <div className="relative w-full h-44 bg-gray-200 border-4 border-white rounded-3xl overflow-hidden shadow-2xl">
+                  <img
+                    src={images[category].img}
+                    alt={category}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    onError={(e) =>
+                      (e.target.src =
+                        "https://via.placeholder.com/300?text=No+Image")
+                    }
+                  />
+                  <div className="absolute bottom-0 left-0 w-full bg-gray-800 bg-opacity-60 text-white text-center py-2 text-xs">
+                    {category}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Button Section */}
+
       <div className="flex flex-row items-center justify-center gap-2">
         <div className="flex flex-row items-center justify-center">
           <button

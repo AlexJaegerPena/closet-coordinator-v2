@@ -7,7 +7,7 @@ import {
 import { storage } from "../utils/firebase";
 import { v4 } from "uuid";
 
-const ImageUpload = forwardRef((props, ref) => {
+const ImageUpload = forwardRef(function ImageUpload(props, ref) {
   const [image, setImage] = useState(null);
   const [filename, setFilename] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -23,7 +23,6 @@ const ImageUpload = forwardRef((props, ref) => {
 
       uploadBytes(imageRef, file).then((snapshot) => {
         getDownloadURL(snapshot.ref).then((url) => {
-          console.log("Image URL:", url);
           setImageUrl(url);
           setFilename(file.name);
 
@@ -57,7 +56,8 @@ const ImageUpload = forwardRef((props, ref) => {
       />
       <label
         htmlFor="imageUpload"
-        className="cursor-pointer bg-blue-500 text-white py-2 px-4 rounded">
+        className="cursor-pointer bg-blue-500 text-white py-2 px-4 rounded"
+      >
         Choose Image
       </label>
       {image && (

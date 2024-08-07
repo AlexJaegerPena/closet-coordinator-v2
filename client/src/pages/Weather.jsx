@@ -1,21 +1,22 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import axios from "axios";
+import { useAuthContext } from "../contexts/authContext";
 
 const WeatherChatComponent = () => {
-  const [location, setLocation] = useState('Berlin');
-  const [response, setResponse] = useState('');
+  const [location, setLocation] = useState("Berlin");
+  const [response, setResponse] = useState("");
+  const { url } = useAuthContext();
 
   const fetchWeatherChat = async () => {
     try {
-      const result = await axios.post('http://localhost:5050/api/v1/weather/completions', {
+      const result = await axios.post(`${url}/api/v1/weather/completions`, {
         location,
         stream: false, // Set to true if you want to handle streaming
-    });
-    console.log(result)
+      });
 
       setResponse(result.data.content);
     } catch (error) {
-      console.error('Error fetching weather chat:', error);
+      console.error("Error fetching weather chat:", error);
     }
   };
 

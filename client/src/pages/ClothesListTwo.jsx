@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "./ClothesListTwo.css";
-
+import { useAuthContext } from "../contexts/authContext";
 
 // Helper function to fetch images by category
-const fetchImagesByCategory = async (category) => {
+const fetchImagesByCategory = async (url, category) => {
   try {
-    const response = await fetch(
-      `http://localhost:5050/api/v1/clothes/category/${category}`
-    );
+    const response = await fetch(`${url}/api/v1/clothes/category/${category}`);
     if (!response.ok) {
       throw new Error(`Network response was not ok for category ${category}`);
     }
@@ -21,6 +19,7 @@ const fetchImagesByCategory = async (category) => {
 };
 
 const ClothesListTwo = () => {
+  const { url } = useAuthContext();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const selectedCategory = queryParams.get("category") || "Shirts"; // Default to "Shirts"
@@ -29,7 +28,7 @@ const ClothesListTwo = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const items = await fetchImagesByCategory(selectedCategory);
+      const items = await fetchImagesByCategory(url, selectedCategory);
       setCategoryItems(items);
     };
 

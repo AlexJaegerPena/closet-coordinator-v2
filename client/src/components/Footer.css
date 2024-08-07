@@ -1,12 +1,4 @@
 .footer {
-  position: sticky;
-  bottom: 0;
-  z-index: 1000; /* Ensure it stays on top */
-  background-color: white; /* Optional: background color to ensure it's visible */
-  width: 100%;
-}
-/* Footer.css */
-.footer {
   position: fixed; /* fixed position für Footer */
   bottom: 0; /* am unteren Rand des Bildschirms */
   left: 0; /* am linken Rand des Bildschirms */

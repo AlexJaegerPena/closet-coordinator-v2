@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../utils/firebase.jsx";
 import axios from "axios";
+import { useAuthContext } from "../contexts/authContext";
 
 const ClothesFormPopup = ({ setMessages, messages, onClose }) => {
+  const { url } = useAuthContext();
   const [imageUpload, setImageUpload] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [form, setForm] = useState({
@@ -16,7 +18,7 @@ const ClothesFormPopup = ({ setMessages, messages, onClose }) => {
     energyLevel: "",
   });
 
-  const url = `http://localhost:5050/api/v1/clothes`;
+  const url = `${url}/api/v1/clothes`;
 
   const handleSubmit = async () => {
     if (form.img) {
@@ -89,7 +91,8 @@ const ClothesFormPopup = ({ setMessages, messages, onClose }) => {
             value={form.category}
             required
             onChange={(e) => setForm({ ...form, category: e.target.value })}
-            className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+            className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          >
             <option value="">Select a category</option>
             <option value="shirt">Shirt</option>
             <option value="pants">Pants</option>
@@ -107,7 +110,8 @@ const ClothesFormPopup = ({ setMessages, messages, onClose }) => {
             value={form.type}
             required
             onChange={(e) => setForm({ ...form, type: e.target.value })}
-            className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+            className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          >
             <option value="">Select a type</option>
             <option value="sports">Vest</option>
             <option value="holiday">Short Sleeves</option>
@@ -126,7 +130,8 @@ const ClothesFormPopup = ({ setMessages, messages, onClose }) => {
             name="occasion"
             required
             onChange={(e) => setForm({ ...form, occasion: e.target.value })}
-            className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+            className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          >
             <option value="">Select an occasion</option>
             <option value="sports">Sports</option>
             <option value="holiday">Holiday</option>
@@ -138,12 +143,14 @@ const ClothesFormPopup = ({ setMessages, messages, onClose }) => {
         <div className="flex justify-between">
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+            className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          >
             Save
           </button>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50">
+            className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50"
+          >
             Close
           </button>
         </div>

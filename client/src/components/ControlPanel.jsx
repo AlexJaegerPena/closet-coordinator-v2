@@ -6,6 +6,7 @@ import Modal from "./Modal";
 import ImageUpload from "./ImageUpload";
 import Checkboxes from "./Checkboxes";
 import axios from "axios";
+import { useAuthContext } from "../contexts/authContext";
 
 const ControlPanel = ({
   clearImage,
@@ -14,6 +15,7 @@ const ControlPanel = ({
   initialData = null,
   onClose,
 }) => {
+  const { url } = useAuthContext();
   const [dropdown1, setDropdown1] = useState(initialData?.category || "");
   const [dropdown2, setDropdown2] = useState(initialData?.type || "");
   const [dropdown3, setDropdown3] = useState(initialData?.color || "");
@@ -88,7 +90,7 @@ const ControlPanel = ({
     try {
       if (isEditMode) {
         await axios.put(
-          `http://localhost:5050/api/v1/clothes/${initialData._id}`,
+          `${url}/api/v1/clothes/${initialData._id}`,
           dataToSend,
           {
             headers: {
@@ -97,7 +99,7 @@ const ControlPanel = ({
           }
         );
       } else {
-        await axios.post("http://localhost:5050/api/v1/clothes", dataToSend, {
+        await axios.post(`${url}/api/v1/clothes`, dataToSend, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -130,7 +132,8 @@ const ControlPanel = ({
       transition={{ duration: 0.5 }}
       className={`mt-6 p-4 bg-white shadow rounded-lg ${
         isShaking ? "animate-shake" : ""
-      } w-full max-w-lg`}>
+      } w-full max-w-lg`}
+    >
       <h2 className="text-xl font-semibold text-blue-700 mb-4">
         {isEditMode ? "Edit Item" : "Add New Item"}
       </h2>
@@ -154,7 +157,8 @@ const ControlPanel = ({
           className="w-full bg-gradient-to-r from-sky-600 to-teal-400 text-white font-bold py-2 px-4 rounded shadow hover:from-sky-700 hover:to-teal-500 transition"
           disabled={
             imageUploadRef.current && imageUploadRef.current.isUploading()
-          }>
+          }
+        >
           {isEditMode ? "Save Changes" : "Add To Closet"}
         </button>
         <button
@@ -165,7 +169,8 @@ const ControlPanel = ({
               handleClear();
             }
           }}
-          className="ml-2 w-full bg-gradient-to-r from-red-500 to-orange-400 text-white font-bold py-2 px-4 rounded shadow hover:from-red-600 hover:to-orange-500 transition">
+          className="ml-2 w-full bg-gradient-to-r from-red-500 to-orange-400 text-white font-bold py-2 px-4 rounded shadow hover:from-red-600 hover:to-orange-500 transition"
+        >
           {isEditMode ? "Cancel" : "Clear Form"}
         </button>
       </div>

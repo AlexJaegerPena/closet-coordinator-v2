@@ -6,7 +6,7 @@ import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
 import Home from "./pages/Home.jsx";
 import ClothesList from "./pages/ClothesList.jsx";
-import Navbar from "./components/Navbar.jsx";
+// import Navbar from "./components/Navbar.jsx";
 import Update from "./pages/Update.jsx";
 // import ChatWindow from "./components/ChatWindow.jsx";
 
@@ -15,7 +15,7 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen relative">
-      <Navbar className="sticky top-0" />
+      {/* <Navbar className="sticky top-0" /> */}
       <div className="app-bg "></div>
       <div className="flex-grow relative">
         <Routes>
