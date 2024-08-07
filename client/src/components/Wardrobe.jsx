@@ -51,7 +51,7 @@ const Wardrobe = () => {
         {
           headers: {
             provider: "open-ai",
-            mode: "development",
+            mode: "production",
             "Content-Type": "application/json",
           },
         }

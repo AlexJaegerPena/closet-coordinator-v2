@@ -40,7 +40,7 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
         {
           headers: {
             provider: "open-ai",
-            mode: "developement",
+            mode: "production",
             "Content-Type": "application/json",
           },
         }
