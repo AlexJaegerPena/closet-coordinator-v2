@@ -62,9 +62,9 @@ export const updateClothes = asyncHandler(async (req, res) => {
     !body.category ||
     !body.type ||
     !body.color ||
-    !body.seasons ||
+    !body.season ||
     !body.occasion ||
-    !body.img ||
+    // !body.img ||
     !body.energyLevel
   ) {
     return next(new ErrorResponse("Invalid input!", 400));
