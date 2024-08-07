@@ -12,6 +12,13 @@ const Footer = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+
+  const handleLogout = async () => {
+    Cookies.remove("token");
+    setIsAuthenticated(false);
+    navigate("/login");
+  };
+
   return (
     <div className="footer flex justify-between items-center p-2 px-4">
       <div className="btn btn-ghost btn-circle pt-2">

@@ -10,42 +10,39 @@ export const createChat2 = asyncHandler(async (req, res) => {
     headers: { mode },
   } = req;
 
+
   const dataClothes = await Clothes.find();
   if (!dataClothes) {
       return next(new ErrorResponse(`Server error`, 500));
     }
     
   
-    let collectMessage=
-    `"I have a list of shirts stored in this database ${dataClothes}. Please randomly select a shirt from the list and provide me with the thumbnail of the selected shirt."  as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request}`
-    
-    
+    let collectMessage;
+
     let message={
         "model": "gpt-4o-mini",
         "messages": [
               {
                     "role": "system",
-                    "content": `You are a helpful assistant who provides only ONE image (img) from this database ${dataClothes} as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request?.messages?.location?.region} give me one <a></a> tags links for one image of the clothes from the database in every sugestion`
+                    "content":  `You are a helpful and friendly clothing assistant who recommends 1 item of clothes from this database only returning ${dataClothes.color} and ${dataClothes.type}. As part of your answer, you provide data about the weather from ${request?.messages?.location?.region} to help make decisions on what to clothes to wear for the day.`
           
                 },
       {
           "role": "user",
-          "content": collectMessage
-      },  {
+          "content": "What clothes should I wear today?"
+      },
+
+      {
         "role": "assistant",
-        "content": " `You are a helpful assistant who provides only ONE image (img) from this database ${dataClothes} as an answer where you use this API to retrieve data about the weather to help me make decisions on what to wear ${request?.messages?.location?.region}`"
-    },
-    {
-        "role": "user",
-        "content": "WHat should I wear today?"
-    }
+        "content": collectMessage
+      }
   ],
   "stream": false
 }
 
 let openai;
 
-  mode === "developement"
+  mode === "development"
     ? (openai = new OpenAI({ apiKey: process.env.OPEN_AI_APIKEY }))
     : (openai = new OpenAIMock());
     

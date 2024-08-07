@@ -1,35 +1,29 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import Dropdowns from "./Dropdowns";
 import Sliders from "./Sliders";
-import Modal from "./Modal";
 import ImageUpload from "./ImageUpload";
-import Checkboxes from "./Checkboxes";
 import axios from "axios";
 import { useAuthContext } from "../contexts/authContext";
-
 const ControlPanel = ({
   clearImage,
   onFeedback,
   isEditMode = false,
   initialData = null,
   onClose,
+  onUpdateItem,
 }) => {
-  const { url } = useAuthContext();
   const [dropdown1, setDropdown1] = useState(initialData?.category || "");
   const [dropdown2, setDropdown2] = useState(initialData?.type || "");
   const [dropdown3, setDropdown3] = useState(initialData?.color || "");
+  const [dropdown4, setDropdown4] = useState(initialData?.season || "");
+  const [dropdown5, setDropdown5] = useState(initialData?.occasion || "");
   const [slider1, setSlider1] = useState(initialData?.energyLevel || 1);
-  const [checkboxes, setCheckboxes] = useState({
-    seasons: initialData?.seasons || [false, false, false, false],
-    occasion: initialData?.occasion || [false, false, false, false],
-  });
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
-
   const imageUploadRef = useRef();
-
+  const { url } = useAuthContext();
   const handleClear = () => {
     setIsShaking(true);
     setTimeout(() => {
@@ -37,59 +31,41 @@ const ControlPanel = ({
       setIsConfirmOpen(true);
     }, 500);
   };
-
   const handleConfirmClear = () => {
     resetForm();
     imageUploadRef.current.clearImage();
     setIsConfirmOpen(false);
   };
-
   const resetForm = () => {
     setDropdown1("");
     setDropdown2("");
     setDropdown3("");
+    setDropdown4("");
+    setDropdown5("");
     setSlider1(1);
-    setCheckboxes({
-      seasons: [false, false, false, false],
-      occasion: [false, false, false, false],
-    });
   };
-
   const handleSubmit = async () => {
-    const imageUrl = imageUploadRef.current.getImageUrl();
-    const isUploading = imageUploadRef.current.isUploading();
-
-    if (isUploading || !imageUrl) {
+    const imageUrl = isEditMode
+      ? initialData.img
+      : imageUploadRef.current.getImageUrl();
+    const isUploading = !isEditMode && imageUploadRef.current.isUploading();
+    if (isUploading || (!isEditMode && !imageUrl)) {
       alert("Image is still uploading or not selected.");
       return;
     }
-
-    const selectedSeasons = ["Summer", "Autumn", "Winter", "Spring"].filter(
-      (season, index) => checkboxes.seasons[index]
-    );
-    const selectedOccasion = [
-      "Party",
-      "Business",
-      "Red Carpet",
-      "Casual",
-    ].filter((season, index) => checkboxes.occasion[index]);
-
-    const formattedSeasons = `[${selectedSeasons.join(", ")}]`;
-    const formattedOccasion = `[${selectedOccasion.join(", ")}]`;
-
     const dataToSend = {
       category: dropdown1,
       type: dropdown2,
       color: dropdown3,
-      seasons: formattedSeasons,
-      occasion: formattedOccasion,
+      season: dropdown4,
+      occasion: dropdown5,
       energyLevel: slider1,
       img: imageUrl,
     };
-
     try {
+      let updatedItem;
       if (isEditMode) {
-        await axios.put(
+        const response = await axios.put(
           `${url}/api/v1/clothes/${initialData._id}`,
           dataToSend,
           {
@@ -98,6 +74,10 @@ const ControlPanel = ({
             },
           }
         );
+        updatedItem = response.data.data;
+        if (onUpdateItem) {
+          onUpdateItem(updatedItem);
+        }
       } else {
         await axios.post(`${url}/api/v1/clothes`, dataToSend, {
           headers: {
@@ -105,7 +85,6 @@ const ControlPanel = ({
           },
         });
       }
-
       setIsFeedbackOpen(true);
       resetForm();
       imageUploadRef.current.clearImage();
@@ -115,16 +94,6 @@ const ControlPanel = ({
       console.error("There was an error!", error);
     }
   };
-
-  const handleCheckboxChange = (group, index) => {
-    setCheckboxes((prev) => ({
-      ...prev,
-      [group]: prev[group].map((checked, i) =>
-        i === index ? !checked : checked
-      ),
-    }));
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -137,7 +106,7 @@ const ControlPanel = ({
       <h2 className="text-xl font-semibold text-blue-700 mb-4">
         {isEditMode ? "Edit Item" : "Add New Item"}
       </h2>
-      <ImageUpload ref={imageUploadRef} />
+      {!isEditMode && <ImageUpload ref={imageUploadRef} />}
       <Dropdowns
         dropdown1={dropdown1}
         setDropdown1={setDropdown1}
@@ -145,18 +114,24 @@ const ControlPanel = ({
         setDropdown2={setDropdown2}
         dropdown3={dropdown3}
         setDropdown3={setDropdown3}
+        dropdown4={dropdown4}
+        setDropdown4={setDropdown4}
+        dropdown5={dropdown5}
+        setDropdown5={setDropdown5}
       />
-      <Checkboxes
+      {/* <Checkboxes
         checkboxes={checkboxes}
         handleCheckboxChange={handleCheckboxChange}
-      />
+      /> */}
       <Sliders slider1={slider1} setSlider1={setSlider1} />
       <div className="flex justify-between">
         <button
           onClick={handleSubmit}
           className="w-full bg-gradient-to-r from-sky-600 to-teal-400 text-white font-bold py-2 px-4 rounded shadow hover:from-sky-700 hover:to-teal-500 transition"
           disabled={
-            imageUploadRef.current && imageUploadRef.current.isUploading()
+            !isEditMode &&
+            imageUploadRef.current &&
+            imageUploadRef.current.isUploading()
           }
         >
           {isEditMode ? "Save Changes" : "Add To Closet"}
@@ -164,7 +139,7 @@ const ControlPanel = ({
         <button
           onClick={() => {
             if (isEditMode) {
-              onClose(); // Close panel without shaking
+              onClose();
             } else {
               handleClear();
             }
@@ -174,25 +149,43 @@ const ControlPanel = ({
           {isEditMode ? "Cancel" : "Clear Form"}
         </button>
       </div>
-      <Modal
-        isOpen={isConfirmOpen}
-        onClose={() => setIsConfirmOpen(false)}
-        message="Are you sure you want to clear all inputs?"
-        onConfirm={handleConfirmClear}
-        onCancel={() => setIsConfirmOpen(false)}
-        showCancelButton={true}
-        confetti={false}
-      />
-      <Modal
-        isOpen={isFeedbackOpen}
-        onClose={() => setIsFeedbackOpen(false)}
-        message="The item has been successfully added."
-        onConfirm={() => setIsFeedbackOpen(false)}
-        showCancelButton={false}
-        confetti={true}
-      />
+      {isConfirmOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
+            <p>Are you sure you want to clear all inputs?</p>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={() => setIsConfirmOpen(false)}
+                className="mr-2 bg-gray-300 px-4 py-2 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmClear}
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {isFeedbackOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
+            <p>Changes saved successfully!</p>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={() => setIsFeedbackOpen(false)}
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 };
-
 export default ControlPanel;
