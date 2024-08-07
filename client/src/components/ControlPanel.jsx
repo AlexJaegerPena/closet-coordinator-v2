@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import Dropdowns from "./Dropdowns";
 import Sliders from "./Sliders";
 import ImageUpload from "./ImageUpload";
-import Checkboxes from "./Checkboxes";
 import axios from "axios";
 import { useAuthContext } from "../contexts/authContext";
 
@@ -13,67 +12,20 @@ const ControlPanel = ({
   isEditMode = false,
   initialData = null,
   onClose,
+  onUpdateItem,
 }) => {
-  const { url } = useAuthContext();
   const [dropdown1, setDropdown1] = useState(initialData?.category || "");
   const [dropdown2, setDropdown2] = useState(initialData?.type || "");
   const [dropdown3, setDropdown3] = useState(initialData?.color || "");
+  const [dropdown4, setDropdown4] = useState(initialData?.season || "");
+  const [dropdown5, setDropdown5] = useState(initialData?.occasion || "");
   const [slider1, setSlider1] = useState(initialData?.energyLevel || 1);
-  const [checkboxes, setCheckboxes] = useState({
-    seasons: initialData?.seasons || [false, false, false, false],
-    occasion: initialData?.occasion || [false, false, false, false],
-  });
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
 
   const imageUploadRef = useRef();
-
-  useEffect(() => {
-    if (isEditMode && initialData) {
-      const parseCheckboxes = (data, possibleValues) => {
-        if (typeof data === "string") {
-          data = data
-            .replace(/[\[\]]/g, "")
-            .split(",")
-            .map((item) => item.trim().toLowerCase());
-        }
-
-        if (!Array.isArray(data)) {
-          return possibleValues.map(() => false);
-        }
-
-        return possibleValues.map((value) =>
-          data.includes(value.toLowerCase())
-        );
-      };
-
-      setCheckboxes({
-        seasons: parseCheckboxes(initialData.seasons, [
-          "summer",
-          "autumn",
-          "winter",
-          "spring",
-        ]),
-        occasion: parseCheckboxes(initialData.occasion, [
-          "athleisure",
-          "beach",
-          "black tie",
-          "business",
-          "casual",
-          "cocktail",
-          "date night",
-          "festival",
-          "formal",
-          "loungewear",
-          "party",
-          "red carpet",
-          "travel",
-          "wedding",
-        ]),
-      });
-    }
-  }, [isEditMode, initialData]);
+  const { url } = useAuthContext();
 
   const handleClear = () => {
     setIsShaking(true);
@@ -93,11 +45,9 @@ const ControlPanel = ({
     setDropdown1("");
     setDropdown2("");
     setDropdown3("");
+    setDropdown4("");
+    setDropdown5("");
     setSlider1(1);
-    setCheckboxes({
-      seasons: [false, false, false, false],
-      occasion: Array(14).fill(false),
-    });
   };
 
   const handleSubmit = async () => {
@@ -111,42 +61,20 @@ const ControlPanel = ({
       return;
     }
 
-    const selectedSeasons = ["summer", "autumn", "winter", "spring"].filter(
-      (season, index) => checkboxes.seasons[index]
-    );
-    const selectedOccasion = [
-      "athleisure",
-      "beach",
-      "black tie",
-      "business",
-      "casual",
-      "cocktail",
-      "date night",
-      "festival",
-      "formal",
-      "loungewear",
-      "party",
-      "red carpet",
-      "travel",
-      "wedding",
-    ].filter((occasion, index) => checkboxes.occasion[index]);
-
-    const formattedSeasons = `[${selectedSeasons.join(", ")}]`;
-    const formattedOccasion = `[${selectedOccasion.join(", ")}]`;
-
     const dataToSend = {
       category: dropdown1,
       type: dropdown2,
       color: dropdown3,
-      seasons: formattedSeasons,
-      occasion: formattedOccasion,
+      season: dropdown4,
+      occasion: dropdown5,
       energyLevel: slider1,
       img: imageUrl,
     };
 
     try {
+      let updatedItem;
       if (isEditMode) {
-        await axios.put(
+        const response = await axios.put(
           `${url}/api/v1/clothes/${initialData._id}`,
           dataToSend,
           {
@@ -155,6 +83,10 @@ const ControlPanel = ({
             },
           }
         );
+        updatedItem = response.data.data;
+        if (onUpdateItem) {
+          onUpdateItem(updatedItem);
+        }
       } else {
         await axios.post(`${url}/api/v1/clothes`, dataToSend, {
           headers: {
@@ -171,15 +103,6 @@ const ControlPanel = ({
     } catch (error) {
       console.error("There was an error!", error);
     }
-  };
-
-  const handleCheckboxChange = (group, index) => {
-    setCheckboxes((prev) => ({
-      ...prev,
-      [group]: prev[group].map((checked, i) =>
-        i === index ? !checked : checked
-      ),
-    }));
   };
 
   return (
@@ -201,11 +124,15 @@ const ControlPanel = ({
         setDropdown2={setDropdown2}
         dropdown3={dropdown3}
         setDropdown3={setDropdown3}
+        dropdown4={dropdown4}
+        setDropdown4={setDropdown4}
+        dropdown5={dropdown5}
+        setDropdown5={setDropdown5}
       />
-      <Checkboxes
+      {/* <Checkboxes
         checkboxes={checkboxes}
         handleCheckboxChange={handleCheckboxChange}
-      />
+      /> */}
       <Sliders slider1={slider1} setSlider1={setSlider1} />
       <div className="flex justify-between">
         <button
@@ -231,7 +158,6 @@ const ControlPanel = ({
         </button>
       </div>
 
-      {/* Confirm Clear Modal */}
       {isConfirmOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
@@ -252,11 +178,10 @@ const ControlPanel = ({
         </div>
       )}
 
-      {/* Feedback Modal */}
       {isFeedbackOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
-            <p>The item has been successfully added.</p>
+            <p>Changes saved successfully!</p>
             <div className="flex justify-end mt-4">
               <button
                 onClick={() => setIsFeedbackOpen(false)}
