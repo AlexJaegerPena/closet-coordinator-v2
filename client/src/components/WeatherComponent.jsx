@@ -32,12 +32,6 @@ const WeatherIcon = ({ condition }) => {
       return <FaCloudSun className="weather-icon partly-cloudy" />;
     case "rainy":
       return <FaCloudRain className="weather-icon rainy" />;
-    case "cloudy":
-      return <FaCloud className="weather-icon cloudy" />;
-    case "partly cloudy":
-      return <FaCloudSun className="weather-icon partly-cloudy" />;
-    case "rainy":
-      return <FaCloudRain className="weather-icon rainy" />;
     case "snowy":
       return <FaSnowflake className="weather-icon snowy" />;
     default:
