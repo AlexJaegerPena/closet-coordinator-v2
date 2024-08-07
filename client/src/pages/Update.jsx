@@ -27,7 +27,7 @@ const Update = () => {
   return (
     <div>
       <Navbar />
-      <div className="min-h-screen flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 bg-light-blue-transparent">
+      <div className="min-h-screen bg-blue-50 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl w-full space-y-8">
           {/* <h1 className="text-3xl font-bold text-center text-blue-800">
             Add New Item
@@ -37,14 +37,6 @@ const Update = () => {
             onFeedback={handleFeedbackOpen}
           />
         </div>
-        <Modal
-          isOpen={isFeedbackOpen}
-          onClose={() => setIsFeedbackOpen(false)}
-          message="The item has been successfully added."
-          onConfirm={() => setIsFeedbackOpen(false)}
-          showCancelButton={false} // Hide cancel button
-          confetti={isFeedbackOpen}
-        />
       </div>
       <Footer />
     </div>
