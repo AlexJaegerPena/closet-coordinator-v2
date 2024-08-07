@@ -9,14 +9,15 @@ html {
   overflow-x: hidden;
 }
 
-.nav-bar {
+.navbar {
   position: sticky;
-  top: 0;
-  z-index: 1000;
-  align-items: center;
-  padding: 0 1rem;
-  width: 100%;
-  box-sizing: border-box;
+  top: 0; /* Fixiert die Navbar am oberen Rand des Bildschirms */
+  z-index: 50; /* Sicherstellen, dass sie über anderen Elementen liegt */
+  background-color: white; /* Hintergrundfarbe setzen */
+  width: 100%; /* Volle Breite */
+  /* Optional: Fallback für alte Browser */
+  background: linear-gradient(to right, #38bdf8, #2dd4bf);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .closet-coordinator {

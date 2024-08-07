@@ -1,6 +1,8 @@
 import React, { useRef, useState, useCallback } from "react";
 import ControlPanel from "../components/ControlPanel";
 import Modal from "../components/Modal";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 
 const Update = () => {
   const imageUploadRef = useRef();

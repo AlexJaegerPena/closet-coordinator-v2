@@ -5,6 +5,7 @@ import Sliders from "./Sliders";
 import ImageUpload from "./ImageUpload";
 import Checkboxes from "./Checkboxes";
 import axios from "axios";
+import { useAuthContext } from "../contexts/authContext";
 
 const ControlPanel = ({
   clearImage,
@@ -13,6 +14,7 @@ const ControlPanel = ({
   initialData = null,
   onClose,
 }) => {
+  const { url } = useAuthContext();
   const [dropdown1, setDropdown1] = useState(initialData?.category || "");
   const [dropdown2, setDropdown2] = useState(initialData?.type || "");
   const [dropdown3, setDropdown3] = useState(initialData?.color || "");
@@ -145,7 +147,7 @@ const ControlPanel = ({
     try {
       if (isEditMode) {
         await axios.put(
-          `http://localhost:5050/api/v1/clothes/${initialData._id}`,
+          `${url}/api/v1/clothes/${initialData._id}`,
           dataToSend,
           {
             headers: {
@@ -154,7 +156,7 @@ const ControlPanel = ({
           }
         );
       } else {
-        await axios.post("http://localhost:5050/api/v1/clothes", dataToSend, {
+        await axios.post(`${url}/api/v1/clothes`, dataToSend, {
           headers: {
             "Content-Type": "application/json",
           },

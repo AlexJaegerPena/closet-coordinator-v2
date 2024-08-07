@@ -5,8 +5,10 @@ import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import { storage } from "../utils/firebase.jsx";
 import { v4 } from "uuid";
 import axios from "axios";
+import { useAuthContext } from "../contexts/authContext";
 
 const ClothesForm = ({ setMessages, messages }) => {
+  const { url } = useAuthContext();
   const { user, clothes, setClothes } = useUserContext();
   const [imageUpload, setImageUpload] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
@@ -22,7 +24,7 @@ const ClothesForm = ({ setMessages, messages }) => {
   });
 
   //  const url=import.meta.env.VITE_URL
-  const url = `http://localhost:5050/api/v1`;
+  const url = `${url}/api/v1`;
 
   const handleSubmit = async () => {
     await uploadFile();
@@ -45,11 +47,11 @@ const ClothesForm = ({ setMessages, messages }) => {
   const uploadFile = () => {
     if (imageUpload == null) return;
     const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-    console.log(imageRef);
+ 
     uploadBytes(imageRef, imageUpload).then((snapshot) => {
-      console.log(snapshot?.ref._location.path_);
+
       getDownloadURL(snapshot.ref).then((url) => {
-        console.log(url);
+     
         setForm({ ...form, img: url });
       });
     });
@@ -58,10 +60,10 @@ const ClothesForm = ({ setMessages, messages }) => {
   useEffect(() => {
     const addClothes = async () => {
       const { data } = await axios.post(`${url}/clothes`, form);
-      console.log(data);
+ 
     };
     addClothes();
-    console.log(form);
+
   }, [form.img]);
 
   useEffect(() => {
@@ -129,7 +131,8 @@ const ClothesForm = ({ setMessages, messages }) => {
           value={form.category}
           required
           onChange={(e) => setForm({ ...form, category: e.target.value })}
-          className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+          className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        >
           <option value="">Select a category</option>
           <option value="shirt">Shirt</option>
           <option value="pants">Pants</option>
@@ -146,7 +149,8 @@ const ClothesForm = ({ setMessages, messages }) => {
           value={form.occasion}
           required
           onChange={(e) => setForm({ ...form, type: e.target.value })}
-          className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+          className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        >
           <option value="">Select an occasion</option>
           <option value="sports">Vest</option>
           <option value="holiday">short sleaves</option>
@@ -164,7 +168,8 @@ const ClothesForm = ({ setMessages, messages }) => {
           name="occasion"
           required
           onChange={(e) => setForm({ ...form, occasion: e.target.value })}
-          className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+          className="block w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        >
           <option value="">Select an occasion</option>
           <option value="sports">Sports</option>
           <option value="holiday">Holiday</option>
@@ -177,7 +182,8 @@ const ClothesForm = ({ setMessages, messages }) => {
         // disabled={!isSaveEnabled}
         // className={`mt-4 w-full text-white font-bold py-2 px-4 rounded ${isSaveEnabled ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-500 cursor-not-allowed'}`}
         className={`mt-4 w-full text-red font-bold py-2 px-4 rounded`}
-        onClick={handleSubmit}>
+        onClick={handleSubmit}
+      >
         Save
       </button>
     </div>

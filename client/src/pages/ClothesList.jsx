@@ -3,11 +3,14 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import SidebarButton from "../components/SidebarButton";
 import SidebarMenu from "../components/SidebarMenu";
-import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-import ControlPanel from "../components/ControlPanel";
-import Modal from "../components/Modal";
+import { AiFillEdit, AiFillDelete } from "react-icons/ai"; // Import react-icons
+import ControlPanel from "../components/ControlPanel"; // Import ControlPanel
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
+import { useAuthContext } from "../contexts/authContext";
 
 const ClothesList = () => {
+  const { url } = useAuthContext();
   const [clothes, setClothes] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [filter, setFilter] = useState("All");
@@ -19,11 +22,8 @@ const ClothesList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/v1/clothes"
-        );
+        const response = await axios.get(`${url}/api/v1/clothes`);
         if (response.data && response.data.data) {
-          console.log("Data received from server:", response.data.data);
           setClothes(response.data.data);
         } else {
           console.error("Unexpected data format:", response.data);
@@ -46,7 +46,6 @@ const ClothesList = () => {
 
   const handleMenuToggle = () => setIsMenuOpen(!isMenuOpen);
   const handleFilterChange = (category) => {
-    console.log(`Filter changed to: ${category}`);
     setFilter(category);
     setIsMenuOpen(false);
     window.scrollTo(0, 0);
@@ -85,8 +84,6 @@ const ClothesList = () => {
   const filteredClothes = clothes.filter(
     (item) => filter === "All" || item.category === filter
   );
-
-  console.log(`Filtered clothes: ${JSON.stringify(filteredClothes)}`);
 
   return (
     <div className="relative">

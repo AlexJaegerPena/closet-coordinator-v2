@@ -3,11 +3,13 @@ import { motion } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
 import axios from "axios";
 import { TbMessageChatbot } from "react-icons/tb";
+import { useAuthContext } from "../contexts/authContext";
 
 const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
   const messagesEndRef = useRef(null);
   const [userMessage, setUserMessage] = useState("");
   const [comeBack, setComeBack] = useState("");
+  const { url } = useAuthContext();
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -29,7 +31,7 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:8000/api/v1/chat/completions/2",
+        `${url}/api/v1/chat/completions/2`,
         {
           model: "gpt-4o-mini",
           messages: [...chatData, newMessage, comeBack.length > 0 && comeBack],
@@ -39,7 +41,6 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
           headers: {
             provider: "open-ai",
             mode: "developement",
-            // mode: "production",
             "Content-Type": "application/json",
           },
         }
@@ -48,7 +49,6 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
       const assistantMessage = {
         role: "assistant",
         content: data?.message?.content || "No response received.",
-        // imageUrl: data?.message?.imageUrl || null, // assuming server sends image URL
       };
 
       setChatData((prevMessages) => [...prevMessages, assistantMessage]);
@@ -66,59 +66,30 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
   };
 
   const RenderMessage = ({ msg, index }) => {
-    if (msg.imageUrl) {
-      return (
+    return (
+      <div
+        key={index}
+        className={`mb-2 ${msg.role === "user" ? "text-right" : "text-left"}`}
+      >
         <div
-          key={index}
-          className={`mb-2 ${msg.role === "user" ? "text-right" : "text-left"}`}
+          className={`inline-block p-2 rounded-lg ${
+            msg.role === "user"
+              ? "bg-gradient-to-r from-red-500 to-orange-400 text-white"
+              : "bg-gray-200 text-black"
+          }`}
+          style={{ maxWidth: "75%", wordBreak: "break-word" }} // Ensure bubbles don't exceed width and text wraps
         >
-          <div
-            className={`inline-block p-2 rounded-lg ${
-              msg.role === "user"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-black"
-            }`}
-          >
-            <div
-              className={`mb-2 ${
-                msg.role === "user" ? "text-right" : "text-left"
-              }`}
-            >
-              <div
-                className={`inline-block p-2 rounded-lg ${
-                  msg.role === "user"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-black"
-                }`}
-              >
-                {msg.content && <p>{msg.content}</p>}
-                <img
-                  src={msg.imageUrl}
-                  alt="Chat Response"
-                  className="max-w-full mt-2 rounded"
-                />
-              </div>
-            </div>
-          </div>
+          {msg.content}
+          {msg.imageUrl && (
+            <img
+              src={msg.imageUrl}
+              alt="Chat Response"
+              className="max-w-full mt-2 rounded"
+            />
+          )}
         </div>
-      );
-    } else {
-      return (
-        <div
-          className={`mb-2 ${msg.role === "user" ? "text-right" : "text-left"}`}
-        >
-          <div
-            className={`inline-block p-2 rounded-lg ${
-              msg.role === "user"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-black"
-            }`}
-          >
-            {msg.content}
-          </div>
-        </div>
-      );
-    }
+      </div>
+    );
   };
 
   return (
@@ -141,15 +112,17 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
       }`}
     >
       <div className="flex flex-col h-full">
-        <div className="bg-gradient-to-r from-red-500 to-orange-400 text-white p-4 flex justify-between items-center border-b border-gray-200 rounded-lg">
-          <TbMessageChatbot className="text-2xl -mr-36" />
+        <div className="bg-gradient-to-r from-red-500 to-orange-400 text-white p-4 flex justify-between items-center border-b border-gray-200 rounded-t-lg">
+          <TbMessageChatbot className="text-2xl" />
           <h2 className="text-lg font-semibold">Chat with Closet</h2>
           <button onClick={onClose} className="text-white hover:text-gray-200">
             <FaTimes />
           </button>
         </div>
         <div className="flex-1 p-4 overflow-y-auto">
-          {chatData?.map((msg, index) => RenderMessage({ msg, index }))}
+          {chatData?.map((msg, index) => (
+            <RenderMessage key={index} msg={msg} index={index} />
+          ))}
           <div ref={messagesEndRef} />
         </div>
         <form onSubmit={handleSubmit} className="border-t border-gray-200 p-2">
@@ -158,7 +131,7 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
             value={userMessage}
             onChange={(e) => setUserMessage(e.target.value)}
             placeholder="Type your message..."
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             type="submit"

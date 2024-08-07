@@ -13,9 +13,7 @@ function FireBase() {
   const uploadFile = () => {
     if (imageUpload == null) return;
     const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-    console.log(imageRef);
     uploadBytes(imageRef, imageUpload).then((snapshot) => {
-      console.log(snapshot?.ref._location.path_);
       getDownloadURL(snapshot.ref).then((url) => {
         setImageUrls((prev) => [...prev, url]);
       });
