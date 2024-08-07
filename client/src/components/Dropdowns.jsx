@@ -171,7 +171,7 @@ const Dropdowns = ({
         </select>
       </label>
     </div>
-    <div className="mb-4">
+    {/* <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-1">
         Occasion
         <select
@@ -186,7 +186,7 @@ const Dropdowns = ({
           <option value="spring">Spring</option>
         </select>
       </label>
-    </div>
+    </div> */}
 
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-1">
