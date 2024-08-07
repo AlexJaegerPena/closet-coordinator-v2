@@ -12,6 +12,13 @@ const Footer = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+
+  const handleLogout = async () => {
+    Cookies.remove("token");
+    setIsAuthenticated(false);
+    navigate("/login");
+  };
+
   return (
     <div className="navbar sticky bottom-0 bg-white shadow-md z-50 flex bg-gradient-to-r from-sky-600 to-teal-400 justify-between items-center p-2 px-4">
       <div className="btn btn-ghost btn-circle ">
@@ -42,7 +49,7 @@ const Footer = () => {
               className="menu menu-m dropdown-content mt-2 p-2 shadow bg-base-100 rounded-box w-24 "
             >
               <li>
-                <Link to="/" className="justify-between">
+                <Link to="/profile" className="justify-between">
                   <span>Profile</span>
                 </Link>
               </li>
