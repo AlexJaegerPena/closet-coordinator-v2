@@ -24,7 +24,7 @@ router.post("/", createClothes);
 // router.use(isAuthenticated, isOwnerOrAdmin);
 // router.use(isAuthenticated, isOwnerOrAdmin);
 router
-  .route(`/:id`)
+  .route("/:id")
   .get(getOneClothes)
   .put(updateClothes)
   .delete(deleteClothes);

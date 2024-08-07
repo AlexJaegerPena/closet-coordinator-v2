@@ -8,6 +8,7 @@ import {
   FaSnowflake,
 } from "react-icons/fa";
 import { useUserContext } from "../contexts/userContext";
+// import { useUserContext } from "../contexts/userContext";
 import { FaLocationDot } from "react-icons/fa6";
 import "./WeatherComponent.css"; // Stile für die Komponente
 const getWeather = async (latitude, longitude) => {
@@ -25,6 +26,12 @@ const WeatherIcon = ({ condition }) => {
   switch (condition.toLowerCase()) {
     case "sunny":
       return <FaSun className="weather-icon sunny" />;
+    case "cloudy":
+      return <FaCloud className="weather-icon cloudy" />;
+    case "partly cloudy":
+      return <FaCloudSun className="weather-icon partly-cloudy" />;
+    case "rainy":
+      return <FaCloudRain className="weather-icon rainy" />;
     case "cloudy":
       return <FaCloud className="weather-icon cloudy" />;
     case "partly cloudy":

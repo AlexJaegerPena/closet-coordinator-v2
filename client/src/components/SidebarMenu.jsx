@@ -14,7 +14,7 @@ const SidebarMenu = ({ isOpen, onClose, onFilterChange }) => {
         } bg-sky-600 bg-opacity-30 backdrop-blur-md border border-white border-opacity-10 shadow-lg rounded-r-lg`}
         onClick={(e) => e.stopPropagation()}
         style={{ zIndex: 50 }}>
-        <h2 className="text-xl mb-4 text-white">Filter by Category</h2>
+        {/* <h2 className="text-xl mb-4 text-white">Filter by Category</h2> */}
         <ul className="space-y-2">
           <li>
             <button
