@@ -51,26 +51,29 @@ const Modal = ({
           }}
         />
       )}
-      <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+      <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 ">
         <motion.div
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 50 }}
           transition={{ duration: 0.3 }}
           className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full relative"
-          style={{ maxWidth: "90%", margin: "auto" }}>
+          style={{ maxWidth: "90%", margin: "auto" }}
+        >
           <p className="mb-6 text-center">{message}</p>
           <div className="flex justify-center space-x-4 mt-4">
             {showCancelButton && (
               <button
                 onClick={onCancel}
-                className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition">
+                className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition"
+              >
                 Cancel
               </button>
             )}
             <button
               onClick={onConfirm}
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+            >
               OK
             </button>
           </div>

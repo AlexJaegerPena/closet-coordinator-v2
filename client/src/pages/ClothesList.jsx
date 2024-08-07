@@ -73,7 +73,6 @@ const ClothesList = () => {
     (item) => filter === "All" || item.category === filter
   );
 
-
   return (
     <div>
       <Navbar className="navbar sticky top-0" />
@@ -84,7 +83,7 @@ const ClothesList = () => {
           onClose={() => setIsMenuOpen(false)}
           onFilterChange={handleFilterChange}
         />
-        <div className="p-2 max-w-screen-sm mx-auto">
+        <div className="p-2 max-w-screen-sm mx-auto mb-16">
           {isEditing && selectedItem && (
             <div className="fixed inset-0 flex items-center justify-center z-40">
               <ControlPanel

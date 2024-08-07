@@ -21,14 +21,15 @@ const Update = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar className="sticky top-0" />
       <div className="min-h-screen bg-blue-50 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 -mt-16">
-        <div className="max-w-2xl w-full space-y-4">
+        <div className="max-w-2xl w-full space-y-4 mb-8">
           <h1 className="text-2xl font-bold text-center text-blue-800">
             Add New Item
           </h1>
           {/* <ImageUpload ref={imageUploadRef} /> */}
           <ControlPanel
+            className="mb-12"
             clearImage={clearImage}
             onFeedback={() => setIsFeedbackOpen(true)}
           />

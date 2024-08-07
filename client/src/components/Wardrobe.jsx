@@ -8,7 +8,7 @@ import ChatWindow from "./ChatWindow";
 import { useAuthContext } from "../contexts/authContext";
 
 // Helper function to fetch images by category
-const fetchImagesByCategory = async (url,category) => {
+const fetchImagesByCategory = async (url, category) => {
   try {
     const response = await fetch(`${url}/api/v1/clothes/category/${category}`);
     if (!response.ok) {
@@ -136,7 +136,7 @@ const Wardrobe = () => {
                         "https://via.placeholder.com/300?text=No+Image")
                     }
                   />
-                  <div className="absolute bottom-0 left-0 w-full bg-gray-800 bg-opacity-60 text-white text-center py-2 text-xs">
+                  <div className="absolute bottom-0 left-0 w-full bg-gray-500 bg-opacity-50 text-white text-center py-2 text-xs text-bold">
                     {category}
                   </div>
                 </div>
