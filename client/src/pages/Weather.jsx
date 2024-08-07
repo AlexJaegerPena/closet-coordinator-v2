@@ -9,7 +9,9 @@ const WeatherChatComponent = () => {
 
   const fetchWeatherChat = async () => {
     try {
+
       const result = await axios.post(`${url}/api/v1/weather/completions`, {
+
         location,
         stream: false, // Set to true if you want to handle streaming
       });
