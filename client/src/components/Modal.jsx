@@ -1,27 +1,37 @@
-import React, { useEffect } from "react";
-import ReactDOM from "react-dom";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import Confetti from "react-confetti";
 
 const Modal = ({
   isOpen,
   onClose,
   message,
   onConfirm,
-  showCancelButton,
   onCancel,
-  confetti,
+  confetti: showConfetti,
+  showCancelButton = true,
 }) => {
-  if (!isOpen) return null;
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
   useEffect(() => {
-    // Prevent default behavior for the escape key
-    const handleEsc = (event) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
+    const handleResize = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
     };
-    document.addEventListener("keydown", handleEsc);
-    return () => document.removeEventListener("keydown", handleEsc);
-  }, [onClose]);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  if (!isOpen) return null;
 
   return (
     <>
@@ -41,7 +51,7 @@ const Modal = ({
           }}
         />
       )}
-      <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 ">
+      <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
         <motion.div
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -69,7 +79,6 @@ const Modal = ({
           </div>
         </motion.div>
       </div>
-      document.body
     </>
   );
 };

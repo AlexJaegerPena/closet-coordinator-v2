@@ -24,6 +24,7 @@ const ControlPanel = ({
   const [isShaking, setIsShaking] = useState(false);
   const imageUploadRef = useRef();
   const { url } = useAuthContext();
+
   const handleClear = () => {
     setIsShaking(true);
     setTimeout(() => {
@@ -53,6 +54,7 @@ const ControlPanel = ({
       alert("Image is still uploading or not selected.");
       return;
     }
+
     const dataToSend = {
       category: dropdown1,
       type: dropdown2,
@@ -94,6 +96,7 @@ const ControlPanel = ({
       console.error("There was an error!", error);
     }
   };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -149,6 +152,7 @@ const ControlPanel = ({
           {isEditMode ? "Cancel" : "Clear Form"}
         </button>
       </div>
+
       {isConfirmOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
@@ -170,6 +174,7 @@ const ControlPanel = ({
           </div>
         </div>
       )}
+
       {isFeedbackOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
