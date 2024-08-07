@@ -1,50 +1,82 @@
-import React, { useEffect } from "react";
-import ReactDOM from "react-dom";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import Confetti from "react-confetti";
 
 const Modal = ({
   isOpen,
   onClose,
   message,
   onConfirm,
-  showCancelButton,
   onCancel,
-  confetti,
+  confetti: showConfetti,
+  showCancelButton = true,
 }) => {
-  if (!isOpen) return null;
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
   useEffect(() => {
-    // Prevent default behavior for the escape key
-    const handleEsc = (event) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
+    const handleResize = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
     };
-    document.addEventListener("keydown", handleEsc);
-    return () => document.removeEventListener("keydown", handleEsc);
-  }, [onClose]);
 
-  return ReactDOM.createPortal(
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
-        <p>{message}</p>
-        <div className="flex justify-end mt-4">
-          {showCancelButton && (
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  if (!isOpen) return null;
+
+  return (
+    <>
+      {showConfetti && (
+        <Confetti
+          width={dimensions.width}
+          height={dimensions.height}
+          numberOfPieces={300}
+          recycle={false}
+          gravity={0.3}
+          run={isOpen}
+          confettiSource={{
+            x: 0,
+            y: 100,
+            w: dimensions.width,
+            h: 0,
+          }}
+        />
+      )}
+      <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 50 }}
+          transition={{ duration: 0.3 }}
+          className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full relative"
+          style={{ maxWidth: "90%", margin: "auto" }}>
+          <p className="mb-6 text-center">{message}</p>
+          <div className="flex justify-center space-x-4 mt-4">
+            {showCancelButton && (
+              <button
+                onClick={onCancel}
+                className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition">
+                Cancel
+              </button>
+            )}
             <button
-              onClick={onCancel}
-              className="mr-2 bg-gray-300 px-4 py-2 rounded">
-              Cancel
+              onClick={onConfirm}
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+              OK
             </button>
-          )}
-          <button
-            onClick={onConfirm}
-            className="bg-blue-500 text-white px-4 py-2 rounded">
-            OK
-          </button>
-        </div>
-        {confetti && <div className="confetti"></div>}
+          </div>
+        </motion.div>
       </div>
-    </div>,
-    document.body
+    </>
   );
 };
 
