@@ -24,7 +24,7 @@ const Home = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            <div className="flex justify-around mx-4 align-items">
+            <div className="flex justify-center mx-4 align-items">
               <WeatherComponent
                 location={location}
                 weather={weather}
