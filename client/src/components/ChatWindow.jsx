@@ -8,7 +8,7 @@ import { useAuthContext } from "../contexts/authContext";
 const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
   const messagesEndRef = useRef(null);
   const [userMessage, setUserMessage] = useState("");
-  const [comeBack, setComeBack] = useState("");
+  const [comeBack, setComeBack] = useState([]);
   const { url } = useAuthContext();
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
         `${url}/api/v1/chat/completions`,
         {
           model: "gpt-4o-mini",
-          messages: [...chatData, newMessage, comeBack.length > 0 && comeBack],
+          messages: [...chatData, newMessage, ...(comeBack.length > 0 ? comeBack : [])],
           stream: false,
         },
         {
@@ -54,7 +54,8 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
       setChatData((prevMessages) => [...prevMessages, assistantMessage]);
       setComeBack((prevMessages) => [...prevMessages, assistantMessage]);
     } catch (error) {
-      console.error("Error fetching chat response:", error);
+      console.error("Error fetching chat response:", error.response?.data || error);
+
       const errorMessage = {
         role: "assistant",
         content: "An error occurred while fetching the response.",
@@ -65,10 +66,13 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
     setUserMessage("");
   };
 
-  const RenderMessage = ({ msg, index }) => {
+  const RenderMessage = ({ msg }) => {
+    if (!msg || !msg.role) {
+      return null;
+    }
+
     return (
       <div
-        key={index}
         className={`mb-2 ${msg.role === "user" ? "text-right" : "text-left"}`}
       >
         <div
@@ -77,7 +81,7 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
               ? "bg-gradient-to-r from-red-500 to-orange-400 text-white"
               : "bg-gray-200 text-black"
           }`}
-          style={{ maxWidth: "75%", wordBreak: "break-word" }} // Ensure bubbles don't exceed width and text wraps
+          style={{ maxWidth: "75%", wordBreak: "break-word" }}
         >
           {msg.content}
           {msg.imageUrl && (
@@ -121,7 +125,7 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
         </div>
         <div className="flex-1 p-4 overflow-y-auto">
           {chatData?.map((msg, index) => (
-            <RenderMessage key={index} msg={msg} index={index} />
+            msg ? <RenderMessage key={index} msg={msg} /> : null
           ))}
           <div ref={messagesEndRef} />
         </div>

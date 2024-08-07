@@ -9,8 +9,6 @@ export const createChat = asyncHandler(async (req, res) => {
     headers: { mode },
   } = req;
 
-  console.log(request);
-
   const dataClothes = await Clothes.find();
   if (!dataClothes) {
     return next(new ErrorResponse(`Server error`, 500));
