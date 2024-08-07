@@ -9,7 +9,6 @@ const getWeather = async (latitude, longitude) => {
   try {
     const response = await axios.get(url);
     const data = response.data;
-    console.log("Weather data:", data);
     return data;
   } catch (error) {
     console.error("Error fetching weather data:", error);
@@ -17,17 +16,13 @@ const getWeather = async (latitude, longitude) => {
   }
 };
 
-const WeatherComponent = ({setWeather,weather,location, setLocation}) => {
+const WeatherComponent = ({ setWeather, weather, location, setLocation }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          })
           setLocation({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
