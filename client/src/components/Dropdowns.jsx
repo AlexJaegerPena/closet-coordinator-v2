@@ -7,15 +7,15 @@ const Dropdowns = ({
   setDropdown2,
   dropdown3,
   setDropdown3,
-  // dropdown4,
-  // setDropdown4,
-  // dropdown5,
-  // setDropdown5,
+  dropdown4,
+  setDropdown4,
+  dropdown5,
+  setDropdown5,
 }) => (
   <div>
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-1">
-        Category:
+        Category
         <select
           value={dropdown1}
           onChange={(e) => setDropdown1(e.target.value)}
@@ -33,7 +33,7 @@ const Dropdowns = ({
 
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-1">
-        Type:
+        Type
         <select
           value={dropdown2}
           onChange={(e) => setDropdown2(e.target.value)}
@@ -123,7 +123,7 @@ const Dropdowns = ({
 
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-1">
-        Main Colour:
+        Main Colour
         <select
           value={dropdown3}
           onChange={(e) => setDropdown3(e.target.value)}
@@ -155,34 +155,61 @@ const Dropdowns = ({
       </label>
     </div>
 
-    {/* <div className="mb-4">
+    <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-1">
-        Season:
+        Season
         <select
           value={dropdown4}
           onChange={(e) => setDropdown4(e.target.value)}
           className="mt-1 block w-full p-2 border border-gray-300 rounded shadow-sm focus:border-blue-500 focus:ring-blue-500">
           <option value="">Select</option>
-          <option value="Summer">Summer</option>
-          <option value="Autumn">Autumn</option>
-          <option value="Winter">Winter</option>
-          <option value="Spring">Spring</option>
+          <option value="summer">Summer</option>
+          <option value="autumn">Autumn</option>
+          <option value="winter">Winter</option>
+          <option value="spring">Spring</option>
         </select>
       </label>
-    </div> */}
+    </div>
 
-    {/* <div className="mb-4">
+    <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-1">
-        Occasion:
+        Occasion
         <select
           value={dropdown5}
           onChange={(e) => setDropdown5(e.target.value)}
           className="mt-1 block w-full p-2 border border-gray-300 rounded shadow-sm focus:border-blue-500 focus:ring-blue-500">
           <option value="">Select</option>
-          <option value="Sports">Sports</option>
-          <option value="Holiday">Holiday</option>
-          <option value="Formal">Formal</option>
-          <option value="Informal">Informal</option>
+          <option value="sport">Sport</option>
+          <option value="casual">Casual</option>
+          <option value="business">Business</option>
+          <option value="holiday">Holiday</option>
+        </select>
+      </label>
+    </div>
+
+    {/* extended occasion list */}
+    {/* <div className="mb-4">
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        Occasion
+        <select
+          value={dropdown5}
+          onChange={(e) => setDropdown5(e.target.value)}
+          className="mt-1 block w-full p-2 border border-gray-300 rounded shadow-sm focus:border-blue-500 focus:ring-blue-500">
+          <option value="">Select</option>
+          <option value="athleisure">Athleisure</option>
+          <option value="beach">Beach</option>
+          <option value="black tie">Black Tie</option>
+          <option value="business">Business</option>
+          <option value="casual">Casual</option>
+          <option value="cocktail">Cocktail</option>
+          <option value="date night">Date Night</option>
+          <option value="festival">Festival</option>
+          <option value="formal">Formal</option>
+          <option value="loungewear">Loungewear</option>
+          <option value="party">Party</option>
+          <option value="red carpet">Red Carpet</option>
+          <option value="travel">Travel</option>
+          <option value="wedding">Wedding</option>
         </select>
       </label>
     </div> */}
