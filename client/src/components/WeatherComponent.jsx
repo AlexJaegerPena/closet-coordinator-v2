@@ -8,7 +8,7 @@ import {
   FaSnowflake,
 } from "react-icons/fa";
 import { useUserContext } from "../contexts/userContext";
-import { useUserContext } from "../contexts/userContext";
+// import { useUserContext } from "../contexts/userContext";
 import { FaLocationDot } from "react-icons/fa6";
 import "./WeatherComponent.css"; // Stile für die Komponente
 const getWeather = async (latitude, longitude) => {
