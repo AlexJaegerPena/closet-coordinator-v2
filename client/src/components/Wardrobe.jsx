@@ -148,8 +148,8 @@ const Wardrobe = () => {
 
       {/* Button Section */}
 
-      <div className="flex flex-row items-center justify-center gap-2">
-        <div className="flex flex-row items-center justify-center mb-16">
+      <div className="flex flex-row items-center justify-center gap-2 mb-16">
+        <div className="flex flex-row items-center justify-center">
           <button
             className="btn bg-gradient-to-r from-sky-600 to-teal-400 w-44 h-12 text-white text-m rounded-2xl shadow-xl border-2 border-white hover:bg-teal-500"
             onClick={handleClick}
