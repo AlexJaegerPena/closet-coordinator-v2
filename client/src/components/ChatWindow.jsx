@@ -31,7 +31,7 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
 
     try {
       const { data } = await axios.post(
-        `${url}/api/v1/chat/completions/2`,
+        `${url}/api/v1/chat/completions`,
         {
           model: "gpt-4o-mini",
           messages: [...chatData, newMessage, comeBack.length > 0 && comeBack],

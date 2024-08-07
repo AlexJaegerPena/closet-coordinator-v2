@@ -1,4 +1,4 @@
-import Clothes from '../models/Clothes.js'
+import Clothes from "../models/Clothes.js";
 import OpenAI from "openai";
 import OpenAIMock from "../utils/OpenAIMock.js";
 import asyncHandler from "../utils/asyncHandler.js";
@@ -9,51 +9,49 @@ export const createChat = asyncHandler(async (req, res) => {
     headers: { mode },
   } = req;
 
-  console.log(request)
+  console.log(request);
 
   const dataClothes = await Clothes.find();
   if (!dataClothes) {
-      return next(new ErrorResponse(`Server error`, 500));
-    }
-    
-  
-    let collectMessage;
+    return next(new ErrorResponse(`Server error`, 500));
+  }
 
-    let message={
-        "model": "gpt-4o-mini",
-        "messages": [
-              {
-                    "role": "system",
-                    "content":  `You are a helpful and friendly clothing assistant who recommends 1 item of clothes from this database only returning ${dataClothes.color} and ${dataClothes.type}. As part of your answer, you provide data about the weather from ${request?.messages?.location?.region} to help make decisions on what to clothes to wear for the day.`
-          
-                },
+  let collectMessage;
+
+  let message = {
+    model: "gpt-4o-mini",
+    messages: [
       {
-          "role": "user",
-          "content": "What clothes should I wear today?"
+        role: "system",
+        content: `You are a helpful and friendly clothing assistant who recommends 1 item of clothes from this database only returning ${dataClothes.color} and ${dataClothes.type}. As part of your answer, you provide data about the weather from ${request?.messages?.location?.region} to help make decisions on what clothes to wear for the day.`,
+      },
+      {
+        role: "user",
+        content: "What clothes should I wear today?",
       },
 
       {
-        "role": "assistant",
-        "content": collectMessage
-      }
-  ],
-  "stream": false
-}
+        role: "assistant",
+        content: collectMessage,
+      },
+    ],
+    stream: false,
+  };
 
-let openai;
+  let openai;
 
-  mode === "development"
+  mode === "production"
     ? (openai = new OpenAI({ apiKey: process.env.OPEN_AI_APIKEY }))
     : (openai = new OpenAIMock());
-    
-    const completion = await openai.chat.completions.create({
-      stream,
-      ...message,
-    });
-    console.log(completion)
-    
-    if (stream) {
-      res.writeHead(200, {
+
+  const completion = await openai.chat.completions.create({
+    stream,
+    ...message,
+  });
+  console.log(completion);
+
+  if (stream) {
+    res.writeHead(200, {
       Connection: "keep-alive",
       "Cache-Control": "no-cache",
       "Content-Type": "text/event-stream",
@@ -64,7 +62,7 @@ let openai;
     res.end();
     res.on("close", () => res.end());
   } else {
-    console.log(completion.choices[0])
+    console.log(completion.choices[0]);
     res.json(completion.choices[0]);
   }
 });

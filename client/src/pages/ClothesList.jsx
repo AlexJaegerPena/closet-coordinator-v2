@@ -8,6 +8,7 @@ import ControlPanel from "../components/ControlPanel"; // Import ControlPanel
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useAuthContext } from "../contexts/authContext";
+import Modal from "../components/Modal";
 
 const ClothesList = () => {
   const { url } = useAuthContext();
@@ -64,7 +65,7 @@ const ClothesList = () => {
   const confirmDelete = async () => {
     if (itemToDelete) {
       try {
-        await axios.delete(`${url}/api/v1/clothes/${itemId}`);
+        await axios.delete(`${url}/api/v1/clothes/${itemToDelete._id}`);
         setClothes(clothes.filter((item) => item._id !== itemToDelete._id));
         setItemToDelete(null);
       } catch (error) {

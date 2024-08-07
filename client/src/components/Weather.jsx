@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const getWeather = async (latitude, longitude) => {
-  // const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
-  const apiKey = "d1f4eb599154491d94e92554240508";
+  const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
+  // const apiKey = "d1f4eb599154491d94e92554240508";
   const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}`;
 
   try {
