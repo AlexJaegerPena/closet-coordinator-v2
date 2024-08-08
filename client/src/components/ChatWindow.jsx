@@ -51,6 +51,8 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
         content: data?.message?.content || "No response received.",
       };
 
+      console.log("API Response:", data);
+
       setChatData((prevMessages) => [...prevMessages, assistantMessage]);
       setComeBack((prevMessages) => [...prevMessages, assistantMessage]);
     } catch (error) {
