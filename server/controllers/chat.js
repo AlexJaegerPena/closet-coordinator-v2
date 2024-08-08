@@ -9,14 +9,12 @@ export const createChat = asyncHandler(async (req, res) => {
     headers: { mode },
   } = req;
 
-  console.log(request);
-
   const dataClothes = await Clothes.find();
   if (!dataClothes) {
     return next(new ErrorResponse(`Server error`, 500));
   }
 
-  let collectMessage;
+  let collectMessage = `Today you should wear a ${dataClothes[0].color} ${dataClothes[0].type}. The weather in Berlin} is ${request}.`;
 
   let message = {
     model: "gpt-4o-mini",
@@ -37,6 +35,8 @@ export const createChat = asyncHandler(async (req, res) => {
     ],
     stream: false,
   };
+
+  console.log()
 
   let openai;
 

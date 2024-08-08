@@ -30,10 +30,12 @@ const Login = () => {
     try {
       // const {headers} =
       const response = await axios.post(`${url}/api/v1/login`, {
-        name,
         email,
         password,
       });
+
+      console.log("response", response.data);
+
 
       setUser(response.data.user.userDetails);
       localStorage.setItem(
@@ -66,12 +68,6 @@ const Login = () => {
       toast.error(error.response.data.message);
       setMessage("");
     }
-  };
-
-  const handleLogout = async () => {
-    Cookies.remove("token");
-    setIsAuthenticated(false);
-    navigate("/login");
   };
 
   return (

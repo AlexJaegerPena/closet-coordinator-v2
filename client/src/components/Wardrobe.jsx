@@ -45,7 +45,7 @@ const Wardrobe = () => {
         `${url}/api/v1/chat/completions`,
         {
           model: "gpt-4o-mini",
-          messages: weather,
+          messages: weather, location,
           stream: false,
         },
         {
@@ -58,15 +58,19 @@ const Wardrobe = () => {
       );
       setChatData([
         {
-          role: "assistant",
+          role: "system",
           content:
             data?.message?.content.slice(7, -3) || "No content available.",
+            
         },
+        console.log(data?.message?.content)
+
       ]);
     } catch (error) {
       console.error("Error:", error);
     }
   };
+
 
   useEffect(() => {
     getGPT();
