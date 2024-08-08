@@ -69,9 +69,11 @@ const Navbar = () => {
             </li>
 
             <li>
+
               <Link to="/login" onClick={handleLogout}>
                 Logout
               </Link>
+
             </li>
           </ul>
         )}

@@ -86,6 +86,7 @@ const WeatherComponent = () => {
       }
     );
   };
+
   return (
     <div className="weather-container border-2 border-white mt-4">
       {error ? (
@@ -95,7 +96,7 @@ const WeatherComponent = () => {
         </div>
       ) : weather ? (
         <div className="weather-info flex flex-row">
-          <p className="hi-text pr-12">Hi, {user?.name}!</p>
+          <p className="hi-text pr-12">Hi {user?.userName}!</p>
           <WeatherIcon condition={weather.current.condition.text} />
           <p className="temperature">{weather.current.temp_c}°</p>
           <div className="loc-con">

@@ -18,7 +18,7 @@ export const weatherChat = asyncHandler(async (req, res) => {
 
   // Fetch weather data
   const apiKey = process.env.WEATHER_API_KEY;
-  const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=London`;
+  const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}`;
   console.log(url)
 
   try {
@@ -28,7 +28,6 @@ export const weatherChat = asyncHandler(async (req, res) => {
     // Use weather data in your prompt
     const prompt = `
       The current weather in ${weatherData.location.name} is ${weatherData.current.condition.text} with a temperature of ${weatherData.current.temp_c}°C.
-      Write a short story about a person experiencing this weather.
     `;
 
     const completion = await openai.weather.completions.create({
