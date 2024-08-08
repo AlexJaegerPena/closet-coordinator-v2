@@ -9,6 +9,8 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
   const messagesEndRef = useRef(null);
   const [userMessage, setUserMessage] = useState("");
   const [comeBack, setComeBack] = useState("");
+  const [loading, setLoading] = useState(false); // Zustand für den Ladeindikator
+  const [initialLoading, setInitialLoading] = useState(true); // Zustand für initiales Laden
   const { url } = useAuthContext();
 
   useEffect(() => {
@@ -16,6 +18,27 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [chatData]);
+
+  useEffect(() => {
+    // Effekt für initiales Laden
+    if (isVisible) {
+      // Simuliere das initiale Laden
+      const loadInitialMessage = async () => {
+        try {
+          // Setze initialLoading auf true
+          setInitialLoading(true);
+          // Simuliere eine Netzwerkanfrage
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          // Hier kannst du zusätzliche Logik für initiale Nachrichten hinzufügen
+          setInitialLoading(false);
+        } catch (error) {
+          console.error("Error during initial loading:", error);
+          setInitialLoading(false);
+        }
+      };
+      loadInitialMessage();
+    }
+  }, [isVisible]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,6 +51,7 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
     };
 
     setChatData((prevMessages) => [...prevMessages, newMessage]);
+    setLoading(true); // Ladeindikator anzeigen
 
     try {
       const { data } = await axios.post(
@@ -46,13 +70,17 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
         }
       );
 
-      const assistantMessage = {
-        role: "assistant",
-        content: data?.message?.content || "No response received.",
-      };
+      // Verzögere das Setzen der Antwort, um den Ladeindikator sichtbar zu machen
+      setTimeout(() => {
+        const assistantMessage = {
+          role: "assistant",
+          content: data?.message?.content || "No response received.",
+        };
 
-      setChatData((prevMessages) => [...prevMessages, assistantMessage]);
-      setComeBack((prevMessages) => [...prevMessages, assistantMessage]);
+        setChatData((prevMessages) => [...prevMessages, assistantMessage]);
+        setComeBack((prevMessages) => [...prevMessages, assistantMessage]);
+        setLoading(false); // Ladeindikator ausblenden
+      }, 2000); // 1 Sekunde Verzögerung
     } catch (error) {
       console.error("Error fetching chat response:", error);
       const errorMessage = {
@@ -60,6 +88,7 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
         content: "An error occurred while fetching the response.",
       };
       setChatData((prevMessages) => [...prevMessages, errorMessage]);
+      setLoading(false); // Ladeindikator ausblenden
     }
 
     setUserMessage("");
@@ -120,9 +149,19 @@ const ChatWindow = ({ isVisible, onClose, chatData, setChatData }) => {
           </button>
         </div>
         <div className="flex-1 p-4 overflow-y-auto">
+          {initialLoading && (
+            <div className="flex justify-center items-center h-16">
+              <span className="loading loading-dots loading-md"></span>
+            </div>
+          )}
           {chatData?.map((msg, index) => (
             <RenderMessage key={index} msg={msg} index={index} />
           ))}
+          {loading && (
+            <div className="flex justify-center items-center h-16">
+              <span className="loading loading-dots loading-md"></span>
+            </div>
+          )}
           <div ref={messagesEndRef} />
         </div>
         <form onSubmit={handleSubmit} className="border-t border-gray-200 p-2">
