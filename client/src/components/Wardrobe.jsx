@@ -37,6 +37,7 @@ const Wardrobe = () => {
   const [chatVisible, setChatVisible] = useState(false);
   const [chatData, setChatData] = useState([]);
   const [animationKey, setAnimationKey] = useState(0); // Add key for animation
+  const [loading, setLoading] = useState(true); // Add loading state
   const { url } = useAuthContext();
 
   const getGPT = async () => {
@@ -52,6 +53,7 @@ const Wardrobe = () => {
           headers: {
             provider: "open-ai",
             mode: "production",
+
             "Content-Type": "application/json",
           },
         }
@@ -84,12 +86,14 @@ const Wardrobe = () => {
     const storedImages = JSON.parse(localStorage.getItem("images"));
     if (storedImages) {
       setImages(storedImages);
+      setLoading(false); // Set loading to false if images are already stored
     } else {
       fetchImages();
     }
   }, []);
 
   const fetchImages = async () => {
+    setLoading(true); // Set loading to true when starting to fetch images
     const categories = [
       "Accessories",
       "Shirts",
@@ -105,8 +109,11 @@ const Wardrobe = () => {
 
       categoryImages[category] = getRandomImage(items); // Save the full item object
     }
+
     setImages(categoryImages);
     localStorage.setItem("images", JSON.stringify(categoryImages)); // Save to localStorage
+
+    setTimeout(() => setLoading(false), 800);
   };
 
   const handleClick = () => {
@@ -131,15 +138,19 @@ const Wardrobe = () => {
                 key={index}
               >
                 <div className="relative w-full h-44 bg-gray-200 border-4 border-white rounded-3xl overflow-hidden shadow-2xl">
-                  <img
-                    src={images[category].img}
-                    alt={category}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    onError={(e) =>
-                      (e.target.src =
-                        "https://via.placeholder.com/300?text=No+Image")
-                    }
-                  />
+                  {loading ? (
+                    <span className="loading loading-ring loading-lg text-accent absolute inset-0 flex items-center justify-center mt-[38%] ml-[38%] "></span>
+                  ) : (
+                    <img
+                      src={images[category].img}
+                      alt={category}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      onError={(e) =>
+                        (e.target.src =
+                          "https://via.placeholder.com/300?text=No+Image")
+                      }
+                    />
+                  )}
                   <div className="absolute bottom-0 left-0 w-full bg-gray-500 bg-opacity-50 text-white text-center py-2 text-xs text-bold">
                     {category}
                   </div>
@@ -151,7 +162,6 @@ const Wardrobe = () => {
       </motion.div>
 
       {/* Button Section */}
-
       <div className="flex flex-row items-center justify-center gap-2 mb-16">
         <div className="flex flex-row items-center justify-center">
           <button
